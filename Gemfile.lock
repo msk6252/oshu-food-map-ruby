@@ -73,7 +73,6 @@ GEM
     coffee-script-source (1.12.2)
     concurrent-ruby (1.1.9)
     crass (1.0.6)
-    diffy (3.4.0)
     erubi (1.10.0)
     execjs (2.8.1)
     ffi (1.15.4)
@@ -139,9 +138,6 @@ GEM
     rb-inotify (0.10.1)
       ffi (~> 1.0)
     regexp_parser (2.1.1)
-    ridgepole (0.9.6)
-      activerecord (>= 5.1, < 6.2)
-      diffy
     ruby_dep (1.5.0)
     rubyzip (2.3.2)
     sass (3.7.4)
@@ -204,7 +200,6 @@ DEPENDENCIES
   pg (>= 0.18, < 2.0)
   puma (~> 3.11)
   rails (~> 5.2.6)
-  ridgepole
   sass-rails (~> 5.0)
   selenium-webdriver
   spring

@@ -1,28 +1,19 @@
 <p id="notice"><%= notice %></p>
 
-<h1>Shops</h1>
+<div id="map"></div>
 
-<table>
-  <thead>
-    <tr>
-      <th>Name</th>
-      <th>Latitude</th>
-      <th>Longitude</th>
-      <th>Address</th>
-      <th>What three words</th>
-      <th colspan="3"></th>
-    </tr>
-  </thead>
+<style>
+html { height: 100% }
+body { height: 100% }
+#map { height: 60%; width: 100%}
+</style>
 
-  <tbody>
-    <% @shops.each do |shop| %>
-      <tr>
-        <td><%= shop.name %></td>
-        <td><%= shop.latitude %></td>
-        <td><%= shop.longitude %></td>
-        <td><%= shop.address %></td>
-        <td><%= shop.what_three_words %></td>
-      </tr>
-    <% end %>
-  </tbody>
-</table>
+<script>
+  function initMap() {
+    map = new google.maps.Map(document.getElementById('map'), {
+      center: {lat: 39.13960294778968, lng: 141.14624841562465},
+      zoom: 13
+    });
+  }
+</script>
+<script async defer src="//maps.googleapis.com/maps/api/js?key=<%= ENV.fetch("GOOGLE_MAP_API_KEY") %>&callback=initMap" type="text/javascript"></script>

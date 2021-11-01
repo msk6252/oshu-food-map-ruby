@@ -69,3 +69,6 @@ gem 'jquery-rails'
 
 # Dotenv
 gem 'dotenv-rails'
+
+# Authorize
+gem 'devise'

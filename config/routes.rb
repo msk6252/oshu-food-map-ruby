@@ -3,6 +3,9 @@ Rails.application.routes.draw do
   root 'shops#index'
   get '/admin' => redirect('/admin/sign_in')
 
+  get '/shops', to: 'shops#index'
+  get '/shops/:id', to: 'shops#show'
+
   namespace :admin do
     resources :shops
   end

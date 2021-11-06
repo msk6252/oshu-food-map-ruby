@@ -18,7 +18,7 @@
 
   <div class="field">
     <%= form.label :address %>
-    <%= form.text_field :address %>
+    <%= form.text_field :address, :id => 'address' %>
   </div>
 
   <%= form.hidden_field :latitude, :id => 'map_latitude'%>
@@ -39,11 +39,68 @@
 </style>
 
 <script>
- function initMap() {
-   map = new google.maps.Map(document.getElementById('map'), {
-     center: {lat: 39.13960294778968, lng: 141.14624841562465},
-     zoom: 13
-   });
- }
+function initMap() {
+  map = new google.maps.Map(document.getElementById('map'), {
+    center: {
+      lat: <%= shop.latitude  || 39.13960294778968 %>,
+      lng: <%= shop.longitude || 141.14624841562465 %>
+    },
+    zoom: 13
+  });
+
+  let marker = new google.maps.Marker()
+  marker.setPosition(new google.maps.LatLng(
+    <%= shop.latitude  || 39.13960294778968 %>,
+    <%= shop.longitude || 141.14624841562465 %>
+  ));
+  marker.setMap(map);
+
+  setAddress();
+
+  google.maps.event.addListener(map, 'click',(function(event) {
+    marker.setMap(null);
+
+    let lati = event.latLng.lat();
+    let lngi = event.latLng.lng();
+
+    marker.setPosition(new google.maps.LatLng(lati, lngi));
+    marker.setMap(map);
+    document.getElementById("map_latitude").value = lati;
+    document.getElementById("map_longitude").value = lngi;
+  }));
+}
+
+// 住所から緯度経度を特定
+function setAddress() {
+  let address_form = document.getElementById('address');
+
+  address_form.addEventListener("blur",() => {
+    let geocoder = new google.maps.Geocoder();
+    geocoder.geocode(
+      {
+        'address': document.getElementById("address").value,
+        'region': 'jp'
+      },
+      function(results, status){
+        if(status==google.maps.GeocoderStatus.OK){
+          let lat = results[0].geometry.location.lat();
+          let lng = results[0].geometry.location.lng();
+          let map = new google.maps.Map(document.getElementById('map'), {
+                      center: {lat: lat, lng: lng},
+                      zoom: 20
+                    });
+          new google.maps.Marker({ // マーカーの追加
+            position: new google.maps.LatLng({lat: lat, lng: lng}), // マーカーを立てる位置を指定
+            map: map // マーカーを立てる地図を指定
+          });
+          document.getElementById("map_latitude").value = lat;
+          document.getElementById("map_longitude").value = lng;
+        } else {
+          console.log(status);
+        }
+      }
+    );
+  });
+}
 </script>
 <script async defer src="//maps.googleapis.com/maps/api/js?key=<%= ENV.fetch("GOOGLE_MAP_API_KEY") %>&callback=initMap" type="text/javascript"></script>

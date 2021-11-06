@@ -17,24 +17,13 @@
   </div>
 
   <div class="field">
-    <%= form.label :latitude %>
-    <%= form.text_field :latitude %>
-  </div>
-
-  <div class="field">
-    <%= form.label :longitude %>
-    <%= form.text_field :longitude %>
-  </div>
-
-  <div class="field">
     <%= form.label :address %>
     <%= form.text_field :address %>
   </div>
 
-  <div class="field">
-    <%= form.label :what_three_words %>
-    <%= form.text_field :what_three_words %>
-  </div>
+  <%= form.hidden_field :latitude, :id => 'map_latitude'%>
+  <%= form.hidden_field :longitude, :id => 'map_longitude'%>
+
 
   <div class="actions">
     <%= form.submit %>

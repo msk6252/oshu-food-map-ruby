@@ -29,3 +29,21 @@
     <%= form.submit %>
   </div>
 <% end %>
+
+<div id="map"></div>
+
+<style>
+  html { height: 100% }
+  body { height: 100% }
+  #map { height: 60%; width: 100%; }
+</style>
+
+<script>
+ function initMap() {
+   map = new google.maps.Map(document.getElementById('map'), {
+     center: {lat: 39.13960294778968, lng: 141.14624841562465},
+     zoom: 13
+   });
+ }
+</script>
+<script async defer src="//maps.googleapis.com/maps/api/js?key=<%= ENV.fetch("GOOGLE_MAP_API_KEY") %>&callback=initMap" type="text/javascript"></script>

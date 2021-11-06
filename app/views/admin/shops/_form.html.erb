@@ -25,17 +25,14 @@
   <%= form.hidden_field :longitude, :id => 'map_longitude'%>
 
 
+  <div id="map"></div>
   <div class="actions">
     <%= form.submit %>
   </div>
 <% end %>
 
-<div id="map"></div>
-
 <style>
-  html { height: 100% }
-  body { height: 100% }
-  #map { height: 60%; width: 100%; }
+  #map { height: 70vh; }
 </style>
 
 <script>

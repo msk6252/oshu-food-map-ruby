@@ -1,4 +1,4 @@
-<%= form_with(model: shop, local: true) do |form| %>
+<%= form_with(url: admin_shops_path, local: true) do |form| %>
   <% if shop.errors.any? %>
     <div id="error_explanation">
       <h2><%= pluralize(shop.errors.count, "error") %> prohibited this shop from being saved:</h2>
@@ -21,11 +21,38 @@
     <%= form.text_field :address, :id => 'address' %>
   </div>
 
+  <div class="field">
+    <%= form.label :inside_image %>
+    <%= form.file_field :inside_image, id: "inside_image_form", onchange: "loadImage(this);" %>
+  </div>
+
+  <div id="inside_image" style="display: none">
+    <p id="inside_image_preview"></p>
+  </div>
+
+  <div class="field">
+    <%= form.label :outside_image %>
+    <%= form.file_field :outside_image, id: "outside_image_form", onchange: "loadImage(this);" %>
+  </div>
+
+  <div id="outside_image" style="display: none">
+    <p id="outside_image_preview"></p>
+  </div>
+
+  <div class="field">
+    <%= form.label :cooking_image %>
+    <%= form.file_field :cooking_image, id: "cooking_image_form", multiple: true, onchange: "loadImage(this);" %>
+  </div>
+
+  <div id="cooking_image" style="display: none">
+    <p id="cooking_image_preview"></p>
+  </div>
+
   <%= form.hidden_field :latitude, :id => 'map_latitude'%>
   <%= form.hidden_field :longitude, :id => 'map_longitude'%>
 
-
   <div id="map"></div>
+
   <div class="actions">
     <%= form.submit %>
   </div>
@@ -99,5 +126,39 @@ function setAddress() {
     );
   });
 }
+</script>
+<script>
+  function loadImage(obj) {
+    let preview_id = ''
+    let form_id = obj.id
+    switch (form_id) {
+      case 'inside_image_form':
+        preview_id = 'inside_image';
+        break;
+      case 'outside_image_form':
+        preview_id = 'outside_image';
+        break;
+      case 'cooking_image_form':
+        preview_id = 'cooking_image';
+        break;
+    }
+
+    const allPreview = document.getElementById(preview_id);
+    const newPreview = document.createElement('p');
+    allPreview.querySelector("p").remove();
+    newPreview.setAttribute("id", preview_id + "preview");
+    allPreview.insertBefore(newPreview, allPreview.firstChild);
+    document.getElementById(preview_id).style.display = "";
+
+    for (i=0;i<obj.files.length;i++) {
+      let fileReader = new FileReader();
+      fileReader.onload= (function  (e) {
+        const img = new Image();
+        img.src = e.target.result;
+        document.getElementById(preview_id + 'preview').appendChild(img);
+      });
+      if (obj.files[i]) { fileReader.readAsDataURL(obj.files[i]) };
+    }
+  }
 </script>
 <script async defer src="//maps.googleapis.com/maps/api/js?key=<%= ENV.fetch("GOOGLE_MAP_API_KEY") %>&callback=initMap" type="text/javascript"></script>

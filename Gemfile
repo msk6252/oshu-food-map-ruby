@@ -72,3 +72,6 @@ gem 'dotenv-rails'
 
 # Authorize
 gem 'devise'
+
+# ImageResize
+gem 'image_processing'

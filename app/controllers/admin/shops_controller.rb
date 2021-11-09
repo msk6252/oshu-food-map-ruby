@@ -26,7 +26,7 @@ class Admin::ShopsController < ApplicationController
 
     respond_to do |format|
       if @shop.save
-        format.html { redirect_to @shop, notice: "Shop was successfully created." }
+        format.html { redirect_to admin_shops_path, notice: "Shop was successfully created." }
         format.json { render :show, status: :created, location: @shop }
       else
         format.html { render :new, status: :unprocessable_entity }
@@ -39,7 +39,7 @@ class Admin::ShopsController < ApplicationController
   def update
     respond_to do |format|
       if @shop.update(shop_params)
-        format.html { redirect_to @shop, notice: "Shop was successfully updated." }
+        format.html { redirect_to admin_shops_path, notice: "Shop was successfully updated." }
         format.json { render :show, status: :ok, location: @shop }
       else
         format.html { render :edit, status: :unprocessable_entity }
@@ -65,6 +65,6 @@ class Admin::ShopsController < ApplicationController
 
     # Only allow a list of trusted parameters through.
     def shop_params
-      params.require(:shop).permit(:name, :latitude, :longitude, :address, :what_three_words)
+      params.permit(:name, :latitude, :longitude, :address, :inside_image, :outside_image, cooking_images: [])
     end
 end

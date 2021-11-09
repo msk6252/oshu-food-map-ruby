@@ -38,6 +38,11 @@ class Admin::ShopsController < ApplicationController
   # PATCH/PUT /admin/shops/1 or /admin/shops/1.json
   def update
     respond_to do |format|
+      if shop_params[:cooking_images]&.length > 0
+        @shop.cooking_images.each do |image|
+          image.purge
+        end
+      end
       if @shop.update(shop_params)
         format.html { redirect_to admin_shops_path, notice: "Shop was successfully updated." }
         format.json { render :show, status: :ok, location: @shop }
@@ -65,6 +70,6 @@ class Admin::ShopsController < ApplicationController
 
     # Only allow a list of trusted parameters through.
     def shop_params
-      params.permit(:name, :latitude, :longitude, :address, :inside_image, :outside_image, cooking_images: [])
+      params.require(:shop).permit(:name, :latitude, :longitude, :address, :inside_image, :outside_image, cooking_images: [])
     end
 end

@@ -146,19 +146,40 @@ function setAddress() {
     const allPreview = document.getElementById(preview_id);
     const newPreview = document.createElement('p');
     allPreview.querySelector("p").remove();
-    newPreview.setAttribute("id", preview_id + "preview");
+    newPreview.setAttribute("id", preview_id + "_preview");
     allPreview.insertBefore(newPreview, allPreview.firstChild);
     document.getElementById(preview_id).style.display = "";
 
     for (i=0;i<obj.files.length;i++) {
       let fileReader = new FileReader();
-      fileReader.onload= (function  (e) {
+      fileReader.onloadend = (function  (e) {
         const img = new Image();
         img.src = e.target.result;
-        document.getElementById(preview_id + 'preview').appendChild(img);
+        img.onload= function() {
+          const imageSize = resizeImage(img, obj.files.length);
+          console.log(imageSize)
+          img.widht = imageSize['width']
+          img.height = imageSize['height']
+        }
+        document.getElementById(preview_id + '_preview').appendChild(img);
       });
       if (obj.files[i]) { fileReader.readAsDataURL(obj.files[i]) };
     }
+  }
+
+  function resizeImage(img, len) {
+    let width = 0;
+    let height = 0;
+    const fixed_size = 450;
+    if (img.height < img.width) {
+      width = fixed_size;
+      height = img.height * (width / img.width);
+    } else {
+      height = fixed_size;
+      width = img.width * (height / img.height);
+    }
+    
+    return { width: width, height: height }
   }
 </script>
 <script async defer src="//maps.googleapis.com/maps/api/js?key=<%= ENV.fetch("GOOGLE_MAP_API_KEY") %>&callback=initMap" type="text/javascript"></script>

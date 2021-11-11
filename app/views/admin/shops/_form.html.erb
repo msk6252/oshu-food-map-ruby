@@ -1,4 +1,5 @@
-<%= form_with(url: admin_shops_path, local: true) do |form| %>
+<% action_name = controller.action_name == 'edit' ? 'update' : 'create' %>
+<%= form_with(model: shop, url: { controller: 'admin/shops', action: action_name }, local: true) do |form| %>
   <% if shop.errors.any? %>
     <div id="error_explanation">
       <h2><%= pluralize(shop.errors.count, "error") %> prohibited this shop from being saved:</h2>
@@ -26,6 +27,10 @@
     <%= form.file_field :inside_image, id: "inside_image_form", onchange: "loadImage(this);" %>
   </div>
 
+  <% if shop.outside_image.attached? %>
+    <%= image_tag shop.inside_image.variant(resize: "300"), name: 'exist_inside_image' %>
+  <% end %>
+
   <div id="inside_image" style="display: none">
     <p id="inside_image_preview"></p>
   </div>
@@ -35,17 +40,25 @@
     <%= form.file_field :outside_image, id: "outside_image_form", onchange: "loadImage(this);" %>
   </div>
 
+  <% if shop.outside_image.attached? %>
+    <%= image_tag shop.outside_image.variant(resize: "300"), name: 'exist_outside_image' %>
+  <% end %>
+
   <div id="outside_image" style="display: none">
     <p id="outside_image_preview"></p>
   </div>
 
   <div class="field">
-    <%= form.label :cooking_image %>
-    <%= form.file_field :cooking_image, id: "cooking_image_form", multiple: true, onchange: "loadImage(this);" %>
+    <%= form.label :cooking_images %>
+    <%= form.file_field :cooking_images, id: "cooking_images_form", multiple: true, onchange: "loadImage(this);" %>
   </div>
 
-  <div id="cooking_image" style="display: none">
-    <p id="cooking_image_preview"></p>
+  <% shop.cooking_images.each do |image| %>
+    <%= image_tag image.variant(resize: "300"), name: 'exist_cooking_images' %>
+  <% end %>
+
+  <div id="cooking_images" style="display: none">
+    <p id="cooking_images_preview"></p>
   </div>
 
   <%= form.hidden_field :latitude, :id => 'map_latitude'%>
@@ -138,8 +151,8 @@ function setAddress() {
       case 'outside_image_form':
         preview_id = 'outside_image';
         break;
-      case 'cooking_image_form':
-        preview_id = 'cooking_image';
+      case 'cooking_images_form':
+        preview_id = 'cooking_images';
         break;
     }
 
@@ -149,6 +162,7 @@ function setAddress() {
     newPreview.setAttribute("id", preview_id + "_preview");
     allPreview.insertBefore(newPreview, allPreview.firstChild);
     document.getElementById(preview_id).style.display = "";
+    if (document.getElementsByName('exist_' + preview_id)) { document.getElementsByName('exist_' + preview_id).forEach(ele => ele.style.display = "none"); }
 
     for (i=0;i<obj.files.length;i++) {
       let fileReader = new FileReader();
@@ -157,7 +171,6 @@ function setAddress() {
         img.src = e.target.result;
         img.onload= function() {
           const imageSize = resizeImage(img, obj.files.length);
-          console.log(imageSize)
           img.widht = imageSize['width']
           img.height = imageSize['height']
         }
@@ -167,7 +180,7 @@ function setAddress() {
     }
   }
 
-  function resizeImage(img, len) {
+  function resizeImage(img) {
     let width = 0;
     let height = 0;
     const fixed_size = 450;

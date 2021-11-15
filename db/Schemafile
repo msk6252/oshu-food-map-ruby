@@ -10,8 +10,10 @@ create_table "shops", id: :bigint, unsigned: true, force: :cascade, comment: "ã
 
   t.datetime "updated_at", precision: 6, null: false
   t.datetime "created_at", precision: 6, null: false
-  t.datetime "deleted_at", precision: 6
+  t.datetime "discarded_at", precision: 6
 end
+
+add_index "shops", ["discarded_at"]
 
 create_table "admins", id: :bigint, unsigned: true, force: :cascade, comment: "ç®¡ç†è€…" do |t|
   ## Database Authenticatable
@@ -45,11 +47,12 @@ create_table "admins", id: :bigint, unsigned: true, force: :cascade, comment: "ç
 
   t.datetime "updated_at", precision: 6, null: false
   t.datetime "created_at", precision: 6, null: false
-  t.datetime "deleted_at", precision: 6
+  t.datetime "discarded_at", precision: 6
 end
 
 add_index "admins", ["email"]
 add_index "admins", ["reset_password_token"]
+add_index "admins", ["discarded_at"]
 
 create_table "active_storage_blobs" do |t|
   t.string   "key",              null: false

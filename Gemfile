@@ -75,3 +75,6 @@ gem 'devise'
 
 # ImageResize
 gem 'image_processing'
+
+# Logical Delete
+gem 'discard'

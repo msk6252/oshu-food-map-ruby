@@ -12,6 +12,7 @@
       <%= image_tag img.variant(resize: '100') %>
     <% end %>
   <% end %>
+  <%= link_to '削除', "/admin/shops/#{shop.id}", method: :delete %>
   <hr />
 <% end %>
 

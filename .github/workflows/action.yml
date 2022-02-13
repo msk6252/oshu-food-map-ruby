@@ -2,7 +2,7 @@ name: heroku-deploy
 
 on:
   pull_request:
-    type: [closed]
+    type: [push, closed]
     branches:
       - main
 

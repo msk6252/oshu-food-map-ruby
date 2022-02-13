@@ -1,0 +1,198 @@
+<% action_name = controller.action_name == 'edit' ? 'update' : 'create' %>
+<%= form_with(model: shop, url: { controller: 'admin/shops', action: action_name }, local: true) do |form| %>
+  <% if shop.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(shop.errors.count, "error") %> prohibited this shop from being saved:</h2>
+
+      <ul>
+      <% shop.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field">
+    <%= form.label :name %>
+    <%= form.text_field :name %>
+  </div>
+
+  <div class="field">
+    <%= form.label :address %>
+    <%= form.text_field :address, :id => 'address' %>
+  </div>
+
+  <div class="field">
+    <%= form.label :inside_image %>
+    <%= form.file_field :inside_image, id: "inside_image_form", onchange: "loadImage(this);" %>
+  </div>
+
+  <% if shop.outside_image.attached? %>
+    <%= image_tag shop.inside_image.variant(resize: "300"), name: 'exist_inside_image' %>
+  <% end %>
+
+  <div id="inside_image" style="display: none">
+    <p id="inside_image_preview"></p>
+  </div>
+
+  <div class="field">
+    <%= form.label :outside_image %>
+    <%= form.file_field :outside_image, id: "outside_image_form", onchange: "loadImage(this);" %>
+  </div>
+
+  <% if shop.outside_image.attached? %>
+    <%= image_tag shop.outside_image.variant(resize: "300"), name: 'exist_outside_image' %>
+  <% end %>
+
+  <div id="outside_image" style="display: none">
+    <p id="outside_image_preview"></p>
+  </div>
+
+  <div class="field">
+    <%= form.label :cooking_images %>
+    <%= form.file_field :cooking_images, id: "cooking_images_form", multiple: true, onchange: "loadImage(this);" %>
+  </div>
+
+  <% shop.cooking_images.each do |image| %>
+    <%= image_tag image.variant(resize: "300"), name: 'exist_cooking_images' %>
+  <% end %>
+
+  <div id="cooking_images" style="display: none">
+    <p id="cooking_images_preview"></p>
+  </div>
+
+  <%= form.hidden_field :latitude, :id => 'map_latitude'%>
+  <%= form.hidden_field :longitude, :id => 'map_longitude'%>
+
+  <div id="map"></div>
+
+  <div class="actions">
+    <%= form.submit %>
+  </div>
+<% end %>
+
+<style>
+  #map { height: 70vh; }
+</style>
+
+<script>
+function initMap() {
+  map = new google.maps.Map(document.getElementById('map'), {
+    center: {
+      lat: <%= shop.latitude  || 39.13960294778968 %>,
+      lng: <%= shop.longitude || 141.14624841562465 %>
+    },
+    zoom: 13
+  });
+
+  let marker = new google.maps.Marker()
+  marker.setPosition(new google.maps.LatLng(
+    <%= shop.latitude  || 39.13960294778968 %>,
+    <%= shop.longitude || 141.14624841562465 %>
+  ));
+  marker.setMap(map);
+
+  setAddress();
+
+  google.maps.event.addListener(map, 'click',(function(event) {
+    marker.setMap(null);
+
+    let lati = event.latLng.lat();
+    let lngi = event.latLng.lng();
+
+    marker.setPosition(new google.maps.LatLng(lati, lngi));
+    marker.setMap(map);
+    document.getElementById("map_latitude").value = lati;
+    document.getElementById("map_longitude").value = lngi;
+  }));
+}
+
+// 住所から緯度経度を特定
+function setAddress() {
+  let address_form = document.getElementById('address');
+
+  address_form.addEventListener("blur",() => {
+    let geocoder = new google.maps.Geocoder();
+    geocoder.geocode(
+      {
+        'address': document.getElementById("address").value,
+        'region': 'jp'
+      },
+      function(results, status){
+        if(status==google.maps.GeocoderStatus.OK){
+          let lat = results[0].geometry.location.lat();
+          let lng = results[0].geometry.location.lng();
+          let map = new google.maps.Map(document.getElementById('map'), {
+                      center: {lat: lat, lng: lng},
+                      zoom: 20
+                    });
+          new google.maps.Marker({ // マーカーの追加
+            position: new google.maps.LatLng({lat: lat, lng: lng}), // マーカーを立てる位置を指定
+            map: map // マーカーを立てる地図を指定
+          });
+          document.getElementById("map_latitude").value = lat;
+          document.getElementById("map_longitude").value = lng;
+        } else {
+          console.log(status);
+        }
+      }
+    );
+  });
+}
+</script>
+<script>
+  function loadImage(obj) {
+    let preview_id = ''
+    let form_id = obj.id
+    switch (form_id) {
+      case 'inside_image_form':
+        preview_id = 'inside_image';
+        break;
+      case 'outside_image_form':
+        preview_id = 'outside_image';
+        break;
+      case 'cooking_images_form':
+        preview_id = 'cooking_images';
+        break;
+    }
+
+    const allPreview = document.getElementById(preview_id);
+    const newPreview = document.createElement('p');
+    allPreview.querySelector("p").remove();
+    newPreview.setAttribute("id", preview_id + "_preview");
+    allPreview.insertBefore(newPreview, allPreview.firstChild);
+    document.getElementById(preview_id).style.display = "";
+    if (document.getElementsByName('exist_' + preview_id)) { document.getElementsByName('exist_' + preview_id).forEach(ele => ele.style.display = "none"); }
+
+    for (i=0;i<obj.files.length;i++) {
+      let fileReader = new FileReader();
+      fileReader.onloadend = (function  (e) {
+        const img = new Image();
+        img.src = e.target.result;
+        img.onload= function() {
+          const imageSize = resizeImage(img, obj.files.length);
+          img.widht = imageSize['width']
+          img.height = imageSize['height']
+        }
+        document.getElementById(preview_id + '_preview').appendChild(img);
+      });
+      if (obj.files[i]) { fileReader.readAsDataURL(obj.files[i]) };
+    }
+  }
+
+  function resizeImage(img) {
+    let width = 0;
+    let height = 0;
+    const fixed_size = 450;
+    if (img.height < img.width) {
+      width = fixed_size;
+      height = img.height * (width / img.width);
+    } else {
+      height = fixed_size;
+      width = img.width * (height / img.height);
+    }
+    
+    return { width: width, height: height }
+  }
+</script>
+<script async defer src="//maps.googleapis.com/maps/api/js?key=<%= ENV.fetch("GOOGLE_MAP_API_KEY") %>&callback=initMap" type="text/javascript"></script>

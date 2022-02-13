@@ -60,3 +60,21 @@ end
 
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem
 gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw, :jruby]
+
+# DB Migration
+gem 'ridgepole'
+
+# JQuery
+gem 'jquery-rails'
+
+# Dotenv
+gem 'dotenv-rails'
+
+# Authorize
+gem 'devise'
+
+# ImageResize
+gem 'image_processing'
+
+# Logical Delete
+gem 'discard'

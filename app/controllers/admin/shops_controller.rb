@@ -5,6 +5,7 @@ class Admin::ShopsController < ApplicationController
   # GET /admin/shops or /admin/shops.json
   def index
     @shops = Shop.all
+    @shops = @shops.where("name like ?", "%#{params[:kw]}%") if params[:kw].present?
   end
 
   # GET /admin/shops/1 or /admin/shops/1.json

@@ -2,9 +2,11 @@ class Admin::ShopsController < ApplicationController
   before_action :authenticate_admin!
   before_action :set_shop, only: %i[ show edit update destroy ]
 
+  DEFAULT_PAGE = 30
+
   # GET /admin/shops or /admin/shops.json
   def index
-    @shops = Shop.all
+    @shops = Shop.all.page(params[:page]).per(DEFAULT_PAGE)
     @shops = @shops.where("name like ?", "%#{params[:kw]}%") if params[:kw].present?
   end
 

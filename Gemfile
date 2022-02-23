@@ -78,3 +78,6 @@ gem 'image_processing'
 
 # Logical Delete
 gem 'discard'
+
+#Pagenation
+gem 'kaminari'

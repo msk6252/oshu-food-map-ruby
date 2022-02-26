@@ -6,4 +6,19 @@ ja:
       previous: "&lsaquo; 前"
       next: "次 &rsaquo;"
       truncate: "..."
+    images:
+      nothing: "投稿画像はありません。"
+      post_photo_number: "投稿枚数: %{number}枚"
   hello: "Hello world"
+  models:
+    base:
+      id: "ID"
+    shop:
+      name: "ショップ名"
+      address: "住所"
+      latitude: "緯度"
+      longitude: "経度"
+      cooking_image: "料理画像"
+      outside_image: "外観画像"
+      inside_image: "内装画像"
+      what3words: "What3Words"

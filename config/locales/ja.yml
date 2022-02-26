@@ -13,6 +13,8 @@ ja:
   models:
     base:
       id: "ID"
+    delete:
+      complete: "削除が完了しました。"
     shop:
       name: "ショップ名"
       address: "住所"

@@ -58,14 +58,10 @@ class Admin::ShopsController < ApplicationController
 
   # DELETE /admin/shops/1 or /admin/shops/1.json
   def destroy
+    # 論理削除
     @shop.discard
-    @shop.outside_image.purge if @shop.outside_image.attached?
-    @shop.inside_image.purge  if @shop.inside_image.attached?
-    @shop.cooking_images.each do |img|
-      img.purge
-    end
     respond_to do |format|
-      format.html { redirect_to admin_shops_path, notice: "Shop was successfully destroyed." }
+      format.html { redirect_to admin_shops_path, notice: I18.t(:complete, scope: [:models, :delete]) }
       format.json { head :no_content }
     end
   end

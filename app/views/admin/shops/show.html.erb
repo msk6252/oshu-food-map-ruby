@@ -1,59 +1,146 @@
-<p id="notice"><%= notice %></p>
+<div class="container">
+  <div class="row">
+    <div class="col-sm-12">
+      <p id="notice"><%= notice %></p>
 
-<p>
-  <strong>Name:</strong>
-  <%= @shop.name %>
-</p>
+      <h2><%= @shop.name %></h2>
+      <% if @shop.discarded_at.present? %>
+        <strong style="color: red">※削除済み</strong>
+      <% end %>
 
-<p>
-  <strong>Address:</strong>
-  <%= @shop.address %>
-</p>
+      <table class="table table-bordered">
+        <thead>
+          <tr>
+            <th scope="col">項目</th>
+            <th scope="col">情報</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <th scope="row"><%= t(:id, scope: [:models, :base])%></th>
+            <td><%= @shop.id %></td>
+          <tr>
+          <tr>
+            <th scope="row"><%= t(:name, scope: [:models, :shop]) %></th>
+            <td><%= @shop.name %></td>
+          <tr>
+          <tr>
+            <th scope="row"><%= t(:address, scope: [:models, :shop]) %></th>
+            <td><%= @shop.address %></td>
+          <tr>
+          <tr>
+            <th scope="row"><%= t(:latitude, scope: [:models, :shop]) %></th>
+            <td><%= @shop.latitude %></td>
+          <tr>
+          <tr>
+            <th scope="row"><%= t(:longitude, scope: [:models, :shop]) %></th>
+            <td><%= @shop.longitude %></td>
+          <tr>
+          <tr>
+            <th scope="row"><%= t(:what3words, scope: [:models, :shop]) %></th>
+            <td><%= @shop.what_three_words %></td>
+          <tr>
 
-<div id="map"></div>
+        </tbody>
+      </table>
+      <br />
+      
+      <div class="row">
+        <div class="col">
+          <%= link_to admin_shops_path do %>
+            <button class="btn btn-primary">ショップ一覧</button>
+          <% end %>
+        </div>
+        <div class="col">
+          <%= link_to edit_admin_shop_path(@shop) do %>
+            <button class="btn btn-warning">編集</button>
+          <% end %>
+        </div>
+        <div class="col">
+          <%= link_to admin_shop_path(@shop), method: :delete, data: {confirm: "削除しますか?"} do %>
+            <button class="btn btn-danger">削除</button>
+          <% end %>
+        </div>
+      </div>
 
-<p>
-  <strong>Outside Image</strong>
-  <%= image_tag @shop.outside_image, size: '30x65' if @shop.outside_image.attached? %>
-</p>
+      <br />
+      <br />
 
-<p>
-  <strong>Inside Image</strong>
-  <%= image_tag @shop.inside_image, size: '100x200' if @shop.inside_image.attached? %>
-</p>
+      <strong><%= t(:outside_image, scope: [:models, :shop]) %></strong>
+      <div class="row">
+        <div class="col">
+          <% if @shop.outside_image.attached? %>
+            <%= image_tag @shop.outside_image.variant(resize: '100') %>
+          <% else %>
+            <%= t(:nothing, scope: [:views, :images]) %>
+          <% end %>
+        </div>
+      </div>
 
-<p>
-  <strong>Cooking Image</strong>
-  <% @shop.cooking_images.each do |food| %>
-    <%= image_tag food.variant(resize: '300') %>
-  <% end %>
-</p>
+      <br />
 
-<%= link_to 'Back', shops_path %>
+      <strong><%= t(:inside_image, scope: [:models, :shop]) %></strong>
+      <div class="row">
+        <div class="col">
+          <% if @shop.inside_image.attached? %>
+            <%= image_tag @shop.inside_image.variant(resize: '100') if @shop.inside_image.attached? %>
+          <% else %>
+            <%= t(:nothing, scope: [:views, :images]) %>
+          <% end %>
+        </div>
+      </div>
 
-<style>
-html { height: 100% }
-body { height: 100% }
-#map { height: 60%; width: 100% }
-</style>
+      <br />
 
-<script>
-  let shopLatLng = {
-                     lat: <%= @shop['latitude'] || 39.13960294778968 %>,
-                     lng: <%= @shop['longitude'] || 141.14624841562465 %>
-                   }
-  function initMap() {
-    map = new google.maps.Map(document.getElementById('map'), {
-      center: shopLatLng,
-      zoom: 13
-    });
+      <strong><%= t(:cooking_image, scope: [:models, :shop]) %>(<%= t(:post_photo_number, scope:[:views, :images], number: @shop.cooking_images.length) %>)</strong>
+      <div class="row">
+        <% if @shop.cooking_images.length != 0 %>
+          <% @shop.cooking_images.each_with_index do |food, idx| %>
+            <div class="col">
+              <%= image_tag food.variant(resize: '100') %>
+            </div>
+          <% end %>
+        <% else %>
+          <div class="col">
+              <%= t(:nothing, scope: [:views,:images]) %>
+            </div>
+        <% end %>
+      </div>
 
-    markerLatLng = new google.maps.LatLng(shopLatLng);
 
-    marker = new google.maps.Marker({
-      position: markerLatLng,
-      map: map
-    });
-  }
-</script>
-<script async defer src="//maps.googleapis.com/maps/api/js?key=<%= ENV.fetch("GOOGLE_MAP_API_KEY") %>&callback=initMap" type="text/javascript"></script>
+      <br />
+
+      <strong><%= t(:address, scope: [:models, :shop]) %>：<%= @shop.address %></strong>
+      <div id="map"></div>
+
+      <%= link_to 'Back', shops_path %>
+      
+      <style>
+      html { height: 100% }
+      body { height: 100% }
+      #map { height: 100%; width: 100% }
+      </style>
+      
+      <script>
+        let shopLatLng = {
+                           lat: <%= @shop['latitude'] || 39.13960294778968 %>,
+                           lng: <%= @shop['longitude'] || 141.14624841562465 %>
+                         }
+        function initMap() {
+          map = new google.maps.Map(document.getElementById('map'), {
+            center: shopLatLng,
+            zoom: 15
+          });
+      
+          markerLatLng = new google.maps.LatLng(shopLatLng);
+      
+          marker = new google.maps.Marker({
+            position: markerLatLng,
+            map: map
+          });
+        }
+      </script>
+      <script async defer src="//maps.googleapis.com/maps/api/js?key=<%= ENV.fetch("GOOGLE_MAP_API_KEY") %>&callback=initMap" type="text/javascript"></script>
+    </div>
+  </div>
+</div>

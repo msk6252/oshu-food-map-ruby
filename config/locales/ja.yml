@@ -14,7 +14,9 @@ ja:
     base:
       id: "ID"
     delete:
-      complete: "削除が完了しました。"
+      complete: "%{object_field}の削除が完了しました。"
+    revival:
+      complete: "%{object_field}を復活しました。"
     shop:
       name: "ショップ名"
       address: "住所"

@@ -1,6 +1,6 @@
 class Admin::ShopsController < ApplicationController
   before_action :authenticate_admin!
-  before_action :set_shop, only: %i[ show edit update destroy ]
+  before_action :set_shop, only: %i[ show edit update destroy revival ]
 
   DEFAULT_PAGE = 30
 
@@ -59,10 +59,22 @@ class Admin::ShopsController < ApplicationController
   # DELETE /admin/shops/1 or /admin/shops/1.json
   def destroy
     # 論理削除
-    @shop.discard
     respond_to do |format|
-      format.html { redirect_to admin_shops_path, notice: I18.t(:complete, scope: [:models, :delete]) }
-      format.json { head :no_content }
+      if @shop.discard
+        format.json { render json: :nil, status: :ok }
+      else
+        format.json { render json: :nil, status: :internal_server_error }
+      end
+    end
+  end
+
+  def revival
+    respond_to do |format|
+      if @shop.undiscard
+        format.json { render json: :nil, status: :ok }
+      else
+        format.json { render json: :nil, status: :internal_server_error }
+      end
     end
   end
 

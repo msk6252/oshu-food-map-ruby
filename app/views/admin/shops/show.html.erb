@@ -120,10 +120,10 @@
       </style>
       
       <script>
-        let shopLatLng = {
-                           lat: <%= @shop['latitude'] || 39.13960294778968 %>,
-                           lng: <%= @shop['longitude'] || 141.14624841562465 %>
-                         }
+        shopLatLng = {
+                        lat: <%= @shop['latitude'] || 39.13960294778968 %>,
+                        lng: <%= @shop['longitude'] || 141.14624841562465 %>
+                     }
         function initMap() {
           map = new google.maps.Map(document.getElementById('map'), {
             center: shopLatLng,
@@ -139,7 +139,7 @@
         }
       </script>
       <script>
-        const swalDeleteButton = Swal.mixin({
+        swalDeleteButton = Swal.mixin({
           customClass: {
             confirmButton: 'btn btn-success',
             cancelButton: 'btn btn-danger'

@@ -1,3 +1,5 @@
+<div class='admin_shop_show' hidden></div>
+<input type="hidden" name="userId" class="admin_shop_show_userId" value="<%= @shop.id %>" >
 <div class="container">
   <div class="row">
     <div class="col-sm-12">
@@ -137,71 +139,6 @@
             map: map
           });
         }
-      </script>
-      <script>
-        swalDeleteButton = Swal.mixin({
-          customClass: {
-            confirmButton: 'btn btn-success',
-            cancelButton: 'btn btn-danger'
-          },
-          buttonsStyling: false
-        });
-
-      $("#deleteOrRevivalButton").click(function() {
-          base_url = "/admin/shops/<%= @shop.id %>"
-          if ($(this).hasClass("delete")) {
-            text = "削除"
-            url = base_url
-            type = "DELETE"
-            changeText = "復元"
-            changeClass = 'btn btn-success revival'
-          } else {
-            text = "復活"
-            url = base_url + "/revival"
-            type = "PATCH"
-            changeText = "削除"
-            changeClass = 'btn btn-danger delete'
-          }
-          swalDeleteButton.fire({
-            title: '確認してください',
-            text: '本当に' + text + 'しますか？',
-            icon: 'warning',
-            showCancelButton: true,
-            confirmButtonText: text + 'する',
-            cancelButtonText: 'キャンセル',
-            reverseButtons: true
-          }).then((result) => {
-            if (result.isConfirmed) {
-              $.ajax({
-                url: url,
-                type: type,
-                dataType: "json"
-              }).done(function(data){
-                ele = document.getElementById("deleteOrRevivalButton")
-                // ボタンのテキストを変更
-                $('#deleteOrRevivalButton').text(changeText)
-                // ボタンのデザインを変更
-                ele.classList.remove(...ele.classList)
-                $('#deleteOrRevivalButton').addClass(changeClass)
-                // 「削除済み」メッセージの制御
-                $('.deleted_message').is(':visible') ?
-                    $('.deleted_message').hide()
-                    : $('.deleted_message').show()
-                Swal.fire(
-                  text + "しました!",
-                  '正常に' + text + 'されました！',
-                  'success'
-                )
-              }).fail(function(data) {
-                Swal.fire(
-                  text + 'に失敗しました...',
-                  '再度実行してください',
-                  'error'
-                )
-              })
-            }
-          })
-        });
       </script>
       <script async defer src="//maps.googleapis.com/maps/api/js?key=<%= ENV.fetch("GOOGLE_MAP_API_KEY") %>&callback=initMap" type="text/javascript"></script>
     </div>

@@ -1,23 +1,22 @@
 <p id="notice"><%= notice %></p>
-
-<div id="map"></div>
-
-<% @shops.each do |shop| %>
-  <%= shop.name %><br />
-  <%= shop.address %><br />
-  <%= image_tag shop.outside_image.variant(resize: '100') if shop.outside_image.attached? %>
-  <%= image_tag shop.inside_image.variant(resize: '100') if shop.inside_image.attached? %>
-  <% if shop.cooking_images.attached? %>
-    <% shop.cooking_images.each do |img| %>
-      <%= image_tag img.variant(resize: '100') %>
+<div id="map" class="d-sm-none d-md-none d-lg-block"></div>
+<div class="col-md-12 col-xs-12">
+  <% @shops.each do |shop| %>
+    <%= shop.name %><br />
+    <%= shop.address %><br />
+    <%= image_tag shop.outside_image.variant(resize: '100') if shop.outside_image.attached? %>
+    <%= image_tag shop.inside_image.variant(resize: '100') if shop.inside_image.attached? %>
+    <% if shop.cooking_images.attached? %>
+      <% shop.cooking_images.each do |img| %>
+        <%= image_tag img.variant(resize: '100') %>
+      <% end %>
     <% end %>
+    <hr />
   <% end %>
-  <hr />
-<% end %>
+</div>
 
 <style>
-html { height: 100% }
-body { height: 100% }
+html,body { height: 100% }
 #map { height: 60%; width: 100%}
 </style>
 

@@ -1,50 +1,65 @@
 <p id="notice"><%= notice %></p>
-<div id="map" class="d-sm-none d-md-none d-lg-block"></div>
-<div class="col-md-12 col-xs-12">
-  <% @shops.each do |shop| %>
-    <%= shop.name %><br />
-    <%= shop.address %><br />
-    <%= image_tag shop.outside_image.variant(resize: '100') if shop.outside_image.attached? %>
-    <%= image_tag shop.inside_image.variant(resize: '100') if shop.inside_image.attached? %>
-    <% if shop.cooking_images.attached? %>
-      <% shop.cooking_images.each do |img| %>
-        <%= image_tag img.variant(resize: '100') %>
+<h2>近くのお店</h2>
+<div id="map"></div>
+
+<input type="hidden" id="shops_info" value=<%= @shops.to_json %> />
+<div class="container">
+  <div class="newShops">
+    <h2>新着店舗</h2>
+    <% @shops.each do |shop| %>
+      <%= link_to controller: 'shops', action: 'show', id: shop do  %>
+        <div class="card">
+          <div class="row no-gutters">
+            <div class="col-auto">
+              <% if shop.outside_image.attached? %>
+                <%= image_tag shop.outside_image.variant(resize: '150x150^'), size: '150x150', crop: '150x150+0+0'%>
+              <% else %>
+                <img src="https://placehold.jp/150x150.png" />
+              <% end %>
+            </div>
+            <div class="col">
+              <div class="card-block px-2">
+                <h4 class="card-title"><%= shop.name %></h4>
+                <p class="card-text">住所:<br /><%= shop.address %></p>
+              </div>
+            </div>
+          </div>
+        </div>
       <% end %>
     <% end %>
-    <hr />
-  <% end %>
+  </div>
 </div>
 
-<style>
-html,body { height: 100% }
-#map { height: 60%; width: 100%}
-</style>
+<script type="text/javascript">
+  var map = L.map('map').setView([39.144562, 141.139285], 17);
+  L.Icon.Default.imagePath = "/assets/";
+  var osmUrl = "http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png";
+  var osmAttrib = "Map data OpenstreetMap contributors";
+  L.tileLayer(osmUrl,{
+    attribution: osmAttrib,
+    maxZoom: 20,
+  }).addTo(map);
 
-<script>
-  let map;
-  let markerLatLng;
-  let marker = [];
-  function initMap() {
-    map = new google.maps.Map(document.getElementById('map'), {
-      center: {lat: 39.13960294778968, lng: 141.14624841562465},
-      zoom: 13
-    });
+  var shops = document.getElementById('shops_info').value;
+  JSON.parse(shops).forEach((s) => {
+    L.marker([s["latitude"], s["longitude"]]).addTo(map)
+  })
 
-    <% @shops.each_with_index do |s, i| %>
-      markerLatLng = new google.maps.LatLng({
-        lat: <%= s['latitude'] %>, lng: <%= s['longitude'] %>
-      });
-      marker[<%= i %>] = new google.maps.Marker({
-        position: markerLatLng,
-        map: map
-      })
-      focusShop(<%= i %>);
-    <% end %>
-  }
-  function focusShop(i) {
-    marker[i].addListener('click', function() {
-      console.log(i)
-    });
-  }
+var options = {
+  enableHighAccuracy: true,
+  timeout: 5000,
+  maximumAge: 0
+};
+
+function success(pos) {
+  var crd = pos.coords;
+  L.marker([crd.latitude, crd.longitude]).addTo(map);
+}
+
+function error(err) {
+  alert("現在地は取得できません。");
+}
+
+navigator.geolocation.getCurrentPosition(success, error, options)
 </script>
-<script async defer src="//maps.googleapis.com/maps/api/js?key=<%= ENV.fetch("GOOGLE_MAP_API_KEY") %>&callback=initMap" type="text/javascript"></script>
+

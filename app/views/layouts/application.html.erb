@@ -1,6 +1,9 @@
 <!DOCTYPE html>
 <html>
   <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no">
     <title>Myapp</title>
     <%= csrf_meta_tags %>
     <%= csp_meta_tag %>
@@ -11,15 +14,34 @@
     <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
   </head>
 
-  <body>
-    <div class="d-flex flex-column flex-md-row align-items-center p-3 px-md-4 mb-3 bg-white border-bottom shadow-sm">
-      <h5 class="my-0 mr-md-auto font-weight-normal">Company name</h5>
-      <nav class="my-2 my-md-0 mr-md-3">
-        <a class="p-2 text-dark" href="/buildings">建物一覧</a>
-        <a class="p-2 text-dark" href="#">レビュー一覧</a>
-        <a class="p-2 text-dark" href="#">お問い合わせ</a>
-      </nav>
-    </div>
+  <body class="<%= controller_name %> <%= action_name %>">
+    <nav>
+      <div class="drawer">
+        <a class="navbar_brand" href="#">Navbar</a>
+        <div class="navbar_toggle">
+          <span class="navbar_toggle_icon"></span>
+          <span class="navbar_toggle_icon"></span>
+          <span class="navbar_toggle_icon"></span>
+        </div>
+      </div>
+      <div class="menu">
+        <ul>
+          <li><a href="#">Home</a></li>
+          <li><a href="#">About</a></li>
+          <li><a href="#">Service</a></li>
+          <li><a href="#">access</a></li>
+        </ul>
+      </div>
+    </nav>
     <%= yield %>
   </body>
+  <script>
+    $(function() {
+      $('.navbar_toggle').on('click', function () {
+        $(this).toggleClass('open');
+        $('.menu').toggleClass('open');
+        $('#map').toggleClass('menu_open');
+      });
+    });
+  </script>
 </html>

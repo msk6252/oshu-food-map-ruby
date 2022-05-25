@@ -12,6 +12,7 @@
 //
 //= require jquery
 //= require rails-ujs
+//= require leaflet
 //= require activestorage
 //= require turbolinks
 //= require admin/shops/show

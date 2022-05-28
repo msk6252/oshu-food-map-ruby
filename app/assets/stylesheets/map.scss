@@ -4,3 +4,9 @@
  margin: 0 auto;
 }
 
+@media screen and (min-width: 720px) {
+  #map {
+    height: 60%;
+  }
+}
+

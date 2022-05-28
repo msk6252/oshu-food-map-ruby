@@ -16,11 +16,7 @@ class GooglePlaceApi
       req.params['radius'] = '8000'
       req.params['types'] = types
       req.params['language'] = 'ja'
-<<<<<<< HEAD
-      req.params['key'] = ''
-=======
       req.params['key'] = ENV['GOOGLE_MAP_API_KEY']
->>>>>>> develop
       req.headers['Content-Type'] = 'application/json'
     end
   

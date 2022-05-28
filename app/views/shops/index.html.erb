@@ -8,6 +8,9 @@
 <%= render 'tab' %>
 
 <script type="text/javascript">
+  // 現在地が取得できなければ、奥州市役所
+  let currentLocation = [39.144562, 141.139285]
+
   // navigatorのオプション
   const options = {
     enableHighAccuracy: true,
@@ -15,10 +18,10 @@
     maximumAge: 0
   };
 
-  // 現在地が取得できなければ、奥州市役所
-  let currentLocation = [39.144562, 141.139285]
   if (navigator.geolocation) {
     navigator.geolocation.getCurrentPosition(success, error, options)
+  } else {
+    currentLocation = [39.144562, 141.139285]
   }
 
   // マップの中心部を決める
@@ -56,6 +59,7 @@
 
   // 現在地取得ができなかった場合の処理
   function error(err) {
+    currentLocation = [39.144562, 141.139285]
     console.alert("現在地は取得できません。");
   }
 </script>

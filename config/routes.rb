@@ -11,5 +11,7 @@ Rails.application.routes.draw do
     patch 'shops/:id/revival', to: '/admin/shops#revival'
   end
 
+  get '/shops/nearbyshop', to: 'shops#get_nearby_shops' 
+
   # For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html
 end

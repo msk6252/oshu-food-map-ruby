@@ -1,4 +1,5 @@
 require 'faraday'
+require 'dotenv'
 require 'faraday/net_http'
 
 class GooglePlaceApi
@@ -7,13 +8,15 @@ class GooglePlaceApi
     conn = Faraday.new(
       url: 'https://maps.googleapis.com/maps/api/place/nearbysearch/json'
     )
-  
+
+    types = ['cafe', 'food', 'meal_delivery', 'meal_takeaway', 'restaurant', 'shopping_mall']
+
     response = conn.get('/maps/api/place/nearbysearch/json') do |req|
       req.params['location'] = "#{lat}, #{lng}"
-      req.params['radius'] = '250'
-      req.params['types'] = 'food'
+      req.params['radius'] = '8000'
+      req.params['types'] = types
       req.params['language'] = 'ja'
-      req.params['key'] = 'AIzaSyBCClI32zB7VIHG76As2aMTORhd7FDw904'
+      req.params['key'] = ENV['GOOGLE_MAP_API_KEY']
       req.headers['Content-Type'] = 'application/json'
     end
   

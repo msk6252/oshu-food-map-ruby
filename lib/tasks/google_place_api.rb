@@ -13,7 +13,7 @@ class GooglePlaceApi
       req.params['radius'] = '250'
       req.params['types'] = 'food'
       req.params['language'] = 'ja'
-      req.params['key'] = 'AIzaSyBCClI32zB7VIHG76As2aMTORhd7FDw904'
+      req.params['key'] = ''
       req.headers['Content-Type'] = 'application/json'
     end
   

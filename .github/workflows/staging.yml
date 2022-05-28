@@ -1,4 +1,4 @@
-name: rails-docker-heroku-deploy
+name: rails-docker-heroku-deploy-staging
 
 on:
   pull_request:

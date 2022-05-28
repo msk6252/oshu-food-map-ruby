@@ -33,6 +33,7 @@ nav.header {
 }
 
 .drawer {
+  width: 98%;
   display: flex;
   flex-direction: row;
   align-items: center;
@@ -40,6 +41,10 @@ nav.header {
   position: relative;
   height: 70px;
   padding: 0 1em;
+}
+
+.navbar_brand {
+  width: 100%;
 }
 
 .navbar_toggle {

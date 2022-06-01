@@ -20,7 +20,7 @@ class GooglePlaceApi
     # next_tokenが使えるようになるには、数秒かかるためsleepを用いる
     while !next_page_token.nil? && !next_page_token.empty? do
       sleep 5
-      response_body = api_request(nil, nil, nil, next_page_token)
+      response_body = api_request(lat, lng, radius, next_page_token)
 
       response_ary << response_body
 
@@ -36,7 +36,7 @@ class GooglePlaceApi
       url: 'https://maps.googleapis.com/maps/api/place/nearbysearch/json'
     )
 
-    types = ['cafe', 'food', 'meal_delivery', 'meal_takeaway', 'restaurant', 'shopping_mall']
+    types = ['bakery', 'bar', 'cafe', 'food', 'meal_delivery', 'meal_takeaway', 'restaurant', 'shopping_mall']
 
     response = conn.get('/maps/api/place/nearbysearch/json') do |req|
       req.params['key'] = ENV['GOOGLE_MAP_API_KEY']

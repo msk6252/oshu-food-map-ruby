@@ -9,7 +9,7 @@
 <!-- 新しいお店 -->
 <div class="m-tab__wrapper tab_newer">
   <h2>新しいお店</h2>
-  <% @shops.each do |shop| %>
+  <% @newer.each do |shop| %>
     <%= link_to controller: 'shops', action: 'show', id: shop do  %>
       <div class="card">
         <div class="row no-gutters">
@@ -30,12 +30,13 @@
       </div>
     <% end %>
   <% end %>
+  <%= paginate @newer, window: 1 %>
 </div>
 
 <!-- 近くのお店 -->
 <div class="m-tab__wrapper tab_nearby" style="display: none;">
   <h2>近くのお店</h2>
-  <% @shops.each do |shop| %>
+  <% @nearby.each do |shop| %>
     <%= link_to controller: 'shops', action: 'show', id: shop do  %>
       <div class="card">
         <div class="row no-gutters">
@@ -56,12 +57,13 @@
       </div>
     <% end %>
   <% end %>
+  <%= paginate @nearby, window: 1 %>
 </div>
 
 <!-- 気になるお店 -->
 <div class="m-tab__wrapper tab_anxious" style="display: none;">
   <h2>気になるお店</h2>
-  <% @shops.each do |shop| %>
+  <% @anxious.each do |shop| %>
     <%= link_to controller: 'shops', action: 'show', id: shop do  %>
       <div class="card">
         <div class="row no-gutters">
@@ -82,6 +84,7 @@
       </div>
     <% end %>
   <% end %>
+  <%= paginate @anxious, window: 1 %>
 </div>
 
 <script>

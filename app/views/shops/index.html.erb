@@ -3,16 +3,14 @@
 <% end %>
 <div id="map"></div>
 
-<input type="hidden" id="shops_info" value=<%= @shops.to_json %> />
-
 <%= render 'tab' %>
 
 <script type="text/javascript">
   // 現在地が取得できなければ、奥州市役所
-  let currentLocation = [39.144562, 141.139285]
+  var currentLocation = [39.144562, 141.139285]
 
   // navigatorのオプション
-  const options = {
+  var options = {
     enableHighAccuracy: true,
     timeout: 5000,
     maximumAge: 0
@@ -25,13 +23,13 @@
   }
 
   // マップの中心部を決める
-  let map = L.map('map').setView(currentLocation, 17);
+  var map = L.map('map').setView(currentLocation, 17);
   // アイコンのディレクトリ
   L.Icon.Default.imagePath = "/assets/";
   // タイルの取得
-  let osmUrl = "http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png";
+  var osmUrl = "http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png";
   // コピーライト
-  let osmAttrib = "Map data OpenstreetMap contributors";
+  var osmAttrib = "Map data OpenstreetMap contributors";
 
   // レイヤーの指定
   L.tileLayer(osmUrl,{
@@ -39,20 +37,17 @@
     maxZoom: 20,
   }).addTo(map);
 
-  // マップをViewに反映
-  let shops = document.getElementById('shops_info').value;
-
   // 現在地にピン立て
   L.marker(currentLocation).addTo(map)
 
   // お店一覧をプロット
-  JSON.parse(shops).forEach((s) => {
-    L.marker([s["latitude"], s["longitude"]]).addTo(map)
-  })
+  <% @newer.each do |shop| %>
+    L.marker([<%= shop["latitude"] %>, <%= shop["longitude"] %>]).addTo(map)
+  <% end %>
 
   // 現在地取得できた場合の処理
   function success(pos) {
-    let crd = pos.coords;
+    var crd = pos.coords;
     currentLocation[0] = crd.latitude
     currentLocation[1] = crd.longitude
   }

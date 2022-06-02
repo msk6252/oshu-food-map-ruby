@@ -1,13 +1,13 @@
 <div class="m-btn__wrapper">
   <div class="m-btn__group">
     <%= link_to newer_path do %>
-      <div class="m-btn__pacificBlue js-newer">新しいお店</div>
+      <div class="m-btn__pacificBlue <%= "active" if action_name == "newer" %>">新しいお店</div>
     <% end %>
     <%= link_to nearby_path do %>
-      <div class="m-btn__pacificBlue p-tab__genreButton js-nearby">近くのお店</div>
+      <div class="m-btn__pacificBlue <%= "active" if action_name =="nearby" %>">近くのお店</div>
     <% end %>
     <%= link_to anxious_path do %>
-      <div class="m-btn__pacificBlue p-tab__genreButton js-anxious">気になるお店</div>
+      <div class="m-btn__pacificBlue <%= "active" if action_name == "anxious" %>">気になるお店</div>
     <% end %>
   </div>
 </div>

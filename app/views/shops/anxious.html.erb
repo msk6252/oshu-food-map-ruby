@@ -44,7 +44,7 @@
 
   // お店一覧をプロット
   <% @shops.each do |shop| %>
-    L.marker([<%= shop["latitude"] %>, <%= shop["longitude"] %>]).addTo(map)
+    L.marker([<%= shop["latitude"] %>, <%= shop["longitude"] %> ]).addTo(map)
   <% end %>
 
   // 現在地取得できた場合の処理

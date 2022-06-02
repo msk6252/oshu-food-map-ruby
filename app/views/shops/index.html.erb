@@ -22,7 +22,7 @@
   }
 
   // マップの中心部を決める
-  var map = L.map('map').setView(currentLocation, 17);
+  var map = L.map('map').setView(currentLocation, 13);
   // アイコンのディレクトリ
   L.Icon.Default.imagePath = "/assets/";
   // タイルの取得
@@ -38,9 +38,6 @@
 
   // マップをViewに反映
   var shops = document.getElementById('shops_info').value;
-
-  // 現在地にピン立て
-  L.marker(currentLocation).addTo(map)
 
   // お店一覧をプロット
   <% @shops.each do |shop| %>

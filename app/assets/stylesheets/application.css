@@ -22,7 +22,7 @@ a {
 a:hover {
   text-decoration: none;
   background-color: #F7EDED;
-  color: #666 !important;
+  color: #666;
 }
 
 nav.header {

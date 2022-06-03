@@ -1,6 +1,12 @@
 .m-btn__wrapper {
   margin: 32px 0; 
   width: 100%;
+  
+  a:hover {
+    background: #87ceeb;
+    color: #fff !important;
+    border-radius: 4px;
+  }
 }
 
 .m-btn__group {
@@ -24,5 +30,10 @@
     border: 1px solid #87ceeb;
     color: #fff;
     background: #87ceeb;
+  }
+
+  &:hover {
+    background: #87ceeb;
+    color: #fff;
   }
 }

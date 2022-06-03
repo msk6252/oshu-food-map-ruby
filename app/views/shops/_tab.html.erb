@@ -1,101 +1,39 @@
 <div class="m-btn__wrapper">
   <div class="m-btn__group">
-    <div class="m-btn__pacificBlue js-newer active">新しいお店</div>
-    <div class="m-btn__pacificBlue js-nearby">近くのお店</div>
-    <div class="m-btn__pacificBlue js-anxious">気になるお店</div>
+    <%= link_to newer_path do %>
+      <div class="m-btn__pacificBlue <%= "active" if action_name == "newer" %>">新しいお店</div>
+    <% end %>
+    <%= link_to nearby_path do %>
+      <div class="m-btn__pacificBlue <%= "active" if action_name =="nearby" %>">近くのお店</div>
+    <% end %>
+    <%= link_to anxious_path do %>
+      <div class="m-btn__pacificBlue <%= "active" if action_name == "anxious" %>">気になるお店</div>
+    <% end %>
   </div>
 </div>
 
 <!-- 新しいお店 -->
 <div class="m-tab__wrapper tab_newer">
-  <h2>新しいお店</h2>
+  <h2><%= @tab_title %></h2>
   <% @shops.each do |shop| %>
     <%= link_to controller: 'shops', action: 'show', id: shop do  %>
-      <div class="card">
-        <div class="row no-gutters">
-          <div class="col-auto">
-            <% if shop.outside_image.attached? %>
-              <%= image_tag shop.outside_image.variant(resize: '150x150^'), size: '150x150', crop: '150x150+0+0'%>
-            <% else %>
-              <img src="https://placehold.jp/150x150.png" />
-            <% end %>
-          </div>
-          <div class="col">
-            <div class="card-block px-2">
-              <h4 class="card-title"><%= shop.name %></h4>
-              <p class="card-text">住所:<br /><%= shop.address %></p>
-            </div>
-          </div>
+      <div class="m-card">
+        <div class="m-card__img">
+          <% if shop.outside_image.attached? %>
+            <%= image_tag shop.outside_image.variant(resize: '150x150^'), size: '150x150', crop: '150x150+0+0'%>
+          <% else %>
+            <img src="https://placehold.jp/150x150.png" />
+          <% end %>
+        </div>
+        <div class="m-card__content">
+          <!-- <p class="m-card__title"><%= shop.name %></h4> -->
+          <p class="m-card__title"><%= truncate(shop.name, length: 18) %></p>
+          <p class="m-card__address"><%= shop.address.gsub(/奥州市/, '') %></p>
+          <p class="m-card__open_now" style="color: green;">営業中</p>
+          <p class="m-card__genre">肉、魚、野菜</p>
+          <p class="m-card__distance">ここから<%= shop.distance_from_current(39.144562, 141.139285)[0]["distance"].round(1) %>km</p>
         </div>
       </div>
     <% end %>
   <% end %>
 </div>
-
-<!-- 近くのお店 -->
-<div class="m-tab__wrapper tab_nearby" style="display: none;">
-  <h2>近くのお店</h2>
-  <% @shops.each do |shop| %>
-    <%= link_to controller: 'shops', action: 'show', id: shop do  %>
-      <div class="card">
-        <div class="row no-gutters">
-          <div class="col-auto">
-            <% if shop.outside_image.attached? %>
-              <%= image_tag shop.outside_image.variant(resize: '150x150^'), size: '150x150', crop: '150x150+0+0'%>
-            <% else %>
-              <img src="https://placehold.jp/150x150.png" />
-            <% end %>
-          </div>
-          <div class="col">
-            <div class="card-block px-2">
-              <h4 class="card-title"><%= shop.name %></h4>
-              <p class="card-text">住所:<br /><%= shop.address %></p>
-            </div>
-          </div>
-        </div>
-      </div>
-    <% end %>
-  <% end %>
-</div>
-
-<!-- 気になるお店 -->
-<div class="m-tab__wrapper tab_anxious" style="display: none;">
-  <h2>気になるお店</h2>
-  <% @shops.each do |shop| %>
-    <%= link_to controller: 'shops', action: 'show', id: shop do  %>
-      <div class="card">
-        <div class="row no-gutters">
-          <div class="col-auto">
-            <% if shop.outside_image.attached? %>
-              <%= image_tag shop.outside_image.variant(resize: '150x150^'), size: '150x150', crop: '150x150+0+0'%>
-            <% else %>
-              <img src="https://placehold.jp/150x150.png" />
-            <% end %>
-          </div>
-          <div class="col">
-            <div class="card-block px-2">
-              <h4 class="card-title"><%= shop.name %></h4>
-              <p class="card-text">住所:<br /><%= shop.address %></p>
-            </div>
-          </div>
-        </div>
-      </div>
-    <% end %>
-  <% end %>
-</div>
-
-<script>
-  $('.m-btn__pacificBlue').on('click', function() {
-    $('.m-btn__pacificBlue').removeClass('active');
-    $(this).toggleClass('active');
-    let category = $(this).attr('class').split(' ').filter(e =>  { return e.match(/js-/) })
-    category = category.length ? category[0].split('js-')[1] : 'newer'
-    
-    categories = ['newer', 'nearby','anxious']
-    exclude = categories.filter(c => { return c != category })
-    $(`.tab_${category}`).css('display', '');
-    exclude.map(c => {
-      $(`.tab_${c}`).css('display', 'none');
-    })
-  })
-</script>

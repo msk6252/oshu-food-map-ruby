@@ -3,8 +3,6 @@
 <% end %>
 <div id="map"></div>
 
-<input type="hidden" id="shops_info" value=<%= @shops.to_json %> />
-
 <%= render 'tab' %>
 
 <script type="text/javascript">
@@ -15,14 +13,8 @@
     maximumAge: 0
   };
 
-  // 現在地が取得できなければ、奥州市役所
-  var currentLocation = [39.144562, 141.139285]
-  if (navigator.geolocation) {
-    navigator.geolocation.getCurrentPosition(success, error, options)
-  }
-
   // マップの中心部を決める
-  var map = L.map('map').setView(currentLocation, 13);
+  var map = L.map('map').setView([39.144562, 141.139285], 13);
   // アイコンのディレクトリ
   L.Icon.Default.imagePath = "/assets/";
   // タイルの取得
@@ -36,24 +28,9 @@
     maxZoom: 20,
   }).addTo(map);
 
-  // マップをViewに反映
-  var shops = document.getElementById('shops_info').value;
-
   // お店一覧をプロット
   <% @shops.each do |shop| %>
     L.marker([<%= shop["latitude"] %>, <%= shop["longitude"] %> ]).addTo(map)
   <% end %>
-
-  // 現在地取得できた場合の処理
-  function success(pos) {
-    var crd = pos.coords;
-    currentLocation[0] = crd.latitude
-    currentLocation[1] = crd.longitude
-  }
-
-  // 現在地取得ができなかった場合の処理
-  function error(err) {
-    console.alert("現在地は取得できません。");
-  }
 </script>
 

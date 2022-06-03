@@ -3,11 +3,14 @@
 <% end %>
 <div id="map"></div>
 
-<input type="hidden" id="shops_info" value=<%= @shops.to_json %> />
-
 <%= render 'tab' %>
 
 <script type="text/javascript">
+  var currentLocation = [39.144562, 141.139285]
+  L.Icon.Default.imagePath = "/assets/";
+  var osmUrl = "http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png";
+  var osmAttrib = "Map data OpenstreetMap contributors";
+
   // navigatorのオプション
   var options = {
     enableHighAccuracy: true,
@@ -15,45 +18,63 @@
     maximumAge: 0
   };
 
-  // 現在地が取得できなければ、奥州市役所
-  var currentLocation = [39.144562, 141.139285]
   if (navigator.geolocation) {
-    navigator.geolocation.getCurrentPosition(success, error, options)
+    setLocation()
+  } else {
+    // マップの中心部を決める
+    var map = L.map('map').setView(currentLocation, 13);
+
+    L.tileLayer(osmUrl,{
+      attribution: osmAttrib,
+      maxZoom: 20,
+    }).addTo(map);
+
+    // お店一覧をプロット
+    <% @shops.each do |shop| %>
+      L.marker([<%= shop["latitude"] %>, <%= shop["longitude"] %>]).addTo(map)
+    <% end %>
   }
 
-  // マップの中心部を決める
-  var map = L.map('map').setView(currentLocation, 13);
-  // アイコンのディレクトリ
-  L.Icon.Default.imagePath = "/assets/";
-  // タイルの取得
-  var osmUrl = "http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png";
-  // コピーライト
-  var osmAttrib = "Map data OpenstreetMap contributors";
-
-  // レイヤーの指定
-  L.tileLayer(osmUrl,{
-    attribution: osmAttrib,
-    maxZoom: 20,
-  }).addTo(map);
-
-  // マップをViewに反映
-  var shops = document.getElementById('shops_info').value;
-
-  // お店一覧をプロット
-  <% @shops.each do |shop| %>
-    L.marker([<%= shop["latitude"] %>, <%= shop["longitude"] %>]).addTo(map)
-  <% end %>
-
-  // 現在地取得できた場合の処理
-  function success(pos) {
-    var crd = pos.coords;
-    currentLocation[0] = crd.latitude
-    currentLocation[1] = crd.longitude
+  function getCurrentPosition(options) {
+    return new Promise((resolve, reject) => {
+      navigator.geolocation.getCurrentPosition(resolve, reject, options)
+    })
   }
 
-  // 現在地取得ができなかった場合の処理
-  function error(err) {
-    console.alert("現在地は取得できません。");
+  async function setLocation() {
+    try {
+      var position = await this.getCurrentPosition()
+      currentLocation[0] = position.coords.latitude;
+      currentLocation[1] = position.coords.longitude;
+      // マップの中心部を決める
+      var map = L.map('map').setView(currentLocation, 13);
+
+      // レイヤーの指定
+      L.tileLayer(osmUrl,{
+        attribution: osmAttrib,
+        maxZoom: 20,
+      }).addTo(map);
+
+      // お店一覧をプロット
+      <% @shops.each do |shop| %>
+        L.marker([<%= shop["latitude"] %>, <%= shop["longitude"] %>]).addTo(map)
+      <% end %>
+
+    } catch(err) {
+      // マップの中心部を決める
+      var map = L.map('map').setView(currentLocation, 13);
+
+      // レイヤーの指定
+      L.tileLayer(osmUrl,{
+        attribution: osmAttrib,
+        maxZoom: 20,
+      }).addTo(map);
+
+      // お店一覧をプロット
+      <% @shops.each do |shop| %>
+        L.marker([<%= shop["latitude"] %>, <%= shop["longitude"] %>]).addTo(map)
+      <% end %>
+    }
   }
 </script>
 

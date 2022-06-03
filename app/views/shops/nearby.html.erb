@@ -1,0 +1,80 @@
+<% if notice %>
+  <p id="notice"><%= notice %></p>
+<% end %>
+<div id="map"></div>
+
+<%= render 'tab' %>
+
+<script type="text/javascript">
+  var currentLocation = [39.144562, 141.139285]
+  L.Icon.Default.imagePath = "/assets/";
+  var osmUrl = "http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png";
+  var osmAttrib = "Map data OpenstreetMap contributors";
+
+  // navigatorのオプション
+  var options = {
+    enableHighAccuracy: true,
+    timeout: 5000,
+    maximumAge: 0
+  };
+
+  if (navigator.geolocation) {
+    setLocation()
+  } else {
+    // マップの中心部を決める
+    var map = L.map('map').setView(currentLocation, 13);
+
+    L.tileLayer(osmUrl,{
+      attribution: osmAttrib,
+      maxZoom: 20,
+    }).addTo(map);
+
+    // お店一覧をプロット
+    <% @shops.each do |shop| %>
+      L.marker([<%= shop["latitude"] %>, <%= shop["longitude"] %>]).addTo(map)
+    <% end %>
+  }
+
+  function getCurrentPosition(options) {
+    return new Promise((resolve, reject) => {
+      navigator.geolocation.getCurrentPosition(resolve, reject, options)
+    })
+  }
+
+  async function setLocation() {
+    try {
+      var position = await this.getCurrentPosition()
+      currentLocation[0] = position.coords.latitude;
+      currentLocation[1] = position.coords.longitude;
+      // マップの中心部を決める
+      var map = L.map('map').setView(currentLocation, 13);
+
+      // レイヤーの指定
+      L.tileLayer(osmUrl,{
+        attribution: osmAttrib,
+        maxZoom: 20,
+      }).addTo(map);
+
+      // お店一覧をプロット
+      <% @shops.each do |shop| %>
+        L.marker([<%= shop["latitude"] %>, <%= shop["longitude"] %>]).addTo(map)
+      <% end %>
+
+    } catch(err) {
+      // マップの中心部を決める
+      var map = L.map('map').setView(currentLocation, 13);
+
+      // レイヤーの指定
+      L.tileLayer(osmUrl,{
+        attribution: osmAttrib,
+        maxZoom: 20,
+      }).addTo(map);
+
+      // お店一覧をプロット
+      <% @shops.each do |shop| %>
+        L.marker([<%= shop["latitude"] %>, <%= shop["longitude"] %>]).addTo(map)
+      <% end %>
+    }
+  }
+</script>
+

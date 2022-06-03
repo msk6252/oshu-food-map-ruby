@@ -17,3 +17,31 @@ a {
   text-decoration: none !important;
   color: #333;
 }
+
+.m-card {
+  width: 100%;
+  display: flex;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  margin-bottom: 16px;
+  box-shadow: 0 0 4px rgba(92, 111, 118, 0.25) ;
+}
+
+.m-card__content {
+  width: 100%;
+}
+
+.m-card__title {
+  width: 95%;
+  margin: 8px auto;
+  font-size: 20px;
+  font-weight: 700;
+}
+
+.m-card__address,
+.m-card__open_now,
+.m-card__genre,
+.m-card__distance {
+  width: 95%;
+  margin: 8px auto;
+}

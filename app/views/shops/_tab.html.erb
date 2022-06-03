@@ -17,21 +17,21 @@
   <h2><%= @tab_title %></h2>
   <% @shops.each do |shop| %>
     <%= link_to controller: 'shops', action: 'show', id: shop do  %>
-      <div class="card">
-        <div class="row no-gutters">
-          <div class="col-auto">
-            <% if shop.outside_image.attached? %>
-              <%= image_tag shop.outside_image.variant(resize: '150x150^'), size: '150x150', crop: '150x150+0+0'%>
-            <% else %>
-              <img src="https://placehold.jp/150x150.png" />
-            <% end %>
-          </div>
-          <div class="col">
-            <div class="card-block px-2">
-              <h4 class="card-title"><%= shop.name %></h4>
-              <p class="card-text">住所:<br /><%= shop.address %></p>
-            </div>
-          </div>
+      <div class="m-card">
+        <div class="m-card__img">
+          <% if shop.outside_image.attached? %>
+            <%= image_tag shop.outside_image.variant(resize: '150x150^'), size: '150x150', crop: '150x150+0+0'%>
+          <% else %>
+            <img src="https://placehold.jp/150x150.png" />
+          <% end %>
+        </div>
+        <div class="m-card__content">
+          <!-- <p class="m-card__title"><%= shop.name %></h4> -->
+          <p class="m-card__title"><%= truncate("あいうえおかきくけこさしすせそたちつてとなにぬねの", length: 18) %></h4>
+          <p class="m-card__address"><%= shop.address.gsub(/奥州市/, '') %></p>
+          <p class="m-card__open_now" style="color: green;">営業中</p>
+          <p class="m-card__genre">肉、魚、野菜</p>
+          <p class="m-card__distance">ここから1.4km</p>
         </div>
       </div>
     <% end %>

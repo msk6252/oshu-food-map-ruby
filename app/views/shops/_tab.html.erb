@@ -27,7 +27,7 @@
         </div>
         <div class="m-card__content">
           <!-- <p class="m-card__title"><%= shop.name %></h4> -->
-          <p class="m-card__title"><%= truncate(shop.name, length: 18) %></p>
+          <p class="m-card__title"><%= truncate(shop.name, length: 15) %></p>
           <p class="m-card__address"><%= shop.address.gsub(/奥州市/, '') %></p>
           <p class="m-card__open_now" style="color: green;">営業中</p>
           <p class="m-card__genre">肉、魚、野菜</p>

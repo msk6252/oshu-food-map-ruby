@@ -1,5 +1,5 @@
 class ShopsController < ApplicationController
-  before_action :set_shop, only: %i[ show edit update destroy ]
+  before_action :set_shop, only: [:show, :edit, :update, :destroy]
   before_action :set_tab_title, only: [:index, :nearby, :anxious, :newer]
 
   DEFAULT_PAGE = 5
@@ -30,7 +30,23 @@ class ShopsController < ApplicationController
   end
 
   def get_nearby_shops
-    return :no_content if params[:lat].blank? || params[:lon].blank? 
+    return :no_content if params[:lat].blank? || params[:lng].blank?
+    @shops_all = Shop.all
+    @shops = Shop.distance_from_current_sortby(@shops_all, params[:lat], params[:lng])
+    shops = @shops.map do |shop|
+      {
+        id: shop.id,
+        name: shop.name,
+        latitude: shop.latitude,
+        longitude: shop.longitude,
+        address: shop.address,
+        business_status: shop.business_status,
+        current_distance: shop.current_distance,
+        price_level: shop.price_level,
+        discarded_at: shop.discarded_at
+      }
+    end
+    render :json => shops
   end
 
   private

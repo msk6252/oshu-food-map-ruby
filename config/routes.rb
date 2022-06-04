@@ -6,6 +6,7 @@ Rails.application.routes.draw do
   get '/newer', to: 'shops#newer'
   get '/nearby', to: 'shops#nearby'
   get '/anxious', to: 'shops#anxious'
+  get '/nearbyshop', to: 'shops#get_nearby_shops'
 
   get '/shops/:id', to: 'shops#show'
 
@@ -14,7 +15,6 @@ Rails.application.routes.draw do
     patch 'shops/:id/revival', to: '/admin/shops#revival'
   end
 
-  get '/shops/nearbyshop', to: 'shops#get_nearby_shops' 
 
   # For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html
 end

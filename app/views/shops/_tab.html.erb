@@ -12,8 +12,8 @@
   </div>
 </div>
 
-<!-- 新しいお店 -->
-<div class="m-tab__wrapper tab_newer">
+<div class="m-tab__wrapper">
+  <%= paginate @shops, window: 1 %>
   <h2><%= @tab_title %></h2>
   <% @shops.each do |shop| %>
     <%= link_to controller: 'shops', action: 'show', id: shop do  %>
@@ -31,7 +31,7 @@
           <p class="m-card__address"><%= shop.address.gsub(/奥州市/, '') %></p>
           <p class="m-card__open_now" style="color: green;">営業中</p>
           <p class="m-card__genre">肉、魚、野菜</p>
-          <p class="m-card__distance">ここから<%= shop.distance_from_current(39.144562, 141.139285)[0]["distance"].round(1) %>km</p>
+          <p class="m-card__distance">ここから約<%= shop.current_distance.round(1) %>km</p>
         </div>
       </div>
     <% end %>

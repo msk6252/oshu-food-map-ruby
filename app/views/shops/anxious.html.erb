@@ -29,7 +29,7 @@
   }).addTo(map);
 
   // お店一覧をプロット
-  <% @shops.each do |shop| %>
+  <% @shops_all.each do |shop| %>
     L.marker([<%= shop["latitude"] %>, <%= shop["longitude"] %> ]).addTo(map)
   <% end %>
 </script>

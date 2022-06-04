@@ -7,6 +7,7 @@ class ShopsController < ApplicationController
   # GET /shops or /shops.json
   def index
     @shops = Shop.all.page(params[:page]).per(DEFAULT_PAGE)
+    @shops_all = @shops
   end
 
   # GET /shops/1 or /shops/1.json
@@ -14,15 +15,18 @@ class ShopsController < ApplicationController
   end
 
   def nearby
-    @shops = Shop.all.page(params[:page]).per(DEFAULT_PAGE)
+    @shops_all = Shop.all
+    @shops = Kaminari.paginate_array(Shop.distance_from_current_sortby(@shops_all)).page(params[:page]).per(DEFAULT_PAGE)
   end
 
   def anxious
     @shops = Shop.all.page(params[:page]).per(DEFAULT_PAGE)
+    @shops_all = @shops
   end
 
   def newer
     @shops = Shop.all.page(params[:page]).per(DEFAULT_PAGE)
+    @shops_all = @shops
   end
 
   def get_nearby_shops

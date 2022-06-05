@@ -8,6 +8,7 @@ Rails.application.routes.draw do
   get '/anxious', to: 'shops#anxious'
 
   get '/shops/:id', to: 'shops#show'
+  get '/result', to: 'shops#result'
 
   namespace :admin do
     resources :shops

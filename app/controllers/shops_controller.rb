@@ -29,6 +29,9 @@ class ShopsController < ApplicationController
     @shops_all = @shops
   end
 
+  def result
+  end
+
   def get_nearby_shops
     return :no_content if params[:lat].blank? || params[:lon].blank? 
   end

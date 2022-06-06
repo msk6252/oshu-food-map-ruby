@@ -44,10 +44,9 @@
   <h4>3. ジャンルを選択してください</h4>
   <div class="p-search__selectBoxWrapper p-search__selectBoxWrapperSub">
     <select name="area">
-      <option value="0">和食</option>
-      <option value="1">洋食・西洋料理</option>
-      <option value="2">中華料理</option>
-      <option value="3">アジア・エスニック</option>
+      <% Genre.all.each.with_index(1) do |genre, idx| %>
+        <option value="<%= idx %>"><%= genre.try(:name) %></option>
+      <% end %>
     </select>
   </div>
   <div class="m-btn__wrapper">

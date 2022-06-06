@@ -81,3 +81,21 @@ end
 
 # add_index "active_storage_attachments", ["record_type", "record_id", "name", "blob_id"], name: "index_active_storage_attachments_uniqueness", unique: true
 # add_foreign_key "active_storage_blobs", "active_storage_attachments", name: :blob_id
+
+create_table "genres", id: :bigint, unsigned: true, force: :cascade, comment: "ジャンル" do |t|
+  t.string "name", limit:191, default: "", null:false
+
+  t.datetime "updated_at", precision: 6, null: false
+  t.datetime "created_at", precision: 6, null: false
+  t.datetime "discarded_at", precision: 6
+end
+
+create_table "rel_shop_genre", id: :bigint, unsigned: true, force: :cascade, comment: "ジャンル中間テーブル" do |t|
+  t.integer "shop_id", null: false, default: 0
+  t.integer "genre_id", null: false, default: 0
+  t.datetime "updated_at", precision: 6, null: false
+  t.datetime "created_at", precision: 6, null: false
+end
+
+add_foreign_key "rel_shop_genre", "shops"
+add_foreign_key "rel_shop_genre", "genres"

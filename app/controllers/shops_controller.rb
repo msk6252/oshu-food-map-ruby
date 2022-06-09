@@ -6,6 +6,17 @@ class ShopsController < ApplicationController
 
   # GET /shops or /shops.json
   def index
+    @shops = Shop.all
+
+    if params[:area].present?
+    end
+
+    if params[:timeframe].present?
+    end
+
+    if params[:lat].present? && params[:lng].present?
+    end
+
     @shops = Shop.all.page(params[:page]).per(DEFAULT_PAGE)
     @shops_all = @shops
   end

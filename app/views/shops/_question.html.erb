@@ -16,34 +16,28 @@
 
   <h3>詳細検索</h3>
   <h4>1. エリアを選択してください</h4>
-  <div class="p-search__selectBoxWrapper p-search__selectBoxWrapperSub">
-    <select name="area">
-      <optgroup label="水沢">
-        <option value="0">駅前エリア</option>
-        <option value="1">商店街エリア</option>
-        <option value="2">4号線エリア</option>
-        <option value="3">アテルイエリア</option>
-      </optgroup>
-      <optgroup label="江刺">
-        <option value="0">駅前エリア</option>
-        <option value="1">商店街エリア</option>
-        <option value="2">4号線エリア</option>
-        <option value="3">アテルイエリア</option>
-      </optgroup>
-    </select>
+  <div class="m-btn__wrapper">
+    <div class="m-btn__group">
+      <div class="m-btn__pacificBlue js-currentLocation areaSelect">現在地から検索</div>
+    </div>
   </div>
+
+  <div id="map"></div>
+  <input type="hidden" id="map_latitude">
+  <input type="hidden" id="map_longitude">
   <h4>2. 訪れる時間帯を選択してください</h4>
   <div class="p-search__selectBoxWrapper p-search__selectBoxWrapperSub">
-    <select name="area">
-      <option value="0">朝食（5:00 ~ 11:00 ）</option>
+    <select name="timeframe">
+      <option value="0">指定なし</option>
       <option value="1">昼食（11:00 ~ 15:00）</option>
       <option value="2">夕食（15:00 ~ 18:00）</option>
+      <option value="3">夕食（15:00 ~ 18:00）</option>
     </select>
   </div>
 
   <h4>3. ジャンルを選択してください</h4>
   <div class="p-search__selectBoxWrapper p-search__selectBoxWrapperSub">
-    <select name="area">
+    <select name="genre">
       <% Genre.all.each.with_index(1) do |genre, idx| %>
         <option value="<%= idx %>"><%= genre.try(:name) %></option>
       <% end %>
@@ -57,3 +51,83 @@
     </div>
   </div>
 </div>
+
+<script type="text/javascript">
+  // navigatorのオプション
+  var options = {
+    enableHighAccuracy: true,
+    timeout: 5000,
+    maximumAge: 0
+  };
+
+  // マップの中心部を決める
+  var map = L.map('map').setView([39.1373645787035, 141.14196393507885], 15);
+  // アイコンのディレクトリ
+  L.Icon.Default.imagePath = "/assets/";
+  // タイルの取得
+  var osmUrl = "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png";
+  // コピーライト
+  var osmAttrib = "Map data OpenstreetMap contributors";
+
+  // レイヤーの指定
+  L.tileLayer(osmUrl,{
+    attribution: osmAttrib,
+    maxZoom: 20,
+  }).addTo(map);
+  
+  var marker
+  marker = L.marker([43.0888003, 141.3414652]).addTo(map);
+
+  map.on("click", function(e){
+    if (marker) {
+      map.removeLayer(marker)
+    }
+    marker = L.marker(e.latlng).addTo(map)
+    marker.setLatLng(e.latlng);
+    $('#map_latitude').val(e.latlng.lat);
+    $('#map_longitude').val(e.latlng.lng);
+  })
+
+  $('.areaSelect').click(function() {
+    if($(this).hasClass('js-mapSelect')) {
+      $('.js-currentLocation').removeClass('active')
+      $(this).toggleClass('active')
+      // $('#map').toggle(500)
+    }
+    if($(this).hasClass('js-currentLocation')) {
+      if (marker) {
+        map.removeLayer(marker)
+      }
+      $('.js-mapSelect').removeClass('active')
+      $(this).toggleClass('active')
+      // $('#map').hide(500)
+      if (navigator.geolocation) {
+        setLocation(map)
+      } else {
+        alert('現在地が取得できませんでした...')
+      }
+    }
+  })
+
+  function getCurrentPosition(options) {
+    return new Promise((resolve, reject) => {
+      navigator.geolocation.getCurrentPosition(resolve, reject, options)
+    })
+  }
+
+  async function setLocation(map) {
+    try {
+      var position = await this.getCurrentPosition()
+      var latitude = position.coords.latitude
+      var longitude = position.coords.longitude
+      marker = L.marker([latitude, longitude]).addTo(map);
+      marker.setLatLng({ lat: latitude, lng: longitude });
+      map.panTo(new L.LatLng(latitude, longitude))
+      $('#map_latitude').val(position.coords.latitude)
+      $('#map_longitude').val(position.coords.longitude)
+    } catch(err) {
+      console.log(err)
+      alert("現在地が取得できませんでした...")
+    }
+  }
+</script>

@@ -1,53 +1,64 @@
 <div class="p-search__wrapper">
-  <h3>簡単検索</h3>
-  <div class="m-btn__wrapper">
-    <div class="m-btn__group">
-      <%= link_to newer_path do %>
-        <div class="m-btn__pacificBlue <%= "active" if action_name == "newer" %>">新しいお店</div>
+  <div class="m-easySearch__wrapper">
+    <div class="m-easySearch__title">
+      <h3>かんたん検索</h3>
+    </div>
+    <div class="m-easySearch__content">
+      <%= link_to newer_path, class: 'm-easySearch__box' do %>
+        <%= image_tag 'ic_nearby.svg',class: 'm-easySearch__img' %>
+        <p class="m-easySearch__text">近くのお店</p>
       <% end %>
-      <%= link_to nearby_path do %>
-        <div class="m-btn__pacificBlue <%= "active" if action_name =="nearby" %>">近くのお店</div>
+      <%= link_to nearby_path, class: 'm-easySearch__box' do %>
+        <%= image_tag 'ic_nearby.svg',class: 'm-easySearch__img' %>
+        <p class="m-easySearch__text">近くのお店</p>
       <% end %>
-      <%= link_to anxious_path do %>
-        <div class="m-btn__pacificBlue <%= "active" if action_name == "anxious" %>">気になるお店</div>
+      <%= link_to anxious_path, class: 'm-easySearch__box' do %>
+        <%= image_tag 'ic_nearby.svg',class: 'm-easySearch__img' %>
+        <p class="m-easySearch__text">近くのお店</p>
       <% end %>
     </div>
   </div>
 
-  <h3>詳細検索</h3>
-  <h4>1. エリアを選択してください</h4>
-  <div class="m-btn__wrapper">
-    <div class="m-btn__group">
-      <div class="m-btn__pacificBlue js-currentLocation areaSelect">現在地から検索</div>
+  <div class="m-detailSearch__wrapper">
+    <div class="m-detailSearch__title">
+      <h3>詳細検索</h3>
     </div>
-  </div>
+    <div class="m-detailSearch__content">
+      <h4>1. エリアを選択してください</h4>
+      <div id="map"></div>
+      <div class="m-btn__wrapper">
+        <div class="m-btn__group">
+          <div class="m-btn__pacificBlue js-currentLocation areaSelect">現在地から検索</div>
+        </div>
+      </div>
 
-  <div id="map"></div>
-  <input type="hidden" id="map_latitude">
-  <input type="hidden" id="map_longitude">
-  <h4>2. 訪れる時間帯を選択してください</h4>
-  <div class="p-search__selectBoxWrapper p-search__selectBoxWrapperSub">
-    <select name="timeframe">
-      <option value="0">指定なし</option>
-      <option value="1">昼食（11:00 ~ 15:00）</option>
-      <option value="2">夕食（15:00 ~ 18:00）</option>
-      <option value="3">夕食（15:00 ~ 18:00）</option>
-    </select>
-  </div>
+      <input type="hidden" id="map_latitude">
+      <input type="hidden" id="map_longitude">
+      <h4>2. 訪れる時間帯を選択してください</h4>
+      <div class="p-search__selectBoxWrapper p-search__selectBoxWrapperSub">
+        <select name="timeframe">
+          <option value="0">指定なし</option>
+          <option value="1">昼食（11:00 ~ 15:00）</option>
+          <option value="2">夕食（15:00 ~ 18:00）</option>
+          <option value="3">夕食（15:00 ~ 18:00）</option>
+        </select>
+      </div>
 
-  <h4>3. ジャンルを選択してください</h4>
-  <div class="p-search__selectBoxWrapper p-search__selectBoxWrapperSub">
-    <select name="genre">
-      <% Genre.all.each.with_index(1) do |genre, idx| %>
-        <option value="<%= idx %>"><%= genre.try(:name) %></option>
-      <% end %>
-    </select>
-  </div>
-  <div class="m-btn__wrapper">
-    <div class="m-btn__group">
-      <%= link_to anxious_path do %>
-        <div class="m-btn__lightBlue" style="padding: 8px 32px;">検索</div>
-      <% end %>
+      <h4>3. ジャンルを選択してください</h4>
+      <div class="p-search__selectBoxWrapper p-search__selectBoxWrapperSub">
+        <select name="genre">
+          <% Genre.all.each.with_index(1) do |genre, idx| %>
+            <option value="<%= idx %>"><%= genre.try(:name) %></option>
+          <% end %>
+        </select>
+      </div>
+      <div class="m-btn__wrapper">
+        <div class="m-btn__group">
+          <%= link_to anxious_path do %>
+            <div class="m-btn__lightBlue" style="padding: 8px 32px;">検索</div>
+          <% end %>
+        </div>
+      </div>
     </div>
   </div>
 </div>

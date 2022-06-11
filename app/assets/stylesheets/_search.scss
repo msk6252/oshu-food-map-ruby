@@ -1,11 +1,13 @@
 .m-detailSearch__title,
 .m-easySearch__title {
-  margin: 12px 0;
+  margin: 12px 0 24px 0;
 
   h3 {
     font-style: normal;
     font-weight: bold;
     font-size: 20px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid #ccc;
   }
 }
 
@@ -22,10 +24,11 @@
 
 .m-easySearch__box {
   border: 1px solid #3aabd2;
+  border-radius: 4px;
   min-width: 80px;
   min-height: 80px;
   width: calc(96% / 3);
-  padding: 2% 0;
+  padding: 4% 0;
 }
 
 .m-easySearch__wrapper .m-easySearch__box:nth-child(2) {
@@ -34,7 +37,9 @@
 
 .m-easySearch__text {
   text-align: center;
-  margin-top: 4px;
+  margin-top: 8px;
+  font-size: 110%;
+  color: #3aabd2;
 }
 
 .m-easySearch__img {

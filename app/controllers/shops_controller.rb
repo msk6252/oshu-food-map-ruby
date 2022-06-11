@@ -8,14 +8,6 @@ class ShopsController < ApplicationController
   def index
     @shops = Shop.all
 
-    if params[:area].present?
-    end
-
-    if params[:timeframe].present?
-    end
-
-    if params[:lat].present? && params[:lng].present?
-    end
 
     @shops = Shop.all.page(params[:page]).per(DEFAULT_PAGE)
     @shops_all = @shops
@@ -41,6 +33,18 @@ class ShopsController < ApplicationController
   end
 
   def result
+    @shops = Shop.all
+    if params[:genre].present?
+      #@shops = @shops.eager_load(:rel_shop_genre).where(rel_shop_genre: { genre_id: params[:genre] })
+    end
+
+    if params[:timeframe].present?
+      # @shops = @shops
+    end
+
+    if params[:lat].present? && params[:lng].present?
+      @shops = Shop.distance_from_current_sortby(@shops, params[:lat].to_f, params[:lng].to_f)
+    end
   end
 
   def get_nearby_shops

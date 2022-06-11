@@ -28,7 +28,8 @@
       <div id="map"></div>
       <div class="m-btn__wrapper">
         <div class="m-btn__group">
-          <div class="m-btn__pacificBlue js-currentLocation areaSelect">現在地から検索</div>
+          <div class="m-btn__pacificBlue js-resetMap areaSelect">地図をリセット</div>
+          <div class="m-btn__pacificBlue js-currentLocation areaSelect">現在地を設定</div>
         </div>
       </div>
 
@@ -38,15 +39,19 @@
       <div class="p-search__selectBoxWrapper p-search__selectBoxWrapperSub">
         <select name="timeframe">
           <option value="0">指定なし</option>
-          <option value="1">昼食（11:00 ~ 15:00）</option>
-          <option value="2">夕食（15:00 ~ 18:00）</option>
-          <option value="3">夕食（15:00 ~ 18:00）</option>
+          <option value="1">早朝（5:00 ~ 7:00）</option>
+          <option value="2">朝（7:00 ~ 11:00）</option>
+          <option value="3">昼（11:00 ~ 15:00）</option>
+          <option value="4">夕方（15:00 ~ 18:00）</option>
+          <option value="5">夜（18:00 ~ 23:00）</option>
+          <option value="6">夕食（23:00 ~ 5:00）</option>
         </select>
       </div>
 
       <h4>3. ジャンルを選択してください</h4>
       <div class="p-search__selectBoxWrapper p-search__selectBoxWrapperSub">
         <select name="genre">
+            <option value="0">指定なし</option>
           <% Genre.all.each.with_index(1) do |genre, idx| %>
             <option value="<%= idx %>"><%= genre.try(:name) %></option>
           <% end %>
@@ -54,9 +59,7 @@
       </div>
       <div class="m-btn__wrapper">
         <div class="m-btn__group">
-          <%= link_to anxious_path do %>
-            <div class="m-btn__lightBlue" style="padding: 8px 32px;">検索</div>
-          <% end %>
+          <div class="m-btn__lightBlue p-detailSearch__submit js-searchDetailBtn">検索</div>
         </div>
       </div>
     </div>
@@ -87,7 +90,7 @@
   }).addTo(map);
   
   var marker
-  marker = L.marker([43.0888003, 141.3414652]).addTo(map);
+  // marker = L.marker([43.0888003, 141.3414652]).addTo(map);
 
   map.on("click", function(e){
     if (marker) {
@@ -99,24 +102,14 @@
     $('#map_longitude').val(e.latlng.lng);
   })
 
-  $('.areaSelect').click(function() {
-    if($(this).hasClass('js-mapSelect')) {
-      $('.js-currentLocation').removeClass('active')
-      $(this).toggleClass('active')
-      // $('#map').toggle(500)
+  $('.js-currentLocation').click(function() {
+    if (marker) {
+      map.removeLayer(marker)
     }
-    if($(this).hasClass('js-currentLocation')) {
-      if (marker) {
-        map.removeLayer(marker)
-      }
-      $('.js-mapSelect').removeClass('active')
-      $(this).toggleClass('active')
-      // $('#map').hide(500)
-      if (navigator.geolocation) {
-        setLocation(map)
-      } else {
-        alert('現在地が取得できませんでした...')
-      }
+    if (navigator.geolocation) {
+      setLocation(map)
+    } else {
+      alert('現在地が取得できませんでした...')
     }
   })
 
@@ -141,4 +134,21 @@
       alert("現在地が取得できませんでした...")
     }
   }
+
+  $('.js-searchDetailBtn').on('click', function() {
+    var params = {
+      lat: $('#map_latitude').val(),
+      lng: $('#map_longitude').val(),
+      timeframe: 0,
+      genre: 0
+    }
+    var urlSearchParam = new URLSearchParams(params).toString();
+    window.location.href = "/result?" + urlSearchParam
+  })
+
+  $('.js-resetMap').on('click', function() {
+    map.removeLayer(marker)
+    map.panTo(new L.LatLng(39.1373645787035, 141.14196393507885))
+    marker = null;
+  })
 </script>

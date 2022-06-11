@@ -27,13 +27,13 @@ class Shop < ApplicationRecord
     ActiveRecord::Base.connection.select_all(sql).to_hash
   end
 
-  def self.distance_from_current_sortby(shops)
-    return [] if shops.blank?
+  def self.distance_from_current_sortby(shops, lat, lng)
+    return [] if shops.blank? || lat.blank? || lng.blank?
 
     distance_sortby = []
 
     shops.each do |shop|
-      shop.current_distance = shop.distance_from_current(39.144562, 141.139285).first["distance"]
+      shop.current_distance = shop.distance_from_current(lat, lng).first["distance"]
     end
 
     shop_ary = shops.to_ary

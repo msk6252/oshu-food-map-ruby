@@ -1,0 +1,6 @@
+<% @shops.each do |shop| %>
+  <%= shop&.name %><br>
+  <%= shop&.current_distance.round(2) %>km
+  <br>
+  <br>
+<% end %>

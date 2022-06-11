@@ -6,10 +6,6 @@
     padding-bottom: 32px;
   }
 
-  h3, h4 {
-    width: 90%;
-  }
-
   .p-search__selectBoxWrapper {
     overflow: hidden;
     width: 90%;
@@ -30,6 +26,10 @@
       -webkit-appearance: none;
       appearance: none;
     }
+  }
+
+  .p-detailSearch__submit {
+    padding: 8px 48px;
   }
 
   .p-search__selectBoxWrapper.p-search__selectBoxWrapperSub {
@@ -54,7 +54,7 @@
     }
 
     select {
-      padding: 8px 38px 8px 8px;
+      padding: 8px;
       color: black;
     }
   }

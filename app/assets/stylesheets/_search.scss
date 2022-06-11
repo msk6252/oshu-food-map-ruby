@@ -28,7 +28,7 @@
   min-width: 80px;
   min-height: 80px;
   width: calc(96% / 3);
-  padding: 2% 0;
+  padding: 4% 0;
 }
 
 .m-easySearch__wrapper .m-easySearch__box:nth-child(2) {
@@ -37,7 +37,9 @@
 
 .m-easySearch__text {
   text-align: center;
-  margin-top: 4px;
+  margin-top: 8px;
+  font-size: 110%;
+  color: #3aabd2;
 }
 
 .m-easySearch__img {

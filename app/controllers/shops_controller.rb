@@ -33,9 +33,10 @@ class ShopsController < ApplicationController
   end
 
   def result
-    @shops = Shop.all
-    if params[:genre].present?
-      #@shops = @shops.eager_load(:rel_shop_genre).where(rel_shop_genre: { genre_id: params[:genre] })
+    @shops = Shop.all.active
+    if params[:genre].present? &&
+       params[:genre].to_i != 0
+      @shops = @shops.eager_load(:rel_shop_genre).where(rel_shop_genres: { genre_id: params[:genre] })
     end
 
     if params[:timeframe].present?
@@ -45,6 +46,8 @@ class ShopsController < ApplicationController
     if params[:lat].present? && params[:lng].present?
       @shops = Shop.distance_from_current_sortby(@shops, params[:lat].to_f, params[:lng].to_f)
     end
+
+    @shops = Kaminari.paginate_array(@shops).page(params[:page]).per(DEFAULT_PAGE)
   end
 
   def get_nearby_shops

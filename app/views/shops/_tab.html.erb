@@ -31,7 +31,7 @@
           <p class="m-card__address"><%= shop.address.gsub(/奥州市/, '') %></p>
           <p class="m-card__open_now" style="color: green;">営業中</p>
           <p class="m-card__genre">肉、魚、野菜</p>
-          <% if action_name == "nearby" %>
+          <% if shop.try(:current_distance).present? %>
             <p class="m-card__distance">ここから約<%= shop.current_distance.round(1) %>km</p>
           <% end %>
         </div>

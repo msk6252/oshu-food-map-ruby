@@ -3,12 +3,20 @@ class Shop < ApplicationRecord
   # include ActiveModel::Model
   # include ActiveModel::Attributes
 
+  # ジャンル
+  has_many :rel_shop_genre
+  has_many :genre, through: :rel_shop_genre
+
   has_one_attached :inside_image
   has_one_attached :outside_image
   has_many_attached :cooking_images
 
+  enum published: { draft: 0, published: 1 }
+
   attr_accessor :current_distance
   #attribute :current_distance, :float, default: 0.0
+
+  scope :active, -> { where(discarded_at: nil) }
 
   def distance_from_current(lat, lng)
     sql = <<-EOS

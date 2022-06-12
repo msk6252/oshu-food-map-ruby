@@ -139,15 +139,17 @@
     var params = {
       lat: $('#map_latitude').val(),
       lng: $('#map_longitude').val(),
-      timeframe: 0,
-      genre: 0
+      timeframe: $('[name=timeframe] option:selected').val(),
+      genre: $('[name=genre] option:selected').val()
     }
     var urlSearchParam = new URLSearchParams(params).toString();
     window.location.href = "/result?" + urlSearchParam
   })
 
   $('.js-resetMap').on('click', function() {
-    map.removeLayer(marker)
+    if (marker) {
+      map.removeLayer(marker)
+    }
     map.panTo(new L.LatLng(39.1373645787035, 141.14196393507885))
     marker = null;
   })

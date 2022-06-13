@@ -14,7 +14,7 @@
   };
 
   var first_content_latlng = [
-    <%= @shops.first["latitude"] || 39.144562 %>, <%= @shops.first["longitude"] || 141.139285 %>
+    <%= @shops.try(:first).try("latitude") || 39.144562 %>, <%= @shops.try(:first).try("longitude") || 141.139285 %>
   ]
 
   // マップの中心部を決める

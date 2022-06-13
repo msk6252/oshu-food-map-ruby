@@ -33,14 +33,18 @@ class ShopsController < ApplicationController
   end
 
   def result
-    @shops = Shop.all.active
+    @shops = Shop.all.active.published
     if params[:genre].present? &&
        params[:genre].to_i != 0
       @shops = @shops.eager_load(:rel_shop_genre).where(rel_shop_genres: { genre_id: params[:genre] })
     end
 
     if params[:timeframe].present?
-      # @shops = @shops
+      tf = TimeFrame.all
+      timeframe = params[:timeframe].to_sym
+      started_at = tf[timeframe][:started_at]
+      finished_at = tf[timeframe][:finished_at]
+      @shops = @shops.eager_load(:business_hour).where('started_at between ? and ?', started_at, finished_at).where('finished_at between ? and ?', started_at, finished_at)
     end
 
     if params[:lat].present? && params[:lng].present?

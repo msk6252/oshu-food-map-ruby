@@ -2,7 +2,7 @@
 
 create_table "shops", id: :bigint, unsigned: true, force: :cascade, comment: "お店" do |t|
   t.string "name", limit: 191, default: "", null: false
-  t.integer "published", default: 0, null: false
+  t.integer "public", default: 0, null: false
   t.decimal "latitude",   precision: 16, scale: 13
   t.decimal "longitude",  precision: 16, scale: 13
   t.integer "area_id"

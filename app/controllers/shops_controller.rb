@@ -39,7 +39,8 @@ class ShopsController < ApplicationController
       @shops = @shops.eager_load(:rel_shop_genre).where(rel_shop_genres: { genre_id: params[:genre] })
     end
 
-    if params[:timeframe].present?
+    if params[:timeframe].present? &&
+       params[:timeframe].to_i != 0
       tf = TimeFrame.all
       timeframe = params[:timeframe].to_sym
       started_at = tf[timeframe][:started_at]

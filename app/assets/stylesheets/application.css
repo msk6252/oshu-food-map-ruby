@@ -133,6 +133,14 @@ nav.header {
   animation: hide 2s;
 }
 
+.swiper.menu_open {
+  z-index: -1;
+}
+
+.swiper:not(.menu_open) {
+ animation: hide 2s;
+}
+
 @keyframes hide {
   from { z-index: -1; }
   to { z-index: 0; }

@@ -1,5 +1,117 @@
-<% if notice %>
-  <p id="notice"><%= notice %></p>
-<% end %>
+<div class="p-shopIndex__wrapper">
+  <div class="p-shopIndex__swiperWrapper">
+    <div class="swiper">
+      <div class="swiper-wrapper">
+        <div class="swiper-slide">
+          <img class="p-shopIndex__AreaImage" src="https://placehold.jp/450x250.png" />
+        </div>
+        <div class="swiper-slide">
+          <img class="p-shopIndex__AreaImage" src="https://placehold.jp/450x250.png" />
+        </div>
+        <div class="swiper-slide">
+          <img class="p-shopIndex__AreaImage" src="https://placehold.jp/450x250.png" />
+        </div>
+      </div>
+      <div class="swiper-pagination"></div>
+      <div class="swiper-button-prev"></div>
+      <div class="swiper-button-next"></div>
+      <div class="swiper-scrollbar"></div>
+    </div>
+  </div>
+  <!-- START Easy Search -->
+  <div class="p-shopIndex__EasySearchWrapper">
+    <h2 class="p-shopIndex__EasySearchTitle">かんたん検索</h2>
+    <div class="p-shopIndex__EasySearchContent">
+      <div class="p-shopIndex__EasySearchImageContent">
+        <img class="p-shopIndex__EasySearchImage" src="https://placehold.jp/150x150" />
+        <span class="p-shopIndex__EasySearchImageText">現在地から検索</span>
+      </div>
+      <div class="p-shopIndex__EasySearchImageContent">
+        <img class="p-shopIndex__EasySearchImage" src="https://placehold.jp/150x150" />
+        <span class="p-shopIndex__EasySearchImageText">詳細検索</span>
+      </div>
+    </div>
+  </div>
+  <!-- END Easy Search -->
 
-<%= render 'search' %>
+  <!-- START Campaign Search -->
+  <div class="p-shopIndex__CampaignWrapper">
+    <h2 class="p-shopIndex__CampaignTitle">キャンペーン一覧</h2>
+    <div class="p-shopIndex__CampaignList">
+      <div class="p-shopIndex__CampaignContent">
+        <span class="p-shopIndex__CampaignDate">2022/06/01 ~ 2022/07/30</span>
+        <span class="p-shopIndex__CampaignText">PayPayキャンペーン</span>
+      </div>
+      <div class="p-shopIndex__CampaignContent">
+        <span class="p-shopIndex__CampaignDate">2022/06/01 ~ 2022/07/30</span>
+        <span class="p-shopIndex__CampaignText">いわてGoToEat</span>
+      </div>
+      <div class="p-shopIndex__CampaignContent">
+        <span class="p-shopIndex__CampaignDate">2022/06/01 ~ 2022/07/30</span>
+        <span class="p-shopIndex__CampaignText">PayPayキャンペーン</span>
+      </div>
+      <div class="p-shopIndex__CampaignDetailLink">
+        <a href="#">キャンペーン一覧へ</a>
+      </div>
+    </div>
+  </div>
+  <!-- END Campaign Search -->
+  <!-- START Area Search -->
+  <div class="p-shopIndex__AreaWrapper">
+    <h2 class="p-shopIndex__AreaTitle">エリアから探す</h2>
+    <div class="p-shopIndex__AreaContent">
+      <div class="p-shopIndex__AreaImageContent">
+        <img class="p-shopIndex__AreaImage" src="https://placehold.jp/150x150.png" />
+        <span class="p-shopIndex__AreaImageText">水沢駅 / 商店街</span>
+      </div>
+      <div class="p-shopIndex__AreaImageContent">
+        <img class="p-shopIndex__AreaImage" src="https://placehold.jp/150x150.png" />
+        <span class="p-shopIndex__AreaImageText">国道４号線沿い</span>
+      </div>
+      <div class="p-shopIndex__AreaImageContent">
+        <img class="p-shopIndex__AreaImage" src="https://placehold.jp/150x150.png" />
+        <span class="p-shopIndex__AreaImageText">水沢公園周辺</span>
+      </div>
+      <div class="p-shopIndex__AreaImageContent">
+        <img class="p-shopIndex__AreaImage" src="https://placehold.jp/150x150.png" />
+        <span class="p-shopIndex__AreaImageText">マイアネタウン周辺</span>
+      </div>
+      <div class="p-shopIndex__AreaImageContent">
+        <img class="p-shopIndex__AreaImage" src="https://placehold.jp/150x150.png" />
+        <span class="p-shopIndex__AreaImageText">水沢江刺駅周辺</span>
+      </div>
+      <div class="p-shopIndex__AreaImageContent">
+        <img class="p-shopIndex__AreaImage" src="https://placehold.jp/150x150.png" />
+        <span class="p-shopIndex__AreaImageText">奥州市役所周辺</span>
+      </div>
+    </div>
+  </div>
+  <!-- END Area Search -->
+  <!-- START Genre Search -->
+  <div class="p-shopIndex__GenreWrapper">
+    <h2 class="p-shopIndex__GenreTitle">ジャンルから探す</h2>
+    <div class="p-shopIndex__GenreContent">
+      <% Genre.all.limit(6).each do |genre| %>
+        <div class="p-shopIndex__GenreImageContent">
+          <img class="p-shopIndex__GenreImage" src="https://placehold.jp/150x150.png" />
+          <span class="p-shopIndex__GenreImageText"><%= genre.name %></span>
+        </div>
+      <% end %>
+    </div>
+  </div>
+  <!-- END Genre Search -->
+
+</div>
+
+<script>
+  var Slider = new Swiper('.swiper', {
+    loop: true,
+    navigation: {
+      nextEl: '.swiper-button-next',
+      prevEl: '.swiper-button-prev',
+    },
+    scrollbar: {
+      el: '.swiper-scrollbar',
+    }
+  })
+</script>

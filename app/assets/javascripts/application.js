@@ -16,4 +16,5 @@
 //= require activestorage
 //= require turbolinks
 //= require admin/shops/show
+//= require shops/index
 //= require_tree .

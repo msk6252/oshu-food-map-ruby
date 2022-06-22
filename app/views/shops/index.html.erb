@@ -1,4 +1,4 @@
-<div class="p-shopIndex__wrapper">
+<div class="p-shopIndex__wrapper js-shopIndex">
   <div class="p-shopIndex__swiperWrapper">
     <div class="swiper">
       <div class="swiper-wrapper">
@@ -22,14 +22,18 @@
   <div class="p-shopIndex__EasySearchWrapper">
     <h2 class="p-shopIndex__EasySearchTitle">かんたん検索</h2>
     <div class="p-shopIndex__EasySearchContent">
-      <div class="p-shopIndex__EasySearchImageContent">
-        <img class="p-shopIndex__EasySearchImage" src="https://placehold.jp/150x150" />
-        <span class="p-shopIndex__EasySearchImageText">現在地から検索</span>
-      </div>
-      <div class="p-shopIndex__EasySearchImageContent">
-        <img class="p-shopIndex__EasySearchImage" src="https://placehold.jp/150x150" />
-        <span class="p-shopIndex__EasySearchImageText">詳細検索</span>
-      </div>
+      <a class="p-shopIndex__EasySearchImageLink js-shopIndexCurrentPositionSearch">
+        <div class="p-shopIndex__EasySearchImageContent">
+          <img class="p-shopIndex__EasySearchImage" src="https://placehold.jp/150x150" />
+          <span class="p-shopIndex__EasySearchImageText">現在地から検索</span>
+        </div>
+      </a>
+      <a href="#" class="p-shopIndex__EasySearchImageLink">
+        <div class="p-shopIndex__EasySearchImageContent">
+          <img class="p-shopIndex__EasySearchImage" src="https://placehold.jp/150x150" />
+          <span class="p-shopIndex__EasySearchImageText">詳細検索</span>
+        </div>
+      </a>
     </div>
   </div>
   <!-- END Easy Search -->

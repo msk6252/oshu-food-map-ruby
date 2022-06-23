@@ -22,6 +22,7 @@ const getCurrentPosition = (options) => {
 }
 
 const getLocation = async () => {
+  $.LoadingOverlay("show")
   try {
     var position = await getCurrentPosition()
     var lat = position.coords.latitude
@@ -33,7 +34,9 @@ const getLocation = async () => {
     }
   } catch(err) {
     alert("現在地が取得できませんでした。設定を確認してください")
-  } 
+  } finally {
+    $.LoadingOverlay("hide")
+  }
 }
 
 

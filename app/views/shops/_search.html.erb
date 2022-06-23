@@ -1,24 +1,4 @@
 <div class="p-search__wrapper">
-  <div class="m-easySearch__wrapper">
-    <div class="m-easySearch__title">
-      <h3>かんたん検索</h3>
-    </div>
-    <div class="m-easySearch__content">
-      <%= link_to newer_path, class: 'm-easySearch__box' do %>
-        <%= image_tag 'ic_nearby.svg',class: 'm-easySearch__img' %>
-        <p class="m-easySearch__text">近くのお店</p>
-      <% end %>
-      <%= link_to nearby_path, class: 'm-easySearch__box' do %>
-        <%= image_tag 'ic_nearby.svg',class: 'm-easySearch__img' %>
-        <p class="m-easySearch__text">いわてGoToEat</p>
-      <% end %>
-      <%= link_to anxious_path, class: 'm-easySearch__box' do %>
-        <%= image_tag 'ic_nearby.svg',class: 'm-easySearch__img' %>
-        <p class="m-easySearch__text">PayPay20%オフキャンペーン</p>
-      <% end %>
-    </div>
-  </div>
-
   <div class="m-detailSearch__wrapper">
     <div class="m-detailSearch__title">
       <h3>詳細検索</h3>
@@ -113,7 +93,7 @@
     }
   })
 
-  function getCurrentPosition(options) {
+  function getCurrentPositionLatLng(options) {
     return new Promise((resolve, reject) => {
       navigator.geolocation.getCurrentPosition(resolve, reject, options)
     })
@@ -121,7 +101,7 @@
 
   async function setLocation(map) {
     try {
-      var position = await this.getCurrentPosition()
+      var position = await this.getCurrentPositionLatLng()
       var latitude = position.coords.latitude
       var longitude = position.coords.longitude
       marker = L.marker([latitude, longitude]).addTo(map);

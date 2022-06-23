@@ -87,12 +87,14 @@
   })
 
   $('.js-currentLocation').click(function() {
+    $.LoadingOverlay("show")
     if (marker) {
       map.removeLayer(marker)
     }
     if (navigator.geolocation) {
       setLocation(map)
     } else {
+      $.LoadingOverlay("hide")
       alert('現在地が取得できませんでした...')
     }
   })
@@ -116,6 +118,8 @@
     } catch(err) {
       console.log(err)
       alert("現在地が取得できませんでした...")
+    } finally {
+      $.LoadingOverlay("hide")
     }
   }
 

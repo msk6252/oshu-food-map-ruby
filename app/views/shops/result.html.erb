@@ -2,7 +2,6 @@
   <p id="notice"><%= notice %></p>
 <% end %>
 <div id="map"></div>
-
 <%= render 'tab' %>
 
 <script type="text/javascript">
@@ -37,4 +36,3 @@
     L.marker([<%= shop["latitude"] %>, <%= shop["longitude"] %> ]).addTo(map)
   <% end %>
 </script>
-

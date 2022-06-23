@@ -29,13 +29,16 @@
     margin: 0 auto;
   }
 
+  .p-shopIndex__EasySearchImageLink {
+    width: 49%;
+  }
+
   .p-shopIndex__EasySearchContent {
     display: flex;
     flex-wrap: wrap;
     gap: 2%;
 
     .p-shopIndex__EasySearchImageContent {
-      width: 49%;
       margin-bottom: 2%;
       position: relative;
       z-index: -1;

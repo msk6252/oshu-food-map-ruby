@@ -30,6 +30,20 @@ a {
   color: #666 !important;
 }
 
+main {
+  min-height: 100%;
+}
+
+footer {
+  padding: 16px 0;
+  margin-top: 16px;
+  background: #F7EDED;
+}
+
+footer p {
+  color: #fff;
+}
+
 a:hover {
   text-decoration: none;
   background-color: #F7EDED;

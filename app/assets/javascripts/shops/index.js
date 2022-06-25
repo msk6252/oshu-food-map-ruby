@@ -27,8 +27,6 @@ const getLocation = async () => {
     var position = await getCurrentPosition()
     var lat = position.coords.latitude
     var lng = position.coords.longitude
-    console.log(lat)
-    console.log(lng)
     if (lat && lng) {
       window.location.href = `/result?lat=${lat}&lng=${lng}`
     }

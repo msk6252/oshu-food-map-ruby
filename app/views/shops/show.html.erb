@@ -1,59 +1,65 @@
-<p id="notice"><%= notice %></p>
+<% if notice %>
+  <p id="notice"><%= notice %></p>
+<% end %>
 
-<p>
-  <strong>Name:</strong>
-  <%= @shop.name %>
-</p>
+<div class="p-shopDetail__wrapper">
+  <div class="p-shopDetail__title">
+    <h2><%= @shop.name %></h2>
+    <p style="line-height: unset;" class="p-shopDetail__opening <%= @shop.opening? ? '-active' : '-passive'%>">（<%= opening_text(@shop) %>）</p>
+  </div>
 
-<p>
-  <strong>Address:</strong>
-  <%= @shop.address %>
-</p>
+  <div class="p-shopDetail__infoWrapper">
+    <h3 class="p-shopDetail__infoTitle">基本情報</h3>
 
-<div id="map"></div>
+    <h4>住所：<%= @shop.address %></h4>
+    <h4>電話番号：<%= @shop.address %></h4>
+  </div>
 
-<p>
-  <strong>Outside Image</strong>
-  <%= image_tag @shop.outside_image, size: '30x65' if @shop.outside_image.attached? %>
-</p>
+  <div id="map"></div>
 
-<p>
-  <strong>Inside Image</strong>
-  <%= image_tag @shop.inside_image, size: '100x200' if @shop.inside_image.attached? %>
-</p>
+  <div class="p-shopDetail__businessHourWrapper">
+    <div class="p-shopDetail__businessHourTitle">
+      <h3>営業時間<h3>
+    </div>
 
-<p>
-  <strong>Cooking Image</strong>
-  <% @shop.cooking_images.each do |food| %>
-    <%= image_tag food.variant(resize: '300') %>
-  <% end %>
-</p>
+    <table class="p-shopDetail__businessHourTable">
+      <thead>
+        <th>曜日</th>
+        <th>営業時間</th>
+        <th>備考</th>
+      </thead>
+      <tbody>
+        <% @shop.group_business_hours.each do |key, hour| %>    
+          <tr>
+            <td><%= key %></td>
+            <td>
+              <% hour.each do |h| %>
+                <%= h.started_at.strftime("%H:%M") %> ~ <%= h.finished_at.strftime("%H:%M") %><br/>
+              <% end%>
+            </td>
+            <td>
+              <% hour.each do |h| %>
+                <%= h.remarks %><br/>
+              <% end %>
+            </td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+  </div>
 
-<%= link_to 'Back', shops_path %>
-
-<style>
-html { height: 100% }
-body { height: 100% }
-#map { height: 60%; width: 100% }
-</style>
+  <%= link_to 'Back', :back %>
+</div>
 
 <script>
-  let shopLatLng = {
-                     lat: <%= @shop['latitude'] || 39.13960294778968 %>,
-                     lng: <%= @shop['longitude'] || 141.14624841562465 %>
-                   }
-  function initMap() {
-    map = new google.maps.Map(document.getElementById('map'), {
-      center: shopLatLng,
-      zoom: 13
-    });
-
-    markerLatLng = new google.maps.LatLng(shopLatLng);
-
-    marker = new google.maps.Marker({
-      position: markerLatLng,
-      map: map
-    });
-  }
+  var latlng = [<%= @shop.latitude %>, <%= @shop.longitude %>]
+  var map = L.map('map').setView(latlng, 19);
+  L.Icon.Default.imagePath = "/assets/";
+  var osmUrl = "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png";
+  var osmAttrib = "Map data OpenstreetMap contributors";
+  L.tileLayer(osmUrl,{
+    attribution: osmAttrib,
+    maxZoom: 19,
+  }).addTo(map);
+  L.marker(latlng).addTo(map);
 </script>
-<script async defer src="//maps.googleapis.com/maps/api/js?key=<%= ENV.fetch("GOOGLE_MAP_API_KEY") %>&callback=initMap" type="text/javascript"></script>

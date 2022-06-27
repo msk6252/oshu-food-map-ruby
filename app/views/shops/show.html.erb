@@ -8,18 +8,37 @@
     <p style="line-height: unset;" class="p-shopDetail__opening <%= @shop.opening? ? '-active' : '-passive'%>">（<%= opening_text(@shop) %>）</p>
   </div>
 
+  <div class="swiper">
+    <div class="swiper-wrapper">
+      <div class="swiper-slide">
+        <img class="p-shopIndex__AreaImage" src="https://placehold.jp/450x250.png" />
+      </div>
+      <div class="swiper-slide">
+        <img class="p-shopIndex__AreaImage" src="https://placehold.jp/450x250.png" />
+      </div>
+      <div class="swiper-slide">
+        <img class="p-shopIndex__AreaImage" src="https://placehold.jp/450x250.png" />
+      </div>
+    </div>
+    <div class="swiper-pagination"></div>
+    <div class="swiper-button-prev"></div>
+    <div class="swiper-button-next"></div>
+    <div class="swiper-scrollbar"></div>
+  </div>
+
   <div class="p-shopDetail__infoWrapper">
     <h3 class="p-shopDetail__infoTitle">基本情報</h3>
 
     <h4>住所：<%= @shop.address %></h4>
     <h4>電話番号：<%= @shop.address %></h4>
+    <h4>ジャンル：<%= shop_genre_names(@shop).join(', ') %></h4>
   </div>
 
   <div id="map"></div>
 
   <div class="p-shopDetail__businessHourWrapper">
     <div class="p-shopDetail__businessHourTitle">
-      <h3>営業時間<h3>
+      <h3>営業時間</h3>
     </div>
 
     <table class="p-shopDetail__businessHourTable">
@@ -62,4 +81,31 @@
     maxZoom: 19,
   }).addTo(map);
   L.marker(latlng).addTo(map);
+</script>
+<script>
+  // new Swiper('.p-shopDetail__swiper', {
+  //   loop: true,
+  //   pagination: {
+  //     el: '.p-shopDetail__swiperPagination',
+  //     type: 'bullets',
+  //     clickable: true, 
+  //   },
+  //   navigation: {
+  //     nextEl: '.p-shopDetail__swiperButtonNext',
+  //     prevEl: '.p-shopDetail__swiperButtonPrev'
+  //   },
+  //   scrollbar: {
+  //     el: '.p-shopDetail__swiperScrollbar'
+  //   }
+  // })
+  new Swiper('.swiper', {
+    loop: true,
+    navigation: {
+      nextEl: '.swiper-button-next',
+      prevEl: '.swiper-button-prev'
+    },
+    scrollbar: {
+      el: '.swiper-scrollbar'
+    }
+  })
 </script>

@@ -23,18 +23,38 @@
     <div class="swiper-pagination"></div>
     <div class="swiper-button-prev"></div>
     <div class="swiper-button-next"></div>
-    <div class="swiper-scrollbar"></div>
   </div>
 
-  <div class="p-shopDetail__infoWrapper">
+  <div class="m-btn__group p-shopDetail__linkButtonWrapper">
+    <div class="m-btn__pacificBlue">食べログ</div>
+    <div class="m-btn__pacificBlue">ぐるなび</div>
+    <div class="m-btn__pacificBlue">Googleマップ</div>
+  </div>
+
+  <div class="p-shopDetail__infoWrapper" style="margin-bottom: 16px;">
     <h3 class="p-shopDetail__infoTitle">基本情報</h3>
-
-    <h4>住所：<%= @shop.address %></h4>
-    <h4>電話番号：<%= @shop.address %></h4>
-    <h4>ジャンル：<%= shop_genre_names(@shop).join(', ') %></h4>
+    <table class="p-shopDetail__infoTable">
+      <tbody>
+        <tr>
+          <td class="p-shopDetail__infoTableTd">住所</td>
+          <td class="p-shopDetail__infoTableTd"><%= @shop.address %></td>
+        </tr>
+        <tr>
+          <td class="p-shopDetail__infoTableTd">電話</td>
+          <td class="p-shopDetail__infoTableTd"><%= @shop.address %></td>
+        </tr>
+        <tr>
+          <td class="p-shopDetail__infoTableTd">ジャンル</td>
+          <td class="p-shopDetail__infoTableTd"><%= shop_genre_names(@shop).join(', ') %></td>
+        </tr>
+      </tbody>
+    </table>  
   </div>
 
-  <div id="map"></div>
+  <div class="p-shopDetail__map">
+    <h3 class="p-shopDetail__mapTitle">地図</h3>
+    <div id="map"></div>
+  </div>
 
   <div class="p-shopDetail__businessHourWrapper">
     <div class="p-shopDetail__businessHourTitle">
@@ -72,7 +92,7 @@
 
 <script>
   var latlng = [<%= @shop.latitude %>, <%= @shop.longitude %>]
-  var map = L.map('map').setView(latlng, 19);
+  var map = L.map('map').setView(latlng, 16);
   L.Icon.Default.imagePath = "/assets/";
   var osmUrl = "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png";
   var osmAttrib = "Map data OpenstreetMap contributors";
@@ -88,9 +108,6 @@
     navigation: {
       nextEl: '.swiper-button-next',
       prevEl: '.swiper-button-prev'
-    },
-    scrollbar: {
-      el: '.swiper-scrollbar'
     }
   })
 </script>

@@ -16,9 +16,25 @@
     margin-top: 16px;
   }
 
+  .p-shopDetail__infoTable {
+    border: 1px solid #ccc;
+    width: 100%;
+  }
+
+  .p-shopDetail__infoTableTd {
+    border: 1px solid #ccc;
+    text-align: center;
+    padding: 5px 7px;
+  }
+
+  .p-shopDetail__linkButtonWrapper {
+    margin: 16px 0;
+  }
+
   // 営業時間
   .p-shopDetail__businessHourTitle,
-  .p-shopDetail__infoTitle {
+  .p-shopDetail__infoTitle,
+  .p-shopDetail__mapTitle {
     margin: 16px 0;
   }
 

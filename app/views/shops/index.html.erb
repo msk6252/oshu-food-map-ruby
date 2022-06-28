@@ -15,12 +15,11 @@
       <div class="swiper-pagination"></div>
       <div class="swiper-button-prev"></div>
       <div class="swiper-button-next"></div>
-      <div class="swiper-scrollbar"></div>
     </div>
   </div>
   <!-- START Easy Search -->
   <div class="p-shopIndex__EasySearchWrapper">
-    <h2 class="p-shopIndex__EasySearchTitle">検索</h2>
+    <h3 class="p-shopIndex__EasySearchTitle">検索</h3>
     <div class="p-shopIndex__EasySearchContent">
       <a class="p-shopIndex__EasySearchImageLink js-shopIndexCurrentPositionSearch">
         <div class="p-shopIndex__EasySearchImageContent js-shopIndexCurrentPositionSearch">
@@ -40,7 +39,7 @@
 
   <!-- START Campaign Search -->
   <div class="p-shopIndex__CampaignWrapper">
-    <h2 class="p-shopIndex__CampaignTitle">キャンペーン一覧から探す</h2>
+    <h3 class="p-shopIndex__CampaignTitle">キャンペーン一覧から探す</h3>
     <div class="p-shopIndex__CampaignList">
       <div class="p-shopIndex__CampaignContent">
         <span class="p-shopIndex__CampaignDate">2022/06/01 ~ 2022/07/30</span>
@@ -62,7 +61,7 @@
   <!-- END Campaign Search -->
   <!-- START Area Search -->
   <div class="p-shopIndex__AreaWrapper">
-    <h2 class="p-shopIndex__AreaTitle">エリアから探す</h2>
+    <h3 class="p-shopIndex__AreaTitle">エリアから探す</h3>
     <div class="p-shopIndex__AreaContent">
       <div class="p-shopIndex__AreaImageContent">
         <img class="p-shopIndex__AreaImage" src="https://placehold.jp/150x150.png" />
@@ -93,7 +92,7 @@
   <!-- END Area Search -->
   <!-- START Genre Search -->
   <div class="p-shopIndex__GenreWrapper">
-    <h2 class="p-shopIndex__GenreTitle">ジャンルから探す</h2>
+    <h3 class="p-shopIndex__GenreTitle">ジャンルから探す</h3>
     <div class="p-shopIndex__GenreContent">
       <% Genre.all.limit(6).each do |genre| %>
         <div class="p-shopIndex__GenreImageContent">
@@ -113,9 +112,6 @@
     navigation: {
       nextEl: '.swiper-button-next',
       prevEl: '.swiper-button-prev',
-    },
-    scrollbar: {
-      el: '.swiper-scrollbar',
     }
   })
 </script>

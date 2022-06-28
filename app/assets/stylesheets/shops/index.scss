@@ -12,13 +12,11 @@
     }
   }
 
-  h2.p-shopIndex__EasySearchTitle,
-  h2.p-shopIndex__AreaTitle,
-  h2.p-shopIndex__CampaignTitle,
-  h2.p-shopIndex__GenreTitle {
+  h3.p-shopIndex__EasySearchTitle,
+  h3.p-shopIndex__AreaTitle,
+  h3.p-shopIndex__CampaignTitle,
+  h3.p-shopIndex__GenreTitle {
       display: block;
-      font-size: 16px;
-      font-weight: bold;
       padding: 8px 0;
       margin-top: 32px;
       margin-bottom: 0 !important;

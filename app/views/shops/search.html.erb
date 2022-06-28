@@ -2,4 +2,143 @@
   <p id="notice"><%= notice %></p>
 <% end %>
 
-<%= render 'search' %>
+<div class="p-search__wrapper">
+  <div class="p-detailSearch__wrapper">
+    <div class="p-detailSearch__title">
+      <h3>詳細検索</h3>
+    </div>
+    <div class="p-detailSearch__content">
+      <h4>1. エリアを選択してください</h4>
+      <div id="map"></div>
+      <div class="m-btn__wrapper">
+        <div class="m-btn__group">
+          <div class="m-btn__pacificBlue js-resetMap areaSelect">地図をリセット</div>
+          <div class="m-btn__pacificBlue js-currentLocation areaSelect">現在地を設定</div>
+        </div>
+      </div>
+
+      <input type="hidden" id="map_latitude">
+      <input type="hidden" id="map_longitude">
+      <h4>2. 訪れる時間帯を選択してください</h4>
+      <div class="p-search__selectBoxWrapper p-search__selectBoxWrapperSub">
+        <select name="timeframe">
+          <option value="0">指定なし</option>
+          <option value="1">早朝（5:00 ~ 7:00）</option>
+          <option value="2">朝（7:00 ~ 11:00）</option>
+          <option value="3">昼（11:00 ~ 15:00）</option>
+          <option value="4">夕方（15:00 ~ 18:00）</option>
+          <option value="5">夜（18:00 ~ 23:00）</option>
+          <option value="6">夕食（23:00 ~ 5:00）</option>
+        </select>
+      </div>
+
+      <h4>3. ジャンルを選択してください</h4>
+      <div class="p-search__selectBoxWrapper p-search__selectBoxWrapperSub">
+        <select name="genre">
+            <option value="0">指定なし</option>
+          <% Genre.all.each.with_index(1) do |genre, idx| %>
+            <option value="<%= idx %>"><%= genre.try(:name) %></option>
+          <% end %>
+        </select>
+      </div>
+      <div class="m-btn__wrapper p-search__submitBtn">
+        <div class="m-btn__group">
+          <div class="m-btn__lightBlue p-detailSearch__submit js-searchDetailBtn">検索</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script type="text/javascript">
+  // navigatorのオプション
+  var options = {
+    enableHighAccuracy: true,
+    timeout: 5000,
+    maximumAge: 0
+  };
+
+  // マップの中心部を決める
+  var map = L.map('map').setView([39.1373645787035, 141.14196393507885], 15);
+  // アイコンのディレクトリ
+  L.Icon.Default.imagePath = "/assets/";
+  // タイルの取得
+  var osmUrl = "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png";
+  // コピーライト
+  var osmAttrib = "Map data OpenstreetMap contributors";
+
+  // レイヤーの指定
+  L.tileLayer(osmUrl,{
+    attribution: osmAttrib,
+    maxZoom: 20,
+  }).addTo(map);
+  
+  var marker
+  // marker = L.marker([43.0888003, 141.3414652]).addTo(map);
+
+  map.on("click", function(e){
+    if (marker) {
+      map.removeLayer(marker)
+    }
+    marker = L.marker(e.latlng).addTo(map)
+    marker.setLatLng(e.latlng);
+    $('#map_latitude').val(e.latlng.lat);
+    $('#map_longitude').val(e.latlng.lng);
+  })
+
+  $('.js-currentLocation').click(function() {
+    $.LoadingOverlay("show")
+    if (marker) {
+      map.removeLayer(marker)
+    }
+    if (navigator.geolocation) {
+      setLocation(map)
+    } else {
+      $.LoadingOverlay("hide")
+      alert('現在地が取得できませんでした...')
+    }
+  })
+
+  function getCurrentPositionLatLng(options) {
+    return new Promise((resolve, reject) => {
+      navigator.geolocation.getCurrentPosition(resolve, reject, options)
+    })
+  }
+
+  async function setLocation(map) {
+    try {
+      var position = await this.getCurrentPositionLatLng()
+      var latitude = position.coords.latitude
+      var longitude = position.coords.longitude
+      marker = L.marker([latitude, longitude]).addTo(map);
+      marker.setLatLng({ lat: latitude, lng: longitude });
+      map.panTo(new L.LatLng(latitude, longitude))
+      $('#map_latitude').val(position.coords.latitude)
+      $('#map_longitude').val(position.coords.longitude)
+    } catch(err) {
+      console.log(err)
+      alert("現在地が取得できませんでした...")
+    } finally {
+      $.LoadingOverlay("hide")
+    }
+  }
+
+  $('.js-searchDetailBtn').on('click', function() {
+    var params = {
+      lat: $('#map_latitude').val(),
+      lng: $('#map_longitude').val(),
+      timeframe: $('[name=timeframe] option:selected').val(),
+      genre: $('[name=genre] option:selected').val()
+    }
+    var urlSearchParam = new URLSearchParams(params).toString();
+    window.location.href = "/result?" + urlSearchParam
+  })
+
+  $('.js-resetMap').on('click', function() {
+    if (marker) {
+      map.removeLayer(marker)
+    }
+    map.panTo(new L.LatLng(39.1373645787035, 141.14196393507885))
+    marker = null;
+  })
+</script>

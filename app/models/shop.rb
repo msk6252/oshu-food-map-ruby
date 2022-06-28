@@ -53,4 +53,18 @@ class Shop < ApplicationRecord
     shop_ary = shops.to_ary
     shop_ary.sort { |x, y| x.current_distance <=> y.current_distance }
   end
+
+  # 曜日ごとの営業時間を取得
+  def group_business_hours
+    dow = DayOfWeek.all
+    self.business_hour.order(day_of_week: :asc).group_by(&:day_of_week).transform_keys!{|k| dow[k.to_s.to_sym]}
+  end
+
+  # お店が営業中かを判定
+  def opening?
+    return false if [2, 3].include?(self.business_status)
+    current_time = Time.now
+    bh = self.business_hour.where("? between started_at and finished_at", current_time)
+    return bh.present? ? true : false
+  end
 end

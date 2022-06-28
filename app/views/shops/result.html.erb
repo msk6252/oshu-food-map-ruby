@@ -2,7 +2,34 @@
   <p id="notice"><%= notice %></p>
 <% end %>
 <div id="map"></div>
-<%= render 'tab' %>
+
+<div class="m-tab__wrapper">
+  <%= paginate @shops, window: 1 %>
+  <h2><%= @tab_title %></h2>
+  <% @shops.each do |shop| %>
+    <%= link_to controller: 'shops', action: 'show', id: shop do  %>
+      <div class="m-card">
+        <div class="m-card__img">
+          <% if shop.outside_image.attached? %>
+            <%= image_tag shop.outside_image.variant(resize: '150x150^'), size: '150x1  50', crop: '150x150+0+0'%>
+          <% else %>
+            <img src="https://placehold.jp/150x150.png" />
+          <% end %>
+        </div>
+        <div class="m-card__content">
+          <p class="m-card__title"><%= truncate(shop.name, length: 15) %></p>
+          <p class="m-card__address"><%= shop.address.gsub(/奥州市/, '') %></p>
+          <p class="m-card__open_now" style="color: green;">営業中</p>
+          <p class="m-card__genre">肉、魚、野菜</p>
+          <% if shop.try(:current_distance).present? %>
+            <p class="m-card__distance">ここから約<%= shop.current_distance.round(1) %>km</p>
+          <% end %>
+        </div>
+      </div>
+    <% end %>
+  <% end %>
+  <%= paginate @shops, window: 1 %>
+</div>
 
 <script type="text/javascript">
   // navigatorのオプション

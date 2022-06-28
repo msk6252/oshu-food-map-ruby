@@ -1,0 +1,63 @@
+.shops.show {
+  .p-shopDetail__wrapper {
+    width: 90%;
+    margin: 0 auto;
+    padding-top: 16px;
+  }
+
+  // 店名(タイトル)
+  .p-shopDetail__title {
+    border-bottom: 1px solid #ccc;
+    margin-bottom: 16px;
+    display: flex;
+  }
+
+  .p-shopDetail__infoTitle {
+    margin-top: 16px;
+  }
+
+  .p-shopDetail__infoTable {
+    border: 1px solid #ccc;
+    width: 100%;
+  }
+
+  .p-shopDetail__infoTableTd {
+    border: 1px solid #ccc;
+    text-align: center;
+    padding: 5px 7px;
+  }
+
+  .p-shopDetail__linkButtonWrapper {
+    margin: 16px 0;
+  }
+
+  // 営業時間
+  .p-shopDetail__businessHourTitle,
+  .p-shopDetail__infoTitle,
+  .p-shopDetail__mapTitle {
+    margin: 16px 0;
+  }
+
+  .p-shopDetail__opening {
+    font-size: 20px;
+    font-weight: bold;
+    margin-top: 0;
+    &.-active {
+      color: green;
+    }
+
+    &.-passive {
+      color: red;
+    }
+  }
+
+  // 営業時間テーブル
+  .p-shopDetail__businessHourTable {
+    width: 100%;
+    th, td {
+      border: 1px solid #ccc;
+      text-align: center;
+    }
+  }
+}
+

@@ -12,8 +12,7 @@ namespace :insert_place do
   puts "+++++ Start Insert Place From Google Place API +++++"
   desc "奥州市役所から半径8kmのお店の情報をGooglePlaceAPIから取得し、DBにインサート"
   task :insert => :environment do
-    google_place_id_ary = Shop.all.map{|shop| shop.try(:google_place_id)}
-    google_place_id_ary.delete(nil)
+    google_place_id_ary = Shop.all.pluck(:google_place_id)
     tmp_shops = []
     LAT_LNG.each do |latlng|
       response_body = GooglePlaceApi.get_nearby_shop(latlng[:lat], latlng[:lng], 500, true)
@@ -22,7 +21,7 @@ namespace :insert_place do
           res = res_ary.fetch("results", nil)
           next if res.blank?
           res.each do |ele|
-            business_status = BUSINESS_STATUS.fetch(ele.fetch("business_status", nil), nil)
+            business_status = BUSINESS_STATUS.fetch(ele.fetch("business_status", nil).try(:to_sym), nil)
             google_place_id = ele.fetch("place_id", nil)
             lat = ele.fetch("geometry").fetch("location").fetch("lat")
             lng = ele.fetch("geometry").fetch("location").fetch("lng")

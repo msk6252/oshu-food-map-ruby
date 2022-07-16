@@ -23,18 +23,14 @@
               <p class="m-card__open_now" style="color: green;">営業中</p>
               <p class="m-card__genre">肉、魚、野菜</p>
               <% if shop.try(:current_distance).present? %>
-                <p class="m-card__distance">ここから約<%= shop.current_distance.round(1) %>km</p>
+                <p class="m-card__distance">現在地から約<%= shop.current_distance.round(1) %>km</p>
               <% end %>
             </div>
           </div>
         <% end %>
         <div class="m-card__linkArea">
-          <a class="m-card__linkTel" href="#">
-            電話する
-          </a>
-          <a class="m-card__linkMap" href="#">
-            Googleマップを開く
-          </a>
+          <%= link_to '電話する', "tel:080-1666-0590", class: 'm-card__linkTel'%>
+          <%= link_to 'Googleマップを開く', "//www.google.com/maps/dir/?api=1&destination=#{ shop.latitude },#{ shop.longitude }", class: 'm-card__linkMap' %>
         </div>
       </div>
   <% end %>
@@ -68,8 +64,9 @@
     maxZoom: 20,
   }).addTo(map);
 
+  var markers = [];
   // お店一覧をプロット
-  <% @shops.each do |shop| %>
-    L.marker([<%= shop["latitude"] %>, <%= shop["longitude"] %> ]).addTo(map)
+  <% @shops.each.with_index(0) do |shop, idx| %>
+    markers[<%= idx %>] = L.marker([<%= shop["latitude"] %>, <%= shop["longitude"] %> ]).addTo(map)
   <% end %>
 </script>

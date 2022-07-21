@@ -5,7 +5,7 @@ ActiveRecord::Base.connection.execute("SET CONSTRAINTS ALL DEFERRED;")
 
 CSV.foreach("db/import/genres.csv") do |row|
   next if row.include?("id")
-  genre = Genre.new
+  genre = Genre.find_or_initialize_by(id: row[0])
   genre.id = row[0]
   genre.name= row[1]
   genre.updated_at = Time.now

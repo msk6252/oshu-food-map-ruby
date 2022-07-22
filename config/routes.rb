@@ -11,6 +11,8 @@ Rails.application.routes.draw do
   get '/search', to: 'shops#search'
   get '/result', to: 'shops#result'
 
+  get '/campaigns', to: 'campaigns#index'
+
   namespace :admin do
     resources :shops
     patch 'shops/:id/revival', to: '/admin/shops#revival'

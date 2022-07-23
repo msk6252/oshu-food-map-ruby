@@ -1,22 +1,28 @@
 <div class="p-campaignIndex__wrapper">
   <h2 class="p-campaignIndex__title">キャンペーン一覧</h2>
   <div class="p-campaignIndex__contentListWrapper">
-    <div class="p-campaignIndex__contentWrapper">
-      <div class="p-campaignIndex__contentImageWrapper">
-        <img src="https://placehold.jp/75x75.png" />
-      </div>
-      <div class="p-campaignIndex__contentMain">
-        <div class="p-campaignIndex__contentTitle">
-          ああああ
-        </div>
-        <div class="p-campaignIndex__contentEventDateWrapper">
-          <div class="p-campaignIndex__contentEventDateLabel">
+    <% if @campaingn %>
+      <% @campaigns.each do |campaign| %>
+        <div class="p-campaignIndex__contentWrapper">
+          <div class="p-campaignIndex__contentImageWrapper">
+            <img src="https://placehold.jp/75x75.png" />
           </div>
-          <div class="p-campaignIndex__contentEventDate">
-            2022-07-22 ~ 2022-07-22
+          <div class="p-campaignIndex__contentMain">
+            <div class="p-campaignIndex__contentTitle">
+              <%= campaign.try(:name) %>
+            </div>
+            <div class="p-campaignIndex__contentEventDateWrapper">
+              <div class="p-campaignIndex__contentEventDateLabel">
+              </div>
+              <div class="p-campaignIndex__contentEventDate">
+                <%= campaign.try(:started_at) %> ~ <%= campaign.try(:finished_at) %>
+              </div>
+            </div>
           </div>
         </div>
-      </div>
-    </div>
+      <% end %>
+    <% else %>
+      キャンペーンはありません。
+    <% end%>
   </div>
 </div>

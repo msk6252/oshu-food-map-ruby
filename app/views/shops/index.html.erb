@@ -38,6 +38,7 @@
   <!-- END Easy Search -->
 
   <!-- START Campaign Search -->
+  <!--
   <div class="p-shopIndex__CampaignWrapper">
     <h3 class="p-shopIndex__CampaignTitle">開催中のキャンペーン</h3>
     <div class="p-shopIndex__CampaignList">
@@ -58,35 +59,20 @@
       </div>
     </div>
   </div>
+  -->
   <!-- END Campaign Search -->
   <!-- START Area Search -->
   <div class="p-shopIndex__AreaWrapper">
     <h3 class="p-shopIndex__AreaTitle">エリアから探す</h3>
     <div class="p-shopIndex__AreaContent">
-      <div class="p-shopIndex__AreaImageContent">
-        <img class="p-shopIndex__AreaImage" src="https://placehold.jp/150x150.png" />
-        <span class="p-shopIndex__AreaImageText">水沢駅 / 商店街</span>
-      </div>
-      <div class="p-shopIndex__AreaImageContent">
-        <img class="p-shopIndex__AreaImage" src="https://placehold.jp/150x150.png" />
-        <span class="p-shopIndex__AreaImageText">国道４号線沿い</span>
-      </div>
-      <div class="p-shopIndex__AreaImageContent">
-        <img class="p-shopIndex__AreaImage" src="https://placehold.jp/150x150.png" />
-        <span class="p-shopIndex__AreaImageText">水沢公園周辺</span>
-      </div>
-      <div class="p-shopIndex__AreaImageContent">
-        <img class="p-shopIndex__AreaImage" src="https://placehold.jp/150x150.png" />
-        <span class="p-shopIndex__AreaImageText">マイアネタウン周辺</span>
-      </div>
-      <div class="p-shopIndex__AreaImageContent">
-        <img class="p-shopIndex__AreaImage" src="https://placehold.jp/150x150.png" />
-        <span class="p-shopIndex__AreaImageText">水沢江刺駅周辺</span>
-      </div>
-      <div class="p-shopIndex__AreaImageContent">
-        <img class="p-shopIndex__AreaImage" src="https://placehold.jp/150x150.png" />
-        <span class="p-shopIndex__AreaImageText">奥州市役所周辺</span>
-      </div>
+      <% Area.all.limit(6).order(:id).each do |area| %>
+        <a href="/result?lat=<%= area.try(:latitude) %>&lng=<%= area.try(:longitude) %>" class="p-shopIndex__AreaImageContentLink">
+          <div class="p-shopIndex__AreaImageContent">
+            <img class="p-shopIndex__AreaImage" src="https://placehold.jp/150x150.png" />
+            <span class="p-shopIndex__AreaImageText"><%= area.try(:name) %></span>
+          </div>
+        </a>
+      <% end %>
     </div>
   </div>
   <!-- END Area Search -->
@@ -95,10 +81,12 @@
     <h3 class="p-shopIndex__GenreTitle">ジャンルから探す</h3>
     <div class="p-shopIndex__GenreContent">
       <% Genre.all.limit(6).each do |genre| %>
-        <div class="p-shopIndex__GenreImageContent">
-          <img class="p-shopIndex__GenreImage" src="https://placehold.jp/150x150.png" />
-          <span class="p-shopIndex__GenreImageText"><%= genre.name %></span>
-        </div>
+        <a href="#" class="p-shopIndex__GenreImageContentLink">
+          <div class="p-shopIndex__GenreImageContent">
+            <img class="p-shopIndex__GenreImage" src="https://placehold.jp/150x150.png" />
+            <span class="p-shopIndex__GenreImageText"><%= genre.name %></span>
+          </div>
+        </a>
       <% end %>
     </div>
   </div>

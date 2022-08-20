@@ -71,10 +71,14 @@
       flex-wrap: wrap;
       gap: 2%;
 
-      .p-shopIndex__AreaImageContent,
-      .p-shopIndex__GenreImageContent {
+      .p-shopIndex__AreaImageContentLink,
+      .p-shopIndex__GenreImageContentLink {
         width: 32%;
         margin-bottom: 2%;
+      }
+
+      .p-shopIndex__AreaImageContent,
+      .p-shopIndex__GenreImageContent {
         position: relative;
       }
 

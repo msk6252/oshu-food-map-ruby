@@ -51,18 +51,18 @@ main {
 
 footer {
   padding: 16px 0;
-  background: #F7EDED;
+  background: #f89e95;
 }
 
 footer p {
-  color: #fff;
+  color: #fff !important;
 }
 
 nav.header {
   width: 100%;
   height: 70px;
   position: relative;
-  background: #F7EDED;
+  background: #f89e95;
 }
 
 .drawer {
@@ -78,6 +78,7 @@ nav.header {
 
 .navbar_brand {
   width: 100%;
+  color: #fff !important;
 }
 
 .navbar_toggle {
@@ -135,15 +136,21 @@ nav.header {
 .menu ul li {
   padding: 2em;
   list-style: none;
-  border-bottom: 1px solid #CCC;
+  color: #fff;
+  border-bottom: 1px solid #fff;
 }
+
+.menu ul li a {
+  color: #fff;
+}
+
 /*OPEN時の動き*/
 .menu.open {
   -webkit-transform:translateX(0);
   transform:translateX(0);
   overflow-y: auto;
   -webkit-overflow-scrolling: touch;
-  background: #F7EDED;
+  background: #f89e95;
   opacity: 1.0;
 }
 
@@ -190,7 +197,7 @@ nav.header {
   .pc_site > p {
     margin: 50% 0;
     text-align: center;
-    font-size: 36px;
+    font-size: 24px;
     font-weight: 700;
   }
 }

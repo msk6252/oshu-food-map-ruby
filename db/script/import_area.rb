@@ -8,8 +8,10 @@ CSV.foreach("db/import/areas.csv") do |row|
   area = Area.find_or_initialize_by(id: row[0])
   area.id = row[0]
   area.name = row[1]
-  area.latitude = row[5]
-  area.longitude= row[6]
+  area.latitude = row[2]
+  area.longitude= row[3]
+  area.updated_at = Time.now
+  area.created_at = Time.now
   area.save
 end
 

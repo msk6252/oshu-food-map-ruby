@@ -5,7 +5,6 @@ create_table "shops", id: :bigint, unsigned: true, force: :cascade, comment: "ã
   t.integer "public", default: 0, null: false
   t.decimal "latitude",   precision: 16, scale: 13
   t.decimal "longitude",  precision: 16, scale: 13
-  t.integer "area_id"
   t.string "address"
   t.string "tel"
   t.string "google_place_id"
@@ -19,7 +18,6 @@ create_table "shops", id: :bigint, unsigned: true, force: :cascade, comment: "ã
 end
 
 add_index "shops", ["discarded_at"]
-add_foreign_key "shops", "areas"
 
 create_table "admins", id: :bigint, unsigned: true, force: :cascade, comment: "ç®¡ç†è€…" do |t|
   ## Database Authenticatable

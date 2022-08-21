@@ -78,6 +78,7 @@ nav.header {
 
 .navbar_brand {
   width: 100%;
+  font-size: 20px;
   color: #fff !important;
 }
 
@@ -90,7 +91,7 @@ nav.header {
   display: block;
   height: 2px;
   width: 30px;
-  background: #5c6b80;
+  background: #fff;
   -webkit-transition: ease .5s;
   transition: ease .5s;
 }

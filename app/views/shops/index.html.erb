@@ -23,7 +23,7 @@
     <div class="p-shopIndex__EasySearchContent">
       <a class="p-shopIndex__EasySearchImageLink js-shopIndexCurrentPositionSearch">
         <div class="p-shopIndex__EasySearchImageContent js-shopIndexCurrentPositionSearch">
-          <img class="p-shopIndex__EasySearchImage" src="https://placehold.jp/150x150" />
+          <%= get_image_tag("", 150, 150, "p-shopIndex__EasySearchImage") %>
           <span class="p-shopIndex__EasySearchImageText">現在地から検索</span>
         </div>
       </a>
@@ -81,7 +81,7 @@
       <% Genre.all.limit(6).each do |genre| %>
         <a href="#" class="p-shopIndex__GenreImageContentLink">
           <div class="p-shopIndex__GenreImageContent">
-            <img class="p-shopIndex__GenreImage" src="https://placehold.jp/150x150.png" />
+            <%= get_image_tag(genre.genre_image, "", "", "p-shopIndex__GenreImage")%>
             <span class="p-shopIndex__GenreImageText"><%= genre.name %></span>
           </div>
         </a>

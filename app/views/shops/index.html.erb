@@ -66,7 +66,7 @@
       <% Area.all.limit(6).order(:id).each do |area| %>
         <a href="/result?lat=<%= area.try(:latitude) %>&lng=<%= area.try(:longitude) %>" class="p-shopIndex__AreaImageContentLink">
           <div class="p-shopIndex__AreaImageContent">
-            <img class="p-shopIndex__AreaImage" src="https://placehold.jp/150x150.png" />
+            <%= get_image_tag(area.image, "150", "150", "p-shopIndex__AreaImage")%>
             <span class="p-shopIndex__AreaImageText"><%= area.try(:name) %></span>
           </div>
         </a>
@@ -78,10 +78,10 @@
   <div class="p-shopIndex__GenreWrapper">
     <h3 class="p-shopIndex__GenreTitle">ジャンルから探す</h3>
     <div class="p-shopIndex__GenreContent">
-      <% Genre.all.limit(6).each do |genre| %>
+      <% Genre.all.order(:id).limit(6).each do |genre| %>
         <a href="#" class="p-shopIndex__GenreImageContentLink">
           <div class="p-shopIndex__GenreImageContent">
-            <%= get_image_tag(genre.genre_image, "", "", "p-shopIndex__GenreImage")%>
+            <%= get_image_tag(genre.image, "150", "150", "p-shopIndex__GenreImage")%>
             <span class="p-shopIndex__GenreImageText"><%= genre.name %></span>
           </div>
         </a>

@@ -31,6 +31,10 @@
             <td><%= @shop.address %></td>
           <tr>
           <tr>
+            <th scope="row"><%= t(:genre, scope: [:models, :shop]) %></th>
+            <td><%= @shop.genre.map(&:name).join("、") %></td>
+          <tr>
+          <tr>
             <th scope="row"><%= t(:latitude, scope: [:models, :shop]) %></th>
             <td><%= @shop.latitude %></td>
           <tr>

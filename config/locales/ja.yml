@@ -4,6 +4,7 @@ ja:
       shop:
         name: 店名/企業名
         address: 住所
+        genre: ジャンル
         inside_image: 店内画像
         outside_image: 外観画像
         cooking_images: 料理画像
@@ -30,6 +31,7 @@ ja:
       address: "住所"
       latitude: "緯度"
       longitude: "経度"
+      genre: ジャンル
       cooking_image: "料理画像"
       outside_image: "外観画像"
       inside_image: "内装画像"

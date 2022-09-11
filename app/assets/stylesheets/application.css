@@ -185,17 +185,17 @@ nav.header {
 }
 
 @media (min-width: 520px) {
-  main {
-    display: none !important;
+  :not(.admin) > main {
+    display: none;
   }
 
-  .pc_site {
+  :not(.admin) > .pc_site {
     display: block;
     width: 100%;
     height: 100%;
   }
 
-  .pc_site > p {
+  :not(.admin) > .pc_site > p {
     margin: 50% 0;
     text-align: center;
     font-size: 24px;

@@ -1,5 +1,5 @@
 class Area < ApplicationRecord
   belongs_to :city
 
-  has_one_attached :area_image
+  has_one_attached :image
 end

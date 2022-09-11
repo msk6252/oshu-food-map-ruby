@@ -18,6 +18,7 @@ services:
     ports:
       - "3000:3000"
     depends_on:
+      - minio
       - db
   minio:
     image: minio/minio:latest

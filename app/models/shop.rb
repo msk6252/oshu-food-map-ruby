@@ -14,7 +14,7 @@ class Shop < ApplicationRecord
   has_one_attached :outside_image
   has_many_attached :cooking_images
 
-  enum public: { draft: 0, published: 1 }
+  # enum public: { draft: 0, published: 1 }
 
   attr_accessor :current_distance
   #attribute :current_distance, :float, default: 0.0

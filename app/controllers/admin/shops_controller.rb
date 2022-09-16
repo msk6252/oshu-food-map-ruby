@@ -47,16 +47,29 @@ class Admin::ShopsController < ApplicationController
 
   # PATCH/PUT /admin/shops/1 or /admin/shops/1.json
   def update
+    shop_params_hash = shop_params.to_h
+    # 公開状況をBooleanに変換
+    shop_params_hash["public"] = shop_params_hash["public"].to_i == 1 ? true : false
+    # POSTされたジャンル一覧から0を省く
+    shop_params_hash["genre_ids"] = shop_params_hash["genre_ids"] - ["0"]
+
+    puts "+++++++++++++++"
+    puts "+++++++++++++++"
+    puts shop_params_hash["genre_ids"]
+    puts "+++++++++++++++"
+    puts "+++++++++++++++"
+    
     ActiveRecord::Base.transaction do
       # 画像を更新
-      if shop_params[:cooking_images].present?
+      if shop_params_hash[:cooking_images].present?
         @shop.cooking_images.each do |image|
           image.purge
         end
       end
 
+
       respond_to do |format|
-        if @shop.update!(shop_params)
+        if @shop.update!(shop_params_hash)
           format.html { redirect_to admin_shop_path(@shop), notice: "Shop was successfully updated." }
           format.json { render :show, status: :created, location: @shop }
         else
@@ -99,6 +112,6 @@ class Admin::ShopsController < ApplicationController
 
     # Only allow a list of trusted parameters through.
     def shop_params
-      params.require(:shop).permit(:name, :latitude, :longitude, :address, :inside_image, :outside_image, cooking_images: [], genre_ids: [])
+      params.require(:shop).permit(:name, :latitude, :longitude, :address, :tel, :inside_image, :outside_image, :public, cooking_images: [], genre_ids: [])
     end
 end

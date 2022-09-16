@@ -21,31 +21,39 @@
           <tr>
             <th scope="row"><%= t(:id, scope: [:models, :base])%></th>
             <td><%= @shop.id %></td>
-          <tr>
+          </tr>
           <tr>
             <th scope="row"><%= t(:name, scope: [:models, :shop]) %></th>
             <td><%= @shop.name %></td>
+          </tr>
           <tr>
+            <th scope="row"><%= t(:public, scope: [:models, :shop]) %></th>
+            <td><%= @shop.public == 1 ? t(:published, scope: [:models, :shop]) : t(:draft, scope: [:models, :shop]) %></td>
+          </tr>
           <tr>
             <th scope="row"><%= t(:address, scope: [:models, :shop]) %></th>
             <td><%= @shop.address %></td>
+          </tr>
           <tr>
+            <th scope="row"><%= t(:tel, scope: [:models, :shop]) %></th>
+            <td><%= @shop.tel %></td>
+          </tr>
           <tr>
             <th scope="row"><%= t(:genre, scope: [:models, :shop]) %></th>
             <td><%= @shop.genre.map(&:name).join("、") %></td>
-          <tr>
+          </tr>
           <tr>
             <th scope="row"><%= t(:latitude, scope: [:models, :shop]) %></th>
             <td><%= @shop.latitude %></td>
-          <tr>
+          </tr>
           <tr>
             <th scope="row"><%= t(:longitude, scope: [:models, :shop]) %></th>
             <td><%= @shop.longitude %></td>
-          <tr>
+          </tr>
           <tr>
             <th scope="row"><%= t(:what3words, scope: [:models, :shop]) %></th>
             <td><%= @shop.what_three_words %></td>
-          <tr>
+          </tr>
 
         </tbody>
       </table>
@@ -74,7 +82,7 @@
       <div class="row">
         <div class="col">
           <% if @shop.outside_image.attached? %>
-            <%= image_tag @shop.outside_image.variant(resize: '100') %>
+            <%= image_tag @shop.outside_image.variant(resize: '450') %>
           <% else %>
             <%= t(:nothing, scope: [:views, :images]) %>
           <% end %>
@@ -87,7 +95,7 @@
       <div class="row">
         <div class="col">
           <% if @shop.inside_image.attached? %>
-            <%= image_tag @shop.inside_image.variant(resize: '100') if @shop.inside_image.attached? %>
+            <%= image_tag @shop.inside_image.variant(resize: '450') if @shop.inside_image.attached? %>
           <% else %>
             <%= t(:nothing, scope: [:views, :images]) %>
           <% end %>
@@ -101,7 +109,7 @@
         <% if @shop.cooking_images.length != 0 %>
           <% @shop.cooking_images.each_with_index do |food, idx| %>
             <div class="col">
-              <%= image_tag food.variant(resize: '100') %>
+              <%= image_tag food.variant(resize: '450') %>
             </div>
           <% end %>
         <% else %>
@@ -119,32 +127,18 @@
 
       <%= link_to 'Back', :back %>
       
-      <style>
-      html { height: 100% }
-      body { height: 100% }
-      #map { height: 100%; width: 100% }
-      </style>
-      
       <script>
-        shopLatLng = {
-                        lat: <%= @shop['latitude'] || 39.13960294778968 %>,
-                        lng: <%= @shop['longitude'] || 141.14624841562465 %>
-                     }
-        function initMap() {
-          map = new google.maps.Map(document.getElementById('map'), {
-            center: shopLatLng,
-            zoom: 15
-          });
-      
-          markerLatLng = new google.maps.LatLng(shopLatLng);
-      
-          marker = new google.maps.Marker({
-            position: markerLatLng,
-            map: map
-          });
-        }
+        var latlng = [<%= @shop.latitude %>, <%= @shop.longitude %>]
+        var map = L.map('map').setView(latlng, 16);
+        L.Icon.Default.imagePath = "/assets/";
+        var osmUrl = "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png";
+        var osmAttrib = "Map data OpenstreetMap contributors";
+        L.tileLayer(osmUrl,{
+          attribution: osmAttrib,
+          maxZoom: 19,
+        }).addTo(map);
+        L.marker(latlng).addTo(map);
       </script>
-      <script async defer src="//maps.googleapis.com/maps/api/js?key=<%= ENV.fetch("GOOGLE_MAP_API_KEY") %>&callback=initMap" type="text/javascript"></script>
     </div>
   </div>
 </div>

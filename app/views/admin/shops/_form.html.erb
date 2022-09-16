@@ -18,14 +18,31 @@
   </div>
 
   <div class="field">
+    <%= form.label :public %>
+    <%= form.check_box :public, checked: shop.public == 1 ? true : false, :as => :boolean %>
+  </div>
+
+  <div class="field">
     <%= form.label :address %>
     <%= form.text_field :address, :id => 'address' %>
   </div>
 
   <div class="field">
-    <%= form.label :genre %>
-    <%= form.collection_select :genre_ids, Genre.all.order(:id), :id, :name, {}, {multiple: true} %>
+    <%= form.label :tel %>
+    <%= form.telephone_field :tel %>
   </div>
+
+  <div class="field">
+    <%= form.label :genre %>
+    <br />
+    <% Genre.all.order(:id).each do |g| %>
+      <% if g.id % 5 == 0%><br /><br /><% end %>
+      <%= form.check_box :genre_ids, { multiple: true, :checked => shop.rel_shop_genre.pluck(:genre_id).include?(g.id) }, g.id %>
+      <%= g.name %>
+      &nbsp;&nbsp;
+    <% end %>
+  </div>
+  <br />
 
   <div class="field">
     <%= form.label :inside_image %>
@@ -58,9 +75,11 @@
     <%= form.file_field :cooking_images, id: "cooking_images_form", multiple: true, onchange: "loadImage(this);" %>
   </div>
 
-  <% shop.cooking_images.each do |image| %>
-    <%= image_tag image.variant(resize: "300"), name: 'exist_cooking_images' %>
-  <% end %>
+  <div style="display: flex;">
+    <% shop.cooking_images.each do |image| %>
+      <%= image_tag image.variant(resize: "300"), name: 'exist_cooking_images' %>
+    <% end %>
+  </div>
 
   <div id="cooking_images" style="display: none">
     <p id="cooking_images_preview"></p>
@@ -176,10 +195,12 @@ function setAddress() {
         img.src = e.target.result;
         img.onload= function() {
           const imageSize = resizeImage(img, obj.files.length);
-          img.widht = imageSize['width']
+          img.width = imageSize['width']
+          img.height = imageSize['height']
           img.height = imageSize['height']
         }
         document.getElementById(preview_id + '_preview').appendChild(img);
+        document.getElementById(preview_id + '_preview').style.display = "flex";
       });
       if (obj.files[i]) { fileReader.readAsDataURL(obj.files[i]) };
     }
@@ -188,7 +209,7 @@ function setAddress() {
   function resizeImage(img) {
     let width = 0;
     let height = 0;
-    const fixed_size = 450;
+    const fixed_size = 300;
     if (img.height < img.width) {
       width = fixed_size;
       height = img.height * (width / img.width);

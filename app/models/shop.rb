@@ -19,8 +19,7 @@ class Shop < ApplicationRecord
   attr_accessor :current_distance
   #attribute :current_distance, :float, default: 0.0
 
-  scope :active, -> { where(discarded_at: nil) }
-  scope :published, -> { where(public: 1) }
+  scope :active, -> { where(discarded_at: nil, public: true) }
 
   # 指定した位置情報から距離を出力
   def distance_from_current(lat, lng)

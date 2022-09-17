@@ -33,7 +33,7 @@ class ShopsController < ApplicationController
   end
 
   def result
-    @shops = Shop.all.active.published
+    @shops = Shop.all.active
     if params[:genre].present? &&
        params[:genre].to_i != 0
       @shops = @shops.eager_load(:rel_shop_genre).where(rel_shop_genres: { genre_id: params[:genre] })

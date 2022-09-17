@@ -20,7 +20,7 @@
             </div>
             <div class="m-card__content">
               <p class="m-card__title"><%= truncate(shop.name, length: 15) %></p>
-              <p class="m-card__address"><%= shop.address.gsub(/奥州市/, '') %></p>
+              <p class="m-card__address"><%= shop.address %></p>
               <p class="m-card__genre">肉、魚、野菜</p>
               <% if shop.try(:current_distance).present? %>
                 <p class="m-card__distance">現在地から約<%= shop.current_distance.round(1) %>km</p>

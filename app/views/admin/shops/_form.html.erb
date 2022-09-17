@@ -46,7 +46,8 @@
 
   <div class="field">
     <%= form.label :inside_image %>
-    <%= form.file_field :inside_image, id: "inside_image_form", onchange: "loadImage(this);" %>
+    <br />
+    <%= form.file_field :inside_image, id: "inside_image_form", onchange: "loadImage(this);", accept: 'image/*' %>
   </div>
 
   <% if shop.outside_image.attached? %>
@@ -59,7 +60,8 @@
 
   <div class="field">
     <%= form.label :outside_image %>
-    <%= form.file_field :outside_image, id: "outside_image_form", onchange: "loadImage(this);" %>
+    <br />
+    <%= form.file_field :outside_image, id: "outside_image_form", onchange: "loadImage(this);", accept: 'image/*' %>
   </div>
 
   <% if shop.outside_image.attached? %>
@@ -72,7 +74,8 @@
 
   <div class="field">
     <%= form.label :cooking_images %>
-    <%= form.file_field :cooking_images, id: "cooking_images_form", multiple: true, onchange: "loadImage(this);" %>
+    <br />
+    <%= form.file_field :cooking_images, id: "cooking_images_form", multiple: true, onchange: "loadImage(this);", accept: 'image/*' %>
   </div>
 
   <div style="display: flex;">
@@ -106,7 +109,7 @@ function initMap() {
       lat: <%= shop.latitude  || 39.13960294778968 %>,
       lng: <%= shop.longitude || 141.14624841562465 %>
     },
-    zoom: 13
+    zoom: 19
   });
 
   let marker = new google.maps.Marker()

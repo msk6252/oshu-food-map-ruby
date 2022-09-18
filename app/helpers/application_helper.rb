@@ -6,10 +6,11 @@ module ApplicationHelper
     # 画像が指定されていない場合
     return "<img src='https://placehold.jp/#{width}x#{height}.png' #{"class=#{cls}" if cls.present?} />".html_safe if img.blank?
 
+    return image_tag(img, class: cls, width: "#{width}px", height: "#{height}px") if img.kind_of?(String)
+
     # 画像がない場合
     return "<img src='https://placehold.jp/#{width}x#{height}.png' #{"class=#{cls}" if cls.present?} />".html_safe if !img.attached?
 
-    return image_tag(img, class: cls, width: "#{width}px", height: "150px")
-
+    return image_tag(img, class: cls, width: "#{width}px", height: "#{height}px")
   end
 end

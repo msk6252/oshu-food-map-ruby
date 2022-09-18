@@ -22,14 +22,14 @@
     <h3 class="p-shopIndex__EasySearchTitle">検索</h3>
     <div class="p-shopIndex__EasySearchContent">
       <a class="p-shopIndex__EasySearchImageLink js-shopIndexCurrentPositionSearch">
-        <div class="p-shopIndex__EasySearchImageContent js-shopIndexCurrentPositionSearch">
-          <%= get_image_tag("", 150, 150, "p-shopIndex__EasySearchImage") %>
+        <div class="p-shopIndex__EasySearchImageContent">
+          <%= get_image_tag("ic_current", 150, 150, "p-shopIndex__EasySearchImage") %>
           <span class="p-shopIndex__EasySearchImageText">現在地から検索</span>
         </div>
       </a>
       <a href="/search" class="p-shopIndex__EasySearchImageLink">
         <div class="p-shopIndex__EasySearchImageContent">
-          <img class="p-shopIndex__EasySearchImage" src="https://placehold.jp/150x150" />
+          <%= get_image_tag("ic_search", 150, 150, "p-shopIndex__EasySearchImage") %>
           <span class="p-shopIndex__EasySearchImageText">詳細検索</span>
         </div>
       </a>
@@ -41,18 +41,14 @@
   <div class="p-shopIndex__CampaignWrapper">
     <h3 class="p-shopIndex__CampaignTitle">開催中のキャンペーン</h3>
     <div class="p-shopIndex__CampaignList">
-      <div class="p-shopIndex__CampaignContent">
-        <span class="p-shopIndex__CampaignDate">2022/06/01 ~ 2022/07/30</span>
-        <span class="p-shopIndex__CampaignText">PayPayキャンペーン</span>
-      </div>
-      <div class="p-shopIndex__CampaignContent">
-        <span class="p-shopIndex__CampaignDate">2022/06/01 ~ 2022/07/30</span>
-        <span class="p-shopIndex__CampaignText">いわてGoToEat</span>
-      </div>
-      <div class="p-shopIndex__CampaignContent">
-        <span class="p-shopIndex__CampaignDate">2022/06/01 ~ 2022/07/30</span>
-        <span class="p-shopIndex__CampaignText">PayPayキャンペーン</span>
-      </div>
+      <% Campaign.all.order(:id).limit(5).each do |c| %>
+        <%= link_to '#', class: "p-shopIndex__CampaignContentLink" do %>
+          <div class="p-shopIndex__CampaignContent">
+            <span class="p-shopIndex__CampaignDate"><%= c.try(:started_on).try(:to_date) %> ~ <%= c.try(:finished_on).try(:to_date) %></span>
+            <span class="p-shopIndex__CampaignText"><%= c.try(:name) %></span>
+          </div>
+        <% end %>
+      <% end %>
       <div class="p-shopIndex__CampaignDetailLink">
         <%= link_to "キャンペーン一覧へ", campaigns_path %>
       </div>

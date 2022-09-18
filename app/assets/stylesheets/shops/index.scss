@@ -40,8 +40,11 @@
       margin-bottom: 2%;
       position: relative;
       z-index: -1;
-      img.p-shopIndex__EasySearchImage {
+      position: relative;
+      background-color: #333;
+      .p-shopIndex__EasySearchImage {
         margin: 0 auto;
+        opacity: 0.5;
       }
     }
 
@@ -146,6 +149,7 @@
 
     .p-shopIndex__CampaignText {
       display: block;
+      font-size: 16px;
     }
   }
 }

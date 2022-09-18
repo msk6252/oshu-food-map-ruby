@@ -42,7 +42,9 @@ p {
 }
 
 a:hover {
-  text-decoration: none;
+  text-decoration: none !important;
+  color: inherit;
+  background-color: initial;
 }
 
 main {
@@ -50,6 +52,7 @@ main {
 }
 
 footer {
+  margin-top: 32px;
   padding: 16px 0;
   background: #f89e95;
 }

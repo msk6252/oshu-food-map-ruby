@@ -2,7 +2,7 @@ class ShopsController < ApplicationController
   before_action :set_shop, only: %i[ show edit update destroy ]
   before_action :set_tab_title, only: [:index, :nearby, :anxious, :newer]
 
-  DEFAULT_PAGE = 5
+  DEFAULT_PAGE = 10
 
   # GET /shops or /shops.json
   def index

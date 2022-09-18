@@ -6,8 +6,8 @@
 <div class="m-tab__wrapper">
   <%= paginate @shops, window: 1 %>
   <h2><%= @tab_title %></h2>
-  <% @shops.each do |shop| %>
-      <div class="m-card">
+  <% @shops.each_with_index do |shop, idx| %>
+      <div class="m-card" id="shop_<%= idx %>">
         <%= link_to controller: 'shops', action: 'show', id: shop do  %>
           <div class="m-card_mainContainer">
             <div class="m-card__img">
@@ -29,8 +29,8 @@
           </div>
         <% end %>
         <div class="m-card__linkArea">
-          <%= link_to '電話する', "tel:080-1666-0590", class: 'm-card__linkTel'%>
-          <%= link_to 'Googleマップを開く', "//www.google.com/maps/dir/?api=1&destination=#{ shop.latitude },#{ shop.longitude }", class: 'm-card__linkMap' %>
+          <% if shop.tel.present? %><%= link_to '電話する', "tel:080-1666-0590", class: 'm-card__linkTel'%><% end %>
+          <% if shop.latitude.present? && shop.longitude.present? %><%= link_to 'Googleマップを開く', "//www.google.com/maps/dir/?api=1&destination=#{ shop.latitude },#{ shop.longitude }", class: 'm-card__linkMap' %><% end %>
         </div>
       </div>
   <% end %>
@@ -68,5 +68,15 @@
   // お店一覧をプロット
   <% @shops.each.with_index(0) do |shop, idx| %>
     markers[<%= idx %>] = L.marker([<%= shop["latitude"] %>, <%= shop["longitude"] %> ]).addTo(map)
+                          .on('click', function(e) {
+                            Array.from(document.getElementsByClassName('m-card')).forEach(ele => { ele.style.border = "1px solid #ccc" })
+                            document.getElementById("shop_<%= idx %>").scrollIntoView();
+                            document.getElementById("shop_<%= idx %>").animate({
+                              border: ["3px solid red", "1px solid #ccc"]
+                            }, {
+                              fill: "backwards",
+                              duration: 5000
+                            });
+                          });
   <% end %>
 </script>

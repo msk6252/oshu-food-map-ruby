@@ -7,6 +7,8 @@ create_table "shops", id: :bigint, unsigned: true, force: :cascade, comment: "„Å
   t.decimal "longitude",  precision: 16, scale: 13
   t.string "address"
   t.string "tel"
+  t.text "tabelog_url"
+  t.text "gnavi_url"
   t.string "google_place_id"
   t.integer "business_status",null: true
   t.integer "price_level", null: true

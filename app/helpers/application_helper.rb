@@ -8,9 +8,13 @@ module ApplicationHelper
 
     return image_tag(img, class: cls, width: "#{width}px", height: "#{height}px") if img.kind_of?(String)
 
-    # 画像がない場合
-    return "<img src='https://placehold.jp/#{width}x#{height}.png' #{"class=#{cls}" if cls.present?} />".html_safe if !img.attached?
+    # 画像単体（ActiveStorage::Attached::One）の場合
+    return image_tag(img, class: cls, width: "#{width}px", height: "#{height}px") if img.kind_of?(ActiveStorage::Attached::One)
 
-    return image_tag(img, class: cls, width: "#{width}px", height: "#{height}px")
+    # 画像複数 - 分割（ActiveStorage::Attachment）の場合
+    return image_tag(rails_blob_path(img, disposition: "attachment"), class: cls, width: "#{width}px", height: "#{height}px") if img.kind_of?(ActiveStorage::Attachment)
+
+    # 上記のどれにも当てはまらない場合
+    return "<img src='https://placehold.jp/#{width}x#{height}.png' #{"class=#{cls}" if cls.present?} />".html_safe
   end
 end

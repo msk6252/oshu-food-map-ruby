@@ -42,7 +42,7 @@
     <h3 class="p-shopIndex__CampaignTitle">開催中のキャンペーン</h3>
     <div class="p-shopIndex__CampaignList">
       <% Campaign.all.order(:id).limit(5).each do |c| %>
-        <%= link_to '#', class: "p-shopIndex__CampaignContentLink" do %>
+        <%= link_to c.try(:url), class: "p-shopIndex__CampaignContentLink", target: '_blank' do %>
           <div class="p-shopIndex__CampaignContent">
             <span class="p-shopIndex__CampaignDate"><%= c.try(:started_on).try(:to_date) %> ~ <%= c.try(:finished_on).try(:to_date) %></span>
             <span class="p-shopIndex__CampaignText"><%= c.try(:name) %></span>

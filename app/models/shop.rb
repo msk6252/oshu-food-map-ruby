@@ -66,4 +66,34 @@ class Shop < ApplicationRecord
     bh = self.business_hour.where("? between started_at and finished_at", current_time)
     return bh.present? ? true : false
   end
+
+  # お店の画像を1つの配列にする
+  def image_list
+    image_list = []
+    return [] if blank?
+
+    # 外装
+    if outside_image.attached?
+      image_list << outside_image
+    end
+
+    # 内装
+    if inside_image.attached?
+      image_list << inside_image
+    end
+
+    # 内装
+    if cooking_images.attached?
+      cooking_images.each do |img|
+        image_list << img
+      end
+    end
+
+    puts "++++++++++++++++"
+    puts "++++++++++++++++"
+    puts image_list&.inspect
+    puts "++++++++++++++++"
+    puts "++++++++++++++++"
+    return image_list
+  end
 end

@@ -5,7 +5,7 @@ module ShopsHelper
     return "閉店" if shop.business_status == 3
     current_time = Time.now
     bh = shop.business_hour.where("? between started_at and finished_at", current_time)
-    return  bh.present? ? "営業中" : "準備中"
+    return bh.present? ? "営業中" : "準備中"
   end
 
   # お店のジャンルを抽出

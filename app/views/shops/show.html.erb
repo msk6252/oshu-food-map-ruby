@@ -30,7 +30,10 @@
     <% end %>
     <% if @shop.try(:latitude).present? && @shop.try(:longitude).present? %>
       <%= link_to 'Googleマップ', "//www.google.com/maps/search/?api=1&query=#{ @shop.latitude },#{ @shop.longitude }", class: "m-btn__pacificBlue" %>
-    <% end %>  
+    <% end %>
+    <% if @shop.try(:tel).present? %>
+      <%= link_to '電話する', "tel:#{ @shop.tel }", class: "m-btn__pacificBlue" %>
+    <% end %>
   </div>
 
   <div class="p-shopDetail__infoWrapper" style="margin-bottom: 16px;">

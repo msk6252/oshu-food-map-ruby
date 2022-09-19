@@ -16,7 +16,7 @@
               <% else %>
                 <img src="https://placehold.jp/150x150.png" />
               <% end %>
-              <div class="p-shopResult__imgCardText">営業中</div>
+              <div class="p-shopResult__imgCardText <%= shop.opening? ? '-active' : '-passive' %>"><%= opening_text(shop) %></div>
             </div>
             <div class="m-card__content">
               <p class="m-card__title"><%= truncate(shop.name, length: 15) %></p>

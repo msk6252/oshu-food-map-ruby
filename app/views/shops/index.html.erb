@@ -75,7 +75,7 @@
     <h3 class="p-shopIndex__GenreTitle">ジャンルから探す</h3>
     <div class="p-shopIndex__GenreContent">
       <% Genre.all.order(:id).limit(6).each do |genre| %>
-        <a href="#" class="p-shopIndex__GenreImageContentLink">
+        <a href="/result?genre=<%= genre.id %>" class="p-shopIndex__GenreImageContentLink">
           <div class="p-shopIndex__GenreImageContent">
             <%= get_image_tag(genre.image, "150", "150", "p-shopIndex__GenreImage")%>
             <span class="p-shopIndex__GenreImageText"><%= genre.name %></span>

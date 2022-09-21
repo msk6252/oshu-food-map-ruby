@@ -2,6 +2,10 @@
   <p id="notice"><%= notice %></p>
 <% end %>
 <div id="map"></div>
+<div class="p-shopResult__searchAnnotation">※ 営業時間の突発的な変更や休業は反映されない恐れがあります。</div>
+<div class="p-shopResult__searchAnnotation">※ 現在地は選択した場所もしくは、現在地からの距離をおおよそで表示しています。</div>
+
+<br />
 
 <div class="m-tab__wrapper">
   <%= paginate @shops, window: 1 %>

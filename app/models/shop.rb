@@ -89,11 +89,6 @@ class Shop < ApplicationRecord
       end
     end
 
-    puts "++++++++++++++++"
-    puts "++++++++++++++++"
-    puts image_list&.inspect
-    puts "++++++++++++++++"
-    puts "++++++++++++++++"
     return image_list
   end
 end

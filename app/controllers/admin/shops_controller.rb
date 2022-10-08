@@ -53,12 +53,6 @@ class Admin::ShopsController < ApplicationController
     # POSTされたジャンル一覧から0を省く
     shop_params_hash["genre_ids"] = shop_params_hash["genre_ids"] - ["0"]
 
-    puts "+++++++++++++++"
-    puts "+++++++++++++++"
-    puts shop_params_hash["genre_ids"]
-    puts "+++++++++++++++"
-    puts "+++++++++++++++"
-    
     ActiveRecord::Base.transaction do
       # 画像を更新
       if shop_params_hash[:cooking_images].present?

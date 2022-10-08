@@ -14,6 +14,14 @@ module ShopsHelper
     RelShopGenre.is_shop(shop.id).each do |rel|
       genre_names << Genre.find_by(id: rel.genre_id).try(:name)
     end
-    genre_names
+
+    display_names = "-"
+    if genre_names.present?
+      display_names = genre_names.join("、")
+    else
+      diplay_names = "-"
+    end
+
+    display_names
   end
 end

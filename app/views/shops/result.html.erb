@@ -16,9 +16,9 @@
           <div class="m-card_mainContainer">
             <div class="m-card__img">
               <% if shop.outside_image.attached? %>
-                <%= image_tag shop.outside_image.variant(resize: '150x150^'), size: '150x1  50', crop: '150x150+0+0'%>
+                <%= get_image_tag shop.outside_image, '150', '150', '' %>
               <% else %>
-                <img src="https://placehold.jp/150x150.png" />
+                <%= get_image_tag 'no_image', '150', '150', '' %>
               <% end %>
               <div class="p-shopResult__imgCardText <%= shop.opening? ? '-active' : '-passive' %>"><%= opening_text(shop) %></div>
             </div>

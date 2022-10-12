@@ -17,21 +17,6 @@ class ShopsController < ApplicationController
   def show
   end
 
-  def nearby
-    @shops_all = Shop.all
-    @shops = Kaminari.paginate_array(Shop.distance_from_current_sortby(@shops_all)).page(params[:page]).per(DEFAULT_PAGE)
-  end
-
-  def anxious
-    @shops = Shop.all.page(params[:page]).per(DEFAULT_PAGE)
-    @shops_all = @shops
-  end
-
-  def newer
-    @shops = Shop.all.page(params[:page]).per(DEFAULT_PAGE)
-    @shops_all = @shops
-  end
-
   def result
     @shops = Shop.all.active
     if params[:genre].present? &&

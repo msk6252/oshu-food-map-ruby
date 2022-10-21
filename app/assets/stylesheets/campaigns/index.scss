@@ -24,6 +24,7 @@
 
   .p-campaignIndex__contentMain {
     margin: auto 0;
+    color: #383838;
   }
   .p-campaignIndex__contentEventDateWrapper {
     display: flex;
@@ -35,7 +36,7 @@
   }
 
   .p-campaignIndex__contentEventDateLabel::after {
-    content: "開催日";
+    content: "開催期間";
     background-color: #f0ad4e;
     color: #fff;
     font-size: 12px;
@@ -44,10 +45,15 @@
     padding: 4px 7px;
     margin: 0px 5px;
     line-height: 1;
-    vertical-align: middle;
+    vertical-align: text-top;
     white-space: nowrap;
     text-align: center;
     border-radius: 4px;
     display: inline-block;
+  }
+
+  .p-campaignIndex__eventAnnotation {
+    font-size: 10px;
+    color: #333;
   }
 }

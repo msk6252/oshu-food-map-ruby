@@ -14,13 +14,12 @@ class Shop < ApplicationRecord
   has_one_attached :outside_image
   has_many_attached :cooking_images
 
-  enum public: { draft: 0, published: 1 }
+  # enum public: { draft: 0, published: 1 }
 
   attr_accessor :current_distance
   #attribute :current_distance, :float, default: 0.0
 
-  scope :active, -> { where(discarded_at: nil) }
-  scope :published, -> { where(public: 1) }
+  scope :active, -> { where(discarded_at: nil, public: true) }
 
   # 指定した位置情報から距離を出力
   def distance_from_current(lat, lng)
@@ -66,5 +65,30 @@ class Shop < ApplicationRecord
     current_time = Time.now
     bh = self.business_hour.where("? between started_at and finished_at", current_time)
     return bh.present? ? true : false
+  end
+
+  # お店の画像を1つの配列にする
+  def image_list
+    image_list = []
+    return [] if blank?
+
+    # 外装
+    if outside_image.attached?
+      image_list << outside_image
+    end
+
+    # 内装
+    if inside_image.attached?
+      image_list << inside_image
+    end
+
+    # 内装
+    if cooking_images.attached?
+      cooking_images.each do |img|
+        image_list << img
+      end
+    end
+
+    return image_list
   end
 end

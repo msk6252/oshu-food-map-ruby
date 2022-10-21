@@ -13,5 +13,16 @@
     color: #fff;
     font-weight: 700;
     font-size: 12px;
+    &.-active {
+      background-color: green;
+    }
+    &.-passive {
+      background-color: red;
+    }
+  }
+
+  .p-shopResult__searchAnnotation {
+    color: #333;
+    font-size: 12px;
   }
 }

@@ -1,0 +1,28 @@
+.shops.result {
+  .m-card__img {
+    position: relative;
+  }
+
+  .p-shopResult__imgCardText {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    text-align: center;
+    background: #8f8f8f;
+    color: #fff;
+    font-weight: 700;
+    font-size: 12px;
+    &.-active {
+      background-color: green;
+    }
+    &.-passive {
+      background-color: red;
+    }
+  }
+
+  .p-shopResult__searchAnnotation {
+    color: #333;
+    font-size: 12px;
+  }
+}

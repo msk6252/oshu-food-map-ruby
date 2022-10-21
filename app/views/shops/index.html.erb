@@ -1,66 +1,99 @@
-<% if notice %>
-  <p id="notice"><%= notice %></p>
-<% end %>
-<div id="map"></div>
+<div class="p-shopIndex__wrapper js-shopIndex">
+  <div class="p-shopIndex__swiperWrapper">
+    <div class="swiper">
+      <div class="swiper-wrapper">
+        <div class="swiper-slide">
+          <img class="p-shopIndex__AreaImage" src="https://placehold.jp/450x250.png" />
+        </div>
+        <div class="swiper-slide">
+          <img class="p-shopIndex__AreaImage" src="https://placehold.jp/450x250.png" />
+        </div>
+        <div class="swiper-slide">
+          <img class="p-shopIndex__AreaImage" src="https://placehold.jp/450x250.png" />
+        </div>
+      </div>
+      <div class="swiper-pagination"></div>
+      <div class="swiper-button-prev"></div>
+      <div class="swiper-button-next"></div>
+    </div>
+  </div>
+  <!-- START Easy Search -->
+  <div class="p-shopIndex__EasySearchWrapper">
+    <h3 class="p-shopIndex__EasySearchTitle">検索</h3>
+    <div class="p-shopIndex__EasySearchContent">
+      <a class="p-shopIndex__EasySearchImageLink js-shopIndexCurrentPositionSearch">
+        <div class="p-shopIndex__EasySearchImageContent">
+          <%= get_image_tag("ic_current", 150, 150, "p-shopIndex__EasySearchImage") %>
+          <span class="p-shopIndex__EasySearchImageText">現在地から検索</span>
+        </div>
+      </a>
+      <a href="/search" class="p-shopIndex__EasySearchImageLink">
+        <div class="p-shopIndex__EasySearchImageContent">
+          <%= get_image_tag("ic_search", 150, 150, "p-shopIndex__EasySearchImage") %>
+          <span class="p-shopIndex__EasySearchImageText">詳細検索</span>
+        </div>
+      </a>
+    </div>
+  </div>
+  <!-- END Easy Search -->
 
-<input type="hidden" id="shops_info" value=<%= @shops.to_json %> />
+  <!-- START Campaign Search -->
+  <div class="p-shopIndex__CampaignWrapper">
+    <h3 class="p-shopIndex__CampaignTitle">開催中のキャンペーン</h3>
+    <div class="p-shopIndex__CampaignList">
+      <% Campaign.all.order(:id).limit(5).each do |c| %>
+        <%= link_to c.try(:url), class: "p-shopIndex__CampaignContentLink", target: '_blank' do %>
+          <div class="p-shopIndex__CampaignContent">
+            <span class="p-shopIndex__CampaignDate"><%= c.try(:started_on).try(:to_date) %> ~ <%= c.try(:finished_on).try(:to_date) %></span>
+            <span class="p-shopIndex__CampaignText"><%= c.try(:name) %></span>
+          </div>
+        <% end %>
+      <% end %>
+      <div class="p-shopIndex__CampaignDetailLink">
+        <%= link_to "キャンペーン一覧へ", campaigns_path %>
+      </div>
+    </div>
+  </div>
+  <!-- END Campaign Search -->
+  <!-- START Area Search -->
+  <div class="p-shopIndex__AreaWrapper">
+    <h3 class="p-shopIndex__AreaTitle">エリアから探す</h3>
+    <div class="p-shopIndex__AreaContent">
+      <% Area.all.limit(6).order(:id).each do |area| %>
+        <a href="/result?lat=<%= area.try(:latitude) %>&lng=<%= area.try(:longitude) %>" class="p-shopIndex__AreaImageContentLink">
+          <div class="p-shopIndex__AreaImageContent">
+            <%= get_image_tag(area.image, "150", "150", "p-shopIndex__AreaImage")%>
+            <span class="p-shopIndex__AreaImageText"><%= area.try(:name) %></span>
+          </div>
+        </a>
+      <% end %>
+    </div>
+  </div>
+  <!-- END Area Search -->
+  <!-- START Genre Search -->
+  <div class="p-shopIndex__GenreWrapper">
+    <h3 class="p-shopIndex__GenreTitle">ジャンルから探す</h3>
+    <div class="p-shopIndex__GenreContent">
+      <% Genre.all.order(:id).limit(6).each do |genre| %>
+        <a href="/result?genre=<%= genre.id %>" class="p-shopIndex__GenreImageContentLink">
+          <div class="p-shopIndex__GenreImageContent">
+            <%= get_image_tag(genre.image, "150", "150", "p-shopIndex__GenreImage")%>
+            <span class="p-shopIndex__GenreImageText"><%= genre.name %></span>
+          </div>
+        </a>
+      <% end %>
+    </div>
+  </div>
+  <!-- END Genre Search -->
 
-<%= render 'tab' %>
+</div>
 
-<script type="text/javascript">
-  // 現在地が取得できなければ、奥州市役所
-  let currentLocation = [39.144562, 141.139285]
-
-  // navigatorのオプション
-  const options = {
-    enableHighAccuracy: true,
-    timeout: 5000,
-    maximumAge: 0
-  };
-
-  if (navigator.geolocation) {
-    navigator.geolocation.getCurrentPosition(success, error, options)
-  } else {
-    currentLocation = [39.144562, 141.139285]
-  }
-
-  // マップの中心部を決める
-  let map = L.map('map').setView(currentLocation, 17);
-  // アイコンのディレクトリ
-  L.Icon.Default.imagePath = "/assets/";
-  // タイルの取得
-  let osmUrl = "http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png";
-  // コピーライト
-  let osmAttrib = "Map data OpenstreetMap contributors";
-
-  // レイヤーの指定
-  L.tileLayer(osmUrl,{
-    attribution: osmAttrib,
-    maxZoom: 20,
-  }).addTo(map);
-
-  // マップをViewに反映
-  let shops = document.getElementById('shops_info').value;
-
-  // 現在地にピン立て
-  L.marker(currentLocation).addTo(map)
-
-  // お店一覧をプロット
-  JSON.parse(shops).forEach((s) => {
-    L.marker([s["latitude"], s["longitude"]]).addTo(map)
+<script>
+  var Slider = new Swiper('.swiper', {
+    loop: true,
+    navigation: {
+      nextEl: '.swiper-button-next',
+      prevEl: '.swiper-button-prev',
+    }
   })
-
-  // 現在地取得できた場合の処理
-  function success(pos) {
-    let crd = pos.coords;
-    currentLocation[0] = crd.latitude
-    currentLocation[1] = crd.longitude
-  }
-
-  // 現在地取得ができなかった場合の処理
-  function error(err) {
-    currentLocation = [39.144562, 141.139285]
-    console.alert("現在地は取得できません。");
-  }
 </script>
-

@@ -1,6 +1,11 @@
 .m-btn__wrapper {
-  margin: 32px 0; 
   width: 100%;
+  
+  a:hover {
+    background: #87ceeb;
+    color: #fff !important;
+    border-radius: 4px;
+  }
 }
 
 .m-btn__group {
@@ -24,5 +29,31 @@
     border: 1px solid #87ceeb;
     color: #fff;
     background: #87ceeb;
+  }
+
+  &:hover {
+    background: #87ceeb;
+    color: #fff;
+  }
+}
+
+.m-btn__lightBlue {
+  display: block;
+  padding: 8px 16px;
+  border: 1px solid #0481cc;
+  border-radius: 4px;
+  color: #fff;
+  background: #0481cc;
+  cursor: pointer;
+
+  &.active {
+    border: 1px solid #0481cc;
+    background: #fff;
+    color: #0481cc;
+  }
+
+  &:hover {
+    background: #fff;
+    color: #0481cc;
   }
 }

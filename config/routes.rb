@@ -3,8 +3,15 @@ Rails.application.routes.draw do
   root 'shops#index'
   get '/admin' => redirect('/admin/sign_in')
 
-  get '/shops', to: 'shops#index'
+  get '/newer', to: 'shops#newer'
+  get '/nearby', to: 'shops#nearby'
+  get '/anxious', to: 'shops#anxious'
+
   get '/shops/:id', to: 'shops#show'
+  get '/search', to: 'shops#search'
+  get '/result', to: 'shops#result'
+
+  get '/campaigns', to: 'campaigns#index'
 
   namespace :admin do
     resources :shops

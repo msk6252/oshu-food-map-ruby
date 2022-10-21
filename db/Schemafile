@@ -2,10 +2,16 @@
 
 create_table "shops", id: :bigint, unsigned: true, force: :cascade, comment: "お店" do |t|
   t.string "name", limit: 191, default: "", null: false
-  
+  t.integer "public", default: 0, null: false
   t.decimal "latitude",   precision: 16, scale: 13
   t.decimal "longitude",  precision: 16, scale: 13
   t.string "address"
+  t.string "tel"
+  t.text "tabelog_url"
+  t.text "gnavi_url"
+  t.string "google_place_id"
+  t.integer "business_status",null: true
+  t.integer "price_level", null: true
   t.string "what_three_words"
 
   t.datetime "updated_at", precision: 6, null: false
@@ -78,3 +84,60 @@ end
 
 # add_index "active_storage_attachments", ["record_type", "record_id", "name", "blob_id"], name: "index_active_storage_attachments_uniqueness", unique: true
 # add_foreign_key "active_storage_blobs", "active_storage_attachments", name: :blob_id
+
+create_table "genres", id: :bigint, unsigned: true, force: :cascade, comment: "ジャンル" do |t|
+  t.string "name", limit:191, default: "", null:false
+
+  t.datetime "updated_at", precision: 6, null: false
+  t.datetime "created_at", precision: 6, null: false
+  t.datetime "discarded_at", precision: 6
+end
+
+create_table "rel_shop_genres", id: :bigint, unsigned: true, force: :cascade, comment: "ジャンル中間テーブル" do |t|
+  t.integer "shop_id", null: false, default: 0
+  t.integer "genre_id", null: false, default: 0
+  t.datetime "updated_at", precision: 6, null: false
+  t.datetime "created_at", precision: 6, null: false
+end
+
+add_foreign_key "rel_shop_genres", "shops"
+add_foreign_key "rel_shop_genres", "genres"
+
+create_table "areas", id: :bigint, unsigned: true, force: :cascade, comment: "エリア" do |t|
+  t.string "name", limit:191, default: "", null:false
+  t.decimal "latitude",   precision: 16, scale: 13
+  t.decimal "longitude",  precision: 16, scale: 13
+  t.datetime "updated_at", precision: 6, null: false
+  t.datetime "created_at", precision: 6, null: false
+  t.datetime "discarded_at", precision: 6
+end
+
+create_table "business_hours", id: :bigint, unsigned: true, force: :cascade, comment: "営業時間" do |t|
+  t.integer "shop_id", null: false, default: 0
+  t.integer "day_of_week"
+  t.time "started_at", precision: 4
+  t.time "finished_at", precision: 4
+  t.text "remarks"
+end
+
+add_foreign_key "business_hours", "shops"
+
+create_table "campaigns", id: :bigint, unsigned: true, force: :cascade, comment: "キャンペーン" do |t|
+  t.string "name", limit:191, default: "", null:false
+  t.text "url"
+  t.datetime "started_on", precision: 4, null: false
+  t.datetime "finished_on", precision: 4, null: false
+  t.datetime "updated_at", precision: 6, null: false
+  t.datetime "created_at", precision: 6, null: false
+  t.datetime "discarded_at", precision: 6
+end
+
+create_table "rel_shop_campaigns", id: :bigint, unsigned: true, force: :cascade, comment: "キャンペーン中間テーブル" do |t|
+  t.integer "shop_id", null: false, default: 0
+  t.integer "campaign_id", null: false, default: 0
+  t.datetime "updated_at", precision: 6, null: false
+  t.datetime "created_at", precision: 6, null: false
+end
+
+add_foreign_key "rel_shop_campaigns", "shops"
+add_foreign_key "rel_shop_campaigns", "campaigns"

@@ -1,0 +1,86 @@
+<% if notice %>
+  <p id="notice"><%= notice %></p>
+<% end %>
+<div id="map"></div>
+<div class="p-shopResult__searchAnnotation">※ 営業時間の突発的な変更や休業は反映されない恐れがあります。</div>
+<div class="p-shopResult__searchAnnotation">※ 現在地は選択した場所もしくは、現在地からの距離をおおよそで表示しています。</div>
+
+<br />
+
+<div class="m-tab__wrapper">
+  <%= paginate @shops, window: 1 %>
+  <h2><%= @tab_title %></h2>
+  <% @shops.each_with_index do |shop, idx| %>
+      <div class="m-card" id="shop_<%= idx %>">
+        <%= link_to controller: 'shops', action: 'show', id: shop do  %>
+          <div class="m-card_mainContainer">
+            <div class="m-card__img">
+              <% if shop.outside_image.attached? %>
+                <%= get_image_tag shop.outside_image, '150', '150', '' %>
+              <% else %>
+                <%= get_image_tag 'no_image', '150', '150', '' %>
+              <% end %>
+              <div class="p-shopResult__imgCardText <%= shop.opening? ? '-active' : '-passive' %>"><%= opening_text(shop) %></div>
+            </div>
+            <div class="m-card__content">
+              <p class="m-card__title"><%= truncate(shop.name, length: 15) %></p>
+              <p class="m-card__address"><%= shop.address %></p>
+              <p class="m-card__genre"><%= shop_genre_names(shop) %></p>
+              <% if shop.try(:current_distance).present? %>
+                <p class="m-card__distance">現在地から約<%= shop.current_distance.round(1) %>km</p>
+              <% end %>
+            </div>
+          </div>
+        <% end %>
+        <div class="m-card__linkArea">
+          <% if shop.tel.present? %><%= link_to '電話する', "tel:080-1666-0590", class: 'm-card__linkTel'%><% end %>
+          <% if shop.latitude.present? && shop.longitude.present? %><%= link_to 'Googleマップを開く', "//www.google.com/maps/dir/?api=1&destination=#{ shop.latitude },#{ shop.longitude }", class: 'm-card__linkMap' %><% end %>
+        </div>
+      </div>
+  <% end %>
+  <%= paginate @shops, window: 1 %>
+</div>
+
+<script type="text/javascript">
+  // navigatorのオプション
+  var options = {
+    enableHighAccuracy: true,
+    timeout: 5000,
+    maximumAge: 0
+  };
+
+  var first_content_latlng = [
+    <%= @shops.try(:first).try("latitude") || 39.144562 %>, <%= @shops.try(:first).try("longitude") || 141.139285 %>
+  ]
+
+  // マップの中心部を決める
+  var map = L.map('map').setView(first_content_latlng, 15);
+  // アイコンのディレクトリ
+  L.Icon.Default.imagePath = "/assets/";
+  // タイルの取得
+  var osmUrl = "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png";
+  // コピーライト
+  var osmAttrib = "Map data OpenstreetMap contributors";
+
+  // レイヤーの指定
+  L.tileLayer(osmUrl,{
+    attribution: osmAttrib,
+    maxZoom: 20,
+  }).addTo(map);
+
+  var markers = [];
+  // お店一覧をプロット
+  <% @shops.each.with_index(0) do |shop, idx| %>
+    markers[<%= idx %>] = L.marker([<%= shop["latitude"] %>, <%= shop["longitude"] %> ]).addTo(map)
+                          .on('click', function(e) {
+                            Array.from(document.getElementsByClassName('m-card')).forEach(ele => { ele.style.border = "1px solid #ccc" })
+                            document.getElementById("shop_<%= idx %>").scrollIntoView();
+                            document.getElementById("shop_<%= idx %>").animate({
+                              border: ["3px solid red", "1px solid #ccc"]
+                            }, {
+                              fill: "backwards",
+                              duration: 5000
+                            });
+                          });
+  <% end %>
+</script>

@@ -4,6 +4,7 @@ $('.admin_shop_show').ready ->
   $._userId = $('.admin_shop_show_userId')
   $._OnClickDeleteOrRevivalButton()
 
+# 削除、復活ボタン
 $._OnClickDeleteOrRevivalButton = () ->
   swalDeleteButton = Swal.mixin({
       customClass: {

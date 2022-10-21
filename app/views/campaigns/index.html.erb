@@ -1,0 +1,30 @@
+<div class="p-campaignIndex__wrapper">
+  <h2 class="p-campaignIndex__title">キャンペーン一覧</h2>
+  <div class="p-campaignIndex__contentListWrapper">
+    <% if @campaigns %>
+      <% @campaigns.each do |campaign| %>
+        <%= link_to campaign.url, class: "p-campaignIndex__contentWrapper", target: '_blank' do %>
+          <% if campaign.image.attached? %>
+            <div class="p-campaignIndex__contentImageWrapper">
+              <%= get_image_tag('', '90', '90', '')%>
+            </div>
+          <% end %>
+          <div class="p-campaignIndex__contentMain">
+            <div class="p-campaignIndex__contentTitle">
+              <%= campaign.try(:name) %>
+            </div>
+            <div class="p-campaignIndex__contentEventDateWrapper">
+              <div class="p-campaignIndex__contentEventDateLabel"></div>
+              <div class="p-campaignIndex__contentEventDate">
+                <%= campaign.try(:started_on).try(:to_date) %> ~ <%= campaign.try(:finished_on).try(:to_date) %>
+              </div>
+            </div>
+          </div>
+        <% end %>
+      <% end %>
+  </div>
+  <div class="p-campaignIndex__eventAnnotation">※ 各キャンペーンをクリックすると外部サイトに遷移します。</div>
+    <% else %>
+      キャンペーンはありません。
+    <% end%>
+</div>

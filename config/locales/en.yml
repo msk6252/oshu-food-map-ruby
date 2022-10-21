@@ -1,23 +1,25 @@
-en:
+ja:
   activerecord:
     attributes:
       shop:
         name: 店名/企業名
         address: 住所
+        tel: 電話番号
+        genre: ジャンル
+        public: 公開/非公開
         inside_image: 店内画像
         outside_image: 外観画像
         cooking_images: 料理画像
   views:
     pagination:
-      first: "&laquo; 最初"
-      last: "最後 &raquo;"
-      previous: "&lsaquo; 前"
-      next: "次 &rsaquo;"
+      first: "&laquo;"
+      last: "&raquo;"
+      previous: "&lsaquo;"
+      next: "&rsaquo;"
       truncate: "..."
     images:
       nothing: "投稿画像はありません。"
       post_photo_number: "投稿枚数: %{number}枚"
-  hello: "Hello world"
   models:
     base:
       id: "ID"
@@ -30,7 +32,12 @@ en:
       address: "住所"
       latitude: "緯度"
       longitude: "経度"
+      genre: ジャンル
       cooking_image: "料理画像"
       outside_image: "外観画像"
       inside_image: "内装画像"
       what3words: "What3Words"
+      public: "公開/非公開"
+      draft: "非公開"
+      published: "公開"
+      tel: "電話番号"

@@ -1,0 +1,99 @@
+.shops.search {
+  .p-detailSearch__title,
+  .m-easySearch__title {
+    margin: 0 0 18px 0;
+    height: 5%;
+    min-height: 5%;
+ 
+    h3 {
+      font-style: normal;
+      font-weight: bold;
+      font-size: 20px;
+      padding-bottom: 12px;
+      border-bottom: 1px solid #ccc;
+    }
+  }
+
+  h4 {
+    font-size: 16px;
+  }
+
+  .m-btn__wrapper {
+    margin: 16px 0;
+  }
+
+  .p-search__submitBtn {
+    margin: 0 !important;
+  }
+
+  .p-detailSearch__wrapper {
+    width: 90%;
+    margin: 0px auto;
+    padding-top: 16px;
+    height: 100%;
+  }
+ 
+  .p-detailSearch__content {
+    height: 95%;
+    min-height: 95%;
+  }
+
+  .p-search__wrapper {
+    width: 100%;
+    height: 100%;
+    margin: 0 auto;
+  }
+
+  .p-search__selectBoxWrapper {
+    overflow: hidden;
+    width: 90%;
+    margin: 0 auto 16px;
+    text-align: center;
+    select {
+      width: 100%;
+      padding-right: 4px;
+      text-align: center;
+      cursor: pointer;
+      text-indent: 0.01px;
+      text-overflow: ellipsis;
+      border: none;
+      outline: none;
+      background: transparent;
+      background-image: none;
+      box-shadow: none;
+      -webkit-appearance: none;
+      appearance: none;
+    }
+  }
+
+  .p-detailSearch__submit {
+    padding: 8px 48px;
+  }
+
+  .p-search__selectBoxWrapper.p-search__selectBoxWrapperSub {
+    position: relative;
+    border-radius: 2px;
+    border: 2px solid skyblue;
+    border-radius: 50px;
+    background: #fff;
+
+    &::before {
+      position: absolute;
+      top: 16px;
+      right: 16px;
+      width: 0;
+      height: 0;
+      padding: 0;
+      content: '';
+      border-left: 6px solid transparent;
+      border-right: 6px solid transparent;
+      border-top: 6px solid skyblue;
+      pointer-events: none;
+    }
+
+    select {
+      padding: 8px;
+      color: black;
+    }
+  }
+}

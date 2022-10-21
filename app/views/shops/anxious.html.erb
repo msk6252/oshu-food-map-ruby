@@ -1,0 +1,36 @@
+<% if notice %>
+  <p id="notice"><%= notice %></p>
+<% end %>
+<div id="map"></div>
+
+<%= render 'tab' %>
+
+<script type="text/javascript">
+  // navigatorのオプション
+  var options = {
+    enableHighAccuracy: true,
+    timeout: 5000,
+    maximumAge: 0
+  };
+
+  // マップの中心部を決める
+  var map = L.map('map').setView([39.144562, 141.139285], 13);
+  // アイコンのディレクトリ
+  L.Icon.Default.imagePath = "/assets/";
+  // タイルの取得
+  var osmUrl = "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png";
+  // コピーライト
+  var osmAttrib = "Map data OpenstreetMap contributors";
+
+  // レイヤーの指定
+  L.tileLayer(osmUrl,{
+    attribution: osmAttrib,
+    maxZoom: 20,
+  }).addTo(map);
+
+  // お店一覧をプロット
+  <% @shops_all.each do |shop| %>
+    L.marker([<%= shop["latitude"] %>, <%= shop["longitude"] %> ]).addTo(map)
+  <% end %>
+</script>
+

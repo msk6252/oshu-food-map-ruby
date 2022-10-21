@@ -1,59 +1,120 @@
-<p id="notice"><%= notice %></p>
+<% if notice %>
+  <p id="notice"><%= notice %></p>
+<% end %>
 
-<p>
-  <strong>Name:</strong>
-  <%= @shop.name %>
-</p>
+<div class="p-shopDetail__wrapper">
+  <div class="p-shopDetail__title">
+    <h2><%= @shop.name %></h2>
+    <p style="line-height: unset;" class="p-shopDetail__opening <%= @shop.opening? ? '-active' : '-passive'%>">（<%= opening_text(@shop) %>）</p>
+  </div>
 
-<p>
-  <strong>Address:</strong>
-  <%= @shop.address %>
-</p>
+  <div class="swiper">
+    <div class="swiper-wrapper">
+      <% @shop.image_list.each do |img| %>
+        <div class="swiper-slide">
+          <%= get_image_tag(img, '450', '250', 'p-shopIndex__AreaImage')%>
+        </div>
+      <% end %>
+    </div>
+    <div class="swiper-pagination"></div>
+    <div class="swiper-button-prev"></div>
+    <div class="swiper-button-next"></div>
+  </div>
 
-<div id="map"></div>
+  <div class="m-btn__group p-shopDetail__linkButtonWrapper">
+    <% if @shop.try(:tabelog_url).present? %>
+      <%= link_to '食べログ', shop.try(:tabelog_url), class: 'm-btn__pacificBlue', target: '_blank'%>
+    <% end %>
+    <% if @shop.try(:gnavi_url).present? %>
+      <%= link_to 'ぐるなび', shop.try(:gnavi_url), class: 'm-btn__pacificBlue', target: '_blank'%>
+    <% end %>
+    <% if @shop.try(:latitude).present? && @shop.try(:longitude).present? %>
+      <%= link_to 'Googleマップ', "//www.google.com/maps/search/?api=1&query=#{ @shop.latitude },#{ @shop.longitude }", class: "m-btn__pacificBlue" %>
+    <% end %>
+    <% if @shop.try(:tel).present? %>
+      <%= link_to '電話する', "tel:#{ @shop.tel }", class: "m-btn__pacificBlue" %>
+    <% end %>
+  </div>
 
-<p>
-  <strong>Outside Image</strong>
-  <%= image_tag @shop.outside_image, size: '30x65' if @shop.outside_image.attached? %>
-</p>
+  <div class="p-shopDetail__infoWrapper" style="margin-bottom: 16px;">
+    <h3 class="p-shopDetail__infoTitle">基本情報</h3>
+    <table class="p-shopDetail__infoTable">
+      <tbody>
+        <tr>
+          <td class="p-shopDetail__infoTableTd">住所</td>
+          <td class="p-shopDetail__infoTableTd"><%= @shop.address %></td>
+        </tr>
+        <tr>
+          <td class="p-shopDetail__infoTableTd">電話</td>
+          <td class="p-shopDetail__infoTableTd"><%= @shop.tel.present? ? @shop.tel : "-" %></td>
+        </tr>
+        <tr>
+          <td class="p-shopDetail__infoTableTd">ジャンル</td>
+          <td class="p-shopDetail__infoTableTd"><%= shop_genre_names(@shop) %></td>
+        </tr>
+      </tbody>
+    </table>  
+  </div>
 
-<p>
-  <strong>Inside Image</strong>
-  <%= image_tag @shop.inside_image, size: '100x200' if @shop.inside_image.attached? %>
-</p>
+  <div class="p-shopDetail__map">
+    <h3 class="p-shopDetail__mapTitle">地図</h3>
+    <div id="map"></div>
+  </div>
 
-<p>
-  <strong>Cooking Image</strong>
-  <% @shop.cooking_images.each do |food| %>
-    <%= image_tag food.variant(resize: '300') %>
+  <% if @shop.group_business_hours.present? %>
+    <div class="p-shopDetail__businessHourWrapper">
+      <div class="p-shopDetail__businessHourTitle">
+        <h3>営業時間</h3>
+      </div>
+
+      <table class="p-shopDetail__businessHourTable">
+        <thead>
+          <th>曜日</th>
+          <th>営業時間</th>
+          <th>備考</th>
+        </thead>
+        <tbody>
+          <% @shop.group_business_hours.each do |key, hour| %>    
+            <tr>
+              <td><%= key %></td>
+              <td>
+                <% hour.each do |h| %>
+                  <%= h.started_at.strftime("%H:%M") %> ~ <%= h.finished_at.strftime("%H:%M") %><br/>
+                <% end%>
+              </td>
+              <td>
+                <% hour.each do |h| %>
+                  <%= h.remarks %><br/>
+                <% end %>
+              </td>
+            </tr>
+          <% end %>
+        </tbody>
+      </table>
+    </div>
   <% end %>
-</p>
 
-<%= link_to 'Back', shops_path %>
-
-<style>
-html { height: 100% }
-body { height: 100% }
-#map { height: 60%; width: 100% }
-</style>
+  <%= link_to 'Back', :back %>
+</div>
 
 <script>
-  let shopLatLng = {
-                     lat: <%= @shop['latitude'] || 39.13960294778968 %>,
-                     lng: <%= @shop['longitude'] || 141.14624841562465 %>
-                   }
-  function initMap() {
-    map = new google.maps.Map(document.getElementById('map'), {
-      center: shopLatLng,
-      zoom: 13
-    });
-
-    markerLatLng = new google.maps.LatLng(shopLatLng);
-
-    marker = new google.maps.Marker({
-      position: markerLatLng,
-      map: map
-    });
-  }
+  var latlng = [<%= @shop.latitude %>, <%= @shop.longitude %>]
+  var map = L.map('map').setView(latlng, 16);
+  L.Icon.Default.imagePath = "/assets/";
+  var osmUrl = "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png";
+  var osmAttrib = "Map data OpenstreetMap contributors";
+  L.tileLayer(osmUrl,{
+    attribution: osmAttrib,
+    maxZoom: 19,
+  }).addTo(map);
+  L.marker(latlng).addTo(map);
 </script>
-<script async defer src="//maps.googleapis.com/maps/api/js?key=<%= ENV.fetch("GOOGLE_MAP_API_KEY") %>&callback=initMap" type="text/javascript"></script>
+<script>
+  new Swiper('.swiper', {
+    loop: true,
+    navigation: {
+      nextEl: '.swiper-button-next',
+      prevEl: '.swiper-button-prev'
+    }
+  })
+</script>

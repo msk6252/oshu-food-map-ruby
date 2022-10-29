@@ -1,7 +1,15 @@
 class ApplicationController < ActionController::Base
   after_action :create_log_access
+  before_action :basic_auth, if: proc { Rails.env.production? }
+
   rescue_from StandardError do |exception|
     create_log_access(exception)
+  end
+
+  def basic_auth
+    authenticate_or_request_with_http_basic do |username, password|
+      username == ENV["BASIC_USER_NAME"] && password == ENV["BASIC_PASSWORD"]
+    end
   end
 
   def after_sign_in_path_for(resource)

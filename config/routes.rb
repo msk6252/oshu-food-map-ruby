@@ -1,6 +1,6 @@
 Rails.application.routes.draw do
-  devise_for :admin
   root 'shops#index'
+  devise_for :admin
   get '/admin' => redirect('/admin/sign_in')
 
   get '/contact', to: 'contacts#index'

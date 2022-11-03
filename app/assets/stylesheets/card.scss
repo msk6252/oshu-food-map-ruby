@@ -9,7 +9,10 @@ a {
   border: 1px solid #ccc;
   border-radius: 4px;
   margin-bottom: 16px;
-  box-shadow: 0 0 4px rgba(92, 111, 118, 0.25) ;
+  box-shadow: 0 0 4px rgba(92, 111, 118, 0.25);
+  a {
+    color: #333;
+  }
 }
 
 .m-card_mainContainer {
@@ -35,6 +38,7 @@ a {
 
 .m-card__img {
   min-width: 150px;
+  max-width: 150px;
   height: 150px;
   img {
     width: 100%;

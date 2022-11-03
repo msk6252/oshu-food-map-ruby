@@ -7,6 +7,8 @@ create_table "shops", id: :bigint, unsigned: true, force: :cascade, comment: "�
   t.decimal "longitude",  precision: 16, scale: 13
   t.string "address"
   t.string "tel"
+  t.text "tabelog_url"
+  t.text "gnavi_url"
   t.string "google_place_id"
   t.integer "business_status",null: true
   t.integer "price_level", null: true
@@ -122,8 +124,12 @@ add_foreign_key "business_hours", "shops"
 
 create_table "campaigns", id: :bigint, unsigned: true, force: :cascade, comment: "キャンペーン" do |t|
   t.string "name", limit:191, default: "", null:false
-  t.datetime "started_at", precision: 6, null: false
-  t.datetime "finished_at", precision: 6, null: false
+  t.text "url"
+  t.datetime "started_on", precision: 4, null: false
+  t.datetime "finished_on", precision: 4, null: false
+  t.datetime "updated_at", precision: 6, null: false
+  t.datetime "created_at", precision: 6, null: false
+  t.datetime "discarded_at", precision: 6
 end
 
 create_table "rel_shop_campaigns", id: :bigint, unsigned: true, force: :cascade, comment: "キャンペーン中間テーブル" do |t|
@@ -135,3 +141,19 @@ end
 
 add_foreign_key "rel_shop_campaigns", "shops"
 add_foreign_key "rel_shop_campaigns", "campaigns"
+
+create_table "log_accesses", id: :bigint, unsigned: true, force: :cascade, comment: "ログ収集" do |t|
+  t.text "url"
+  t.string "http_method"
+  t.text "parameters"
+  t.text "referer"
+  t.text "user_agent"
+  t.string "ip_address"
+  t.string "controller", limit: 255, default: ""
+  t.string "action", limit: 255, default: ""
+  t.text "error_message"
+  t.datetime "updated_at", precision: 6, null: false
+  t.datetime "created_at", precision: 6, null: false
+end
+
+add_index "log_accesses", ["created_at"]

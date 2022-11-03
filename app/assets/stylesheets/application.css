@@ -42,7 +42,9 @@ p {
 }
 
 a:hover {
-  text-decoration: none;
+  text-decoration: none !important;
+  color: inherit;
+  background-color: initial;
 }
 
 main {
@@ -50,6 +52,7 @@ main {
 }
 
 footer {
+  margin-top: 32px;
   padding: 16px 0;
   background: #f89e95;
 }
@@ -185,17 +188,17 @@ nav.header {
 }
 
 @media (min-width: 520px) {
-  main {
-    display: none !important;
+  :not(.admin) > main {
+    display: none;
   }
 
-  .pc_site {
+  :not(.admin) > .pc_site {
     display: block;
     width: 100%;
     height: 100%;
   }
 
-  .pc_site > p {
+  :not(.admin) > .pc_site > p {
     margin: 50% 0;
     text-align: center;
     font-size: 24px;

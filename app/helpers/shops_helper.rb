@@ -5,7 +5,7 @@ module ShopsHelper
     return "閉店" if shop.business_status == 3
     current_time = Time.now
     bh = shop.business_hour.where("? between started_at and finished_at", current_time)
-    return  bh.present? ? "営業中" : "準備中"
+    return bh.present? ? "営業中" : "準備中"
   end
 
   # お店のジャンルを抽出
@@ -14,6 +14,14 @@ module ShopsHelper
     RelShopGenre.is_shop(shop.id).each do |rel|
       genre_names << Genre.find_by(id: rel.genre_id).try(:name)
     end
-    genre_names
+
+    display_names = "-"
+    if genre_names.present?
+      display_names = genre_names.join("、")
+    else
+      diplay_names = "-"
+    end
+
+    display_names
   end
 end

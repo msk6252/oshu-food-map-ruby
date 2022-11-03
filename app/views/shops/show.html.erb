@@ -10,15 +10,11 @@
 
   <div class="swiper">
     <div class="swiper-wrapper">
-      <div class="swiper-slide">
-        <img class="p-shopIndex__AreaImage" src="https://placehold.jp/450x250.png" />
-      </div>
-      <div class="swiper-slide">
-        <img class="p-shopIndex__AreaImage" src="https://placehold.jp/450x250.png" />
-      </div>
-      <div class="swiper-slide">
-        <img class="p-shopIndex__AreaImage" src="https://placehold.jp/450x250.png" />
-      </div>
+      <% @shop.image_list.each do |img| %>
+        <div class="swiper-slide">
+          <%= get_image_tag(img, '450', '250', 'p-shopIndex__AreaImage')%>
+        </div>
+      <% end %>
     </div>
     <div class="swiper-pagination"></div>
     <div class="swiper-button-prev"></div>
@@ -26,9 +22,18 @@
   </div>
 
   <div class="m-btn__group p-shopDetail__linkButtonWrapper">
-    <div class="m-btn__pacificBlue">食べログ</div>
-    <div class="m-btn__pacificBlue">ぐるなび</div>
-    <div class="m-btn__pacificBlue">Googleマップ</div>
+    <% if @shop.try(:tabelog_url).present? %>
+      <%= link_to '食べログ', shop.try(:tabelog_url), class: 'm-btn__pacificBlue', target: '_blank'%>
+    <% end %>
+    <% if @shop.try(:gnavi_url).present? %>
+      <%= link_to 'ぐるなび', shop.try(:gnavi_url), class: 'm-btn__pacificBlue', target: '_blank'%>
+    <% end %>
+    <% if @shop.try(:latitude).present? && @shop.try(:longitude).present? %>
+      <%= link_to 'Googleマップ', "//www.google.com/maps/search/?api=1&query=#{ @shop.latitude },#{ @shop.longitude }", class: "m-btn__pacificBlue" %>
+    <% end %>
+    <% if @shop.try(:tel).present? %>
+      <%= link_to '電話する', "tel:#{ @shop.tel }", class: "m-btn__pacificBlue" %>
+    <% end %>
   </div>
 
   <div class="p-shopDetail__infoWrapper" style="margin-bottom: 16px;">
@@ -41,11 +46,11 @@
         </tr>
         <tr>
           <td class="p-shopDetail__infoTableTd">電話</td>
-          <td class="p-shopDetail__infoTableTd"><%= @shop.address %></td>
+          <td class="p-shopDetail__infoTableTd"><%= @shop.tel.present? ? @shop.tel : "-" %></td>
         </tr>
         <tr>
           <td class="p-shopDetail__infoTableTd">ジャンル</td>
-          <td class="p-shopDetail__infoTableTd"><%= shop_genre_names(@shop).join(', ') %></td>
+          <td class="p-shopDetail__infoTableTd"><%= shop_genre_names(@shop) %></td>
         </tr>
       </tbody>
     </table>  
@@ -56,36 +61,38 @@
     <div id="map"></div>
   </div>
 
-  <div class="p-shopDetail__businessHourWrapper">
-    <div class="p-shopDetail__businessHourTitle">
-      <h3>営業時間</h3>
-    </div>
+  <% if @shop.group_business_hours.present? %>
+    <div class="p-shopDetail__businessHourWrapper">
+      <div class="p-shopDetail__businessHourTitle">
+        <h3>営業時間</h3>
+      </div>
 
-    <table class="p-shopDetail__businessHourTable">
-      <thead>
-        <th>曜日</th>
-        <th>営業時間</th>
-        <th>備考</th>
-      </thead>
-      <tbody>
-        <% @shop.group_business_hours.each do |key, hour| %>    
-          <tr>
-            <td><%= key %></td>
-            <td>
-              <% hour.each do |h| %>
-                <%= h.started_at.strftime("%H:%M") %> ~ <%= h.finished_at.strftime("%H:%M") %><br/>
-              <% end%>
-            </td>
-            <td>
-              <% hour.each do |h| %>
-                <%= h.remarks %><br/>
-              <% end %>
-            </td>
-          </tr>
-        <% end %>
-      </tbody>
-    </table>
-  </div>
+      <table class="p-shopDetail__businessHourTable">
+        <thead>
+          <th>曜日</th>
+          <th>営業時間</th>
+          <th>備考</th>
+        </thead>
+        <tbody>
+          <% @shop.group_business_hours.each do |key, hour| %>    
+            <tr>
+              <td><%= key %></td>
+              <td>
+                <% hour.each do |h| %>
+                  <%= h.started_at.strftime("%H:%M") %> ~ <%= h.finished_at.strftime("%H:%M") %><br/>
+                <% end%>
+              </td>
+              <td>
+                <% hour.each do |h| %>
+                  <%= h.remarks %><br/>
+                <% end %>
+              </td>
+            </tr>
+          <% end %>
+        </tbody>
+      </table>
+    </div>
+  <% end %>
 
   <%= link_to 'Back', :back %>
 </div>

@@ -27,9 +27,16 @@ class Admin::ShopsController < ApplicationController
   def create
     @shop = Shop.new(shop_params)
 
+    # 画像を更新
+    if shop_params[:cooking_images].present?
+      @shop.cooking_images.each do |image|
+        image.purge
+      end
+    end
+
     respond_to do |format|
-      if @shop.save
-        format.html { redirect_to admin_shops_path, notice: "Shop was successfully created." }
+      if @shop.save!
+        format.html { redirect_to admin_shop_path(@shop), notice: "Shop was successfully created." }
         format.json { render :show, status: :created, location: @shop }
       else
         format.html { render :new, status: :unprocessable_entity }
@@ -40,19 +47,32 @@ class Admin::ShopsController < ApplicationController
 
   # PATCH/PUT /admin/shops/1 or /admin/shops/1.json
   def update
-    respond_to do |format|
-      if shop_params[:cooking_images]&.length > 0
+    shop_params_hash = shop_params.to_h
+    # 公開状況をBooleanに変換
+    shop_params_hash["public"] = shop_params_hash["public"].to_i == 1 ? true : false
+    # POSTされたジャンル一覧から0を省く
+    shop_params_hash["genre_ids"] = shop_params_hash["genre_ids"] - ["0"]
+
+    ActiveRecord::Base.transaction do
+      # 画像を更新
+      if shop_params_hash[:cooking_images].present?
         @shop.cooking_images.each do |image|
           image.purge
         end
       end
-      if @shop.update(shop_params)
-        format.html { redirect_to admin_shops_path, notice: "Shop was successfully updated." }
-        format.json { render :show, status: :ok, location: @shop }
-      else
-        format.html { render :edit, status: :unprocessable_entity }
-        format.json { render json: @shop.errors, status: :unprocessable_entity }
+
+
+      respond_to do |format|
+        if @shop.update!(shop_params_hash)
+          format.html { redirect_to admin_shop_path(@shop), notice: "Shop was successfully updated." }
+          format.json { render :show, status: :created, location: @shop }
+        else
+          format.html { render :new, status: :unprocessable_entity }
+          format.json { render json: @shop.errors, status: :unprocessable_entity }
+        end
       end
+    rescue => e
+      Rails.logger.error{ "Error: #{e}"}
     end
   end
 
@@ -86,6 +106,6 @@ class Admin::ShopsController < ApplicationController
 
     # Only allow a list of trusted parameters through.
     def shop_params
-      params.require(:shop).permit(:name, :latitude, :longitude, :address, :inside_image, :outside_image, cooking_images: [])
+      params.require(:shop).permit(:name, :latitude, :longitude, :address, :tel, :inside_image, :outside_image, :public, cooking_images: [], genre_ids: [])
     end
 end

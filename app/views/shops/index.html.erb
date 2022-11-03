@@ -22,14 +22,14 @@
     <h3 class="p-shopIndex__EasySearchTitle">検索</h3>
     <div class="p-shopIndex__EasySearchContent">
       <a class="p-shopIndex__EasySearchImageLink js-shopIndexCurrentPositionSearch">
-        <div class="p-shopIndex__EasySearchImageContent js-shopIndexCurrentPositionSearch">
-          <img class="p-shopIndex__EasySearchImage" src="https://placehold.jp/150x150" />
+        <div class="p-shopIndex__EasySearchImageContent">
+          <%= get_image_tag("ic_current", 150, 150, "p-shopIndex__EasySearchImage") %>
           <span class="p-shopIndex__EasySearchImageText">現在地から検索</span>
         </div>
       </a>
       <a href="/search" class="p-shopIndex__EasySearchImageLink">
         <div class="p-shopIndex__EasySearchImageContent">
-          <img class="p-shopIndex__EasySearchImage" src="https://placehold.jp/150x150" />
+          <%= get_image_tag("ic_search", 150, 150, "p-shopIndex__EasySearchImage") %>
           <span class="p-shopIndex__EasySearchImageText">詳細検索</span>
         </div>
       </a>
@@ -41,18 +41,14 @@
   <div class="p-shopIndex__CampaignWrapper">
     <h3 class="p-shopIndex__CampaignTitle">開催中のキャンペーン</h3>
     <div class="p-shopIndex__CampaignList">
-      <div class="p-shopIndex__CampaignContent">
-        <span class="p-shopIndex__CampaignDate">2022/06/01 ~ 2022/07/30</span>
-        <span class="p-shopIndex__CampaignText">PayPayキャンペーン</span>
-      </div>
-      <div class="p-shopIndex__CampaignContent">
-        <span class="p-shopIndex__CampaignDate">2022/06/01 ~ 2022/07/30</span>
-        <span class="p-shopIndex__CampaignText">いわてGoToEat</span>
-      </div>
-      <div class="p-shopIndex__CampaignContent">
-        <span class="p-shopIndex__CampaignDate">2022/06/01 ~ 2022/07/30</span>
-        <span class="p-shopIndex__CampaignText">PayPayキャンペーン</span>
-      </div>
+      <% Campaign.all.order(:id).limit(5).each do |c| %>
+        <%= link_to c.try(:url), class: "p-shopIndex__CampaignContentLink", target: '_blank' do %>
+          <div class="p-shopIndex__CampaignContent">
+            <span class="p-shopIndex__CampaignDate"><%= c.try(:started_on).try(:to_date) %> ~ <%= c.try(:finished_on).try(:to_date) %></span>
+            <span class="p-shopIndex__CampaignText"><%= c.try(:name) %></span>
+          </div>
+        <% end %>
+      <% end %>
       <div class="p-shopIndex__CampaignDetailLink">
         <%= link_to "キャンペーン一覧へ", campaigns_path %>
       </div>
@@ -66,7 +62,7 @@
       <% Area.all.limit(6).order(:id).each do |area| %>
         <a href="/result?lat=<%= area.try(:latitude) %>&lng=<%= area.try(:longitude) %>" class="p-shopIndex__AreaImageContentLink">
           <div class="p-shopIndex__AreaImageContent">
-            <img class="p-shopIndex__AreaImage" src="https://placehold.jp/150x150.png" />
+            <%= get_image_tag(area.image, "150", "150", "p-shopIndex__AreaImage")%>
             <span class="p-shopIndex__AreaImageText"><%= area.try(:name) %></span>
           </div>
         </a>
@@ -78,10 +74,10 @@
   <div class="p-shopIndex__GenreWrapper">
     <h3 class="p-shopIndex__GenreTitle">ジャンルから探す</h3>
     <div class="p-shopIndex__GenreContent">
-      <% Genre.all.limit(6).each do |genre| %>
-        <a href="#" class="p-shopIndex__GenreImageContentLink">
+      <% Genre.all.order(:id).limit(6).each do |genre| %>
+        <a href="/result?genre=<%= genre.id %>" class="p-shopIndex__GenreImageContentLink">
           <div class="p-shopIndex__GenreImageContent">
-            <img class="p-shopIndex__GenreImage" src="https://placehold.jp/150x150.png" />
+            <%= get_image_tag(genre.image, "150", "150", "p-shopIndex__GenreImage")%>
             <span class="p-shopIndex__GenreImageText"><%= genre.name %></span>
           </div>
         </a>

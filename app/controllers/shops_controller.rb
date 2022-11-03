@@ -2,7 +2,7 @@ class ShopsController < ApplicationController
   before_action :set_shop, only: %i[ show edit update destroy ]
   before_action :set_tab_title, only: [:index, :nearby, :anxious, :newer]
 
-  DEFAULT_PAGE = 5
+  DEFAULT_PAGE = 10
 
   # GET /shops or /shops.json
   def index
@@ -17,23 +17,8 @@ class ShopsController < ApplicationController
   def show
   end
 
-  def nearby
-    @shops_all = Shop.all
-    @shops = Kaminari.paginate_array(Shop.distance_from_current_sortby(@shops_all)).page(params[:page]).per(DEFAULT_PAGE)
-  end
-
-  def anxious
-    @shops = Shop.all.page(params[:page]).per(DEFAULT_PAGE)
-    @shops_all = @shops
-  end
-
-  def newer
-    @shops = Shop.all.page(params[:page]).per(DEFAULT_PAGE)
-    @shops_all = @shops
-  end
-
   def result
-    @shops = Shop.all.active.published
+    @shops = Shop.all.active
     if params[:genre].present? &&
        params[:genre].to_i != 0
       @shops = @shops.eager_load(:rel_shop_genre).where(rel_shop_genres: { genre_id: params[:genre] })

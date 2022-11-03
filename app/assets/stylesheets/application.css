@@ -61,6 +61,10 @@ footer p {
   color: #fff !important;
 }
 
+footer p a {
+  color: #fff !important;
+}
+
 nav.header {
   width: 100%;
   height: 70px;

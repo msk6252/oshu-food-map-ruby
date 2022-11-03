@@ -20,8 +20,7 @@ class ApplicationController < ActionController::Base
     end
   end
 
-  def create_log_access(exception)
-    error_message = exception.present? ? exception : ""
+  def create_log_access(exception = "")
     parameters = request.request_method == "GET" ? request.query_parameters : request.request_parameters
 
     LogAccess.create!(
@@ -33,7 +32,7 @@ class ApplicationController < ActionController::Base
       ip_address: request.remote_ip,
       controller: controller_name,
       action: action_name,
-      error_message: error_message
+      error_message: exception
     )
   rescue => e
     Rails.logger.error("LogAccess Create Failed: #{e}")
